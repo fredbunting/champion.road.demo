@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Champion Road"><meta name="theme-color" content="#0b0d12"><meta name="cr-version" content="0.3.2">
+<meta name="apple-mobile-web-app-title" content="Champion Road"><meta name="theme-color" content="#0b0d12"><meta name="cr-version" content="0.3.3">
 <title>Champion Road: The Last Champion</title>
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -308,6 +308,7 @@ body.inhub #menuBtn,body.inhub .touch,body.inhub #quest,body.inhub .banner{displ
 .mv{height:auto!important;min-height:58px;padding-top:8px;padding-bottom:8px}.mvd{display:flex;align-items:center;gap:6px;font:600 11px var(--sans)}.mvd .dmg{color:#e8ecf2;font-weight:800}.mvd .ko{font:800 9px var(--sans);padding:1px 5px;border-radius:4px;background:#d9604f;color:#fff}.mvd .ko.maybe{background:#8f5a2a}
 .btop .bdmg{color:var(--dim)}.btop .bdmg.on{color:#4fd07a;border-color:rgba(79,208,122,.5)}
 .badge.pbadge{position:absolute;right:6px;top:2px}.hub-tabs button{position:relative}
+.ht-q{display:block;margin-top:4px;font-size:12px;color:#e9e4da;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62vw}.ht-q b{color:var(--gold);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:10px;margin-right:6px}
 
 </style></head><body>
 <canvas id="gl"></canvas><div id="ui"><button id="menuBtn" aria-label="Menu"><i></i></button></div>
@@ -13045,9 +13046,9 @@ class Battler{
     if(this.tex)this.tex.dispose();this.tex=tex;this.mat.map=tex;this.mat.emissiveMap=tex;this.dmat.map=tex;this.mat.needsUpdate=this.dmat.needsUpdate=true;
     /* sized by the Pokémon's real height (a trainer is about 2 units), so Pikachu is small and Onix towers */
     const hm=(typeof MON_HEIGHT!=='undefined'&&MON_HEIGHT[SPECIES[mon.sp].dex]||10)/10;const want=clamp(.8+1.0*Math.sqrt(hm),1.05,4.6);this.scale=want/Math.max(8,S.feet-(S.top||0))*(back?.68:1);this.mesh.scale.set(S.W*this.scale,S.H*this.scale,1);this.mesh.position.y=-(S.H-S.feet)*this.scale;
-    const w=Math.max(.9,S.W*this.scale*.55);this.blob.scale.set(w/1.6*1.4,w/1.6*1.4,1);this.frame=0;this.t=0}
+    const w=Math.max(.9,S.W*this.scale*.55);this.blob.scale.set(w/1.6*1.4,w/1.6*1.4,1);this.frame=0;this.frameIdx=0;this.t=0;this.fx={dx:0,dy:0,k:1,op:1};this.sink=0}
   height(){return this.S?(this.S.feet)*this.scale:1.5}
-  update(dt,cam){if(!this.S)return;this.t+=dt*1000;const S=this.S;let k=this.frameIdx||0;while(this.t>S.durs[k]){this.t-=S.durs[k];k=(k+1)%S.n}this.frameIdx=k;
+  update(dt,cam){if(!this.S)return;this.t+=dt*1000;const S=this.S;let k=this.frameIdx||0;if(k>=S.n)k=0;while(this.t>S.durs[k]){this.t-=S.durs[k];k=(k+1)%S.n}this.frameIdx=k;
     this.tex.offset.set((k%S.cols)/S.cols,1-(Math.floor(k/S.cols)+1)/S.rows);
     /* face the camera around Y */
     const p=this.group.position;this.mesh.rotation.y=Math.atan2(cam.position.x-p.x,cam.position.z-p.z);
@@ -13193,7 +13194,7 @@ const Battle3D={b:null,shake:0,
       if(/Gotcha/.test(e.text||'')){Audio2.sfx('caught');this.msg(e.text);await this.ballCaught();await wait(1400/sp);continue}
       if(this.ball&&/broke free|appeared to be caught|Almost had it|so close/.test(e.text||'')){await this.ballFail();this.msg(e.text);if(e.snap)this.view=e.snap;this.hud('r');await wait(900/sp);continue}
       if(a&&a.type==='enter'){if(e.snap)this.view=e.snap;const bt=a.side==='p'?this.bp:this.br;const s=this.b.sides[a.side];const m=s.team[e.snap?(a.side==='p'?e.snap.pa:e.snap.ra):s.active];const fresh=bt.mon!==m;if(fresh||!bt.visible){await bt.set(m,a.side==='p');if(e.text)this.msg(e.text);await this.sendOut(bt,a.side,first&&a.side==='r'&&this.cfg.wild)}this.hud(a.side);if(a.side==='r'&&!this.cfg.wild)this.shot('classic');continue}
-      if(a&&a.type==='atk'){if(e.text)this.msg(e.text);this.shot(a.side==='p'?'classic':'classic');const d=this.moveFX(a.side,a.mv);await wait((d+120)/sp);if(e.snap){this.view=e.snap;this.hud('p');this.hud('r')}continue}
+      if(a&&a.type==='atk'){if(e.text)this.msg(e.text);this.shot(a.side==='p'?'classic':'classic');const d=this.moveFX(a.side,a.mv);await wait(d+120/sp);if(e.snap){this.view=e.snap;this.hud('p');this.hud('r')}continue}
       if(a&&a.type==='hit'){const bt=a.side==='p'?this.bp:this.br;bt.flashT=.35/sp;Audio2.sfx(/super effective/i.test(e.text||'')?'superhit':/not very/i.test(e.text||'')?'weak':'hit')}
       if(a&&a.type==='down'){const bt=a.side==='p'?this.bp:this.br;Audio2.cry(SPECIES[bt.mon.sp].dex);await wait(250/sp);Audio2.sfx('faint');await this.tween(500/sp,k=>{bt.sink=k*1.6});bt.show(false);bt.sink=0}
       if(a&&a.type==='out'){const bt=a.side==='p'?this.bp:this.br;if(/threw/i.test(e.text||'')){this.msg(e.text);await this.throwBall();continue}await this.withdraw(bt)}
@@ -13532,23 +13533,24 @@ function ovrPill(v,k='OVR'){const c=v>=70?'#4cd38a':v>=55?'#a9d65a':v>=38?'#e3b0
 const Hub={el:null,scr:'home',
   open(o={}){if(!G.club)G.club=League.newClub();if(this.el)this.close(true);Game.lock++;this.prevMode=Game.mode;Game.mode='hub';document.body.classList.add('inhub');Audio2.music('hub');
     const e=this.el=document.createElement('div');e.className='hub';e.innerHTML=`<aside class="hub-nav"><div class="hn-club">${crest('fer',40)}<div><b>Fernwick Rovers</b><small>Division 4 · Season ${G.club.season}</small></div></div><nav>${NAV.map(([k,t,d])=>`<button data-s="${k}">${icon(d)}<span>${t}</span>${k==='inbox'?'<em class="badge"></em>':''}</button>`).join('')}</nav><div class="hn-foot">Manager <b>${esc(G.name)}</b></div></aside>
-      <main class="hub-main"><header class="hub-top"><div class="ht-t"><h1></h1><small class="ht-d"></small></div><div class="ht-r"><span class="ht-m"></span><button class="ht-w" title="Walk around Fernwick">${icon('M12 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM8 22l2-7-3-3 2-4h6l2 4-3 3 2 7',18)}<span>World</span></button><button class="ht-c"><span>Continue</span>${icon('M9 6l6 6-6 6',18)}</button></div></header><section class="hub-body"></section></main>
+      <main class="hub-main"><header class="hub-top"><div class="ht-t"><h1></h1><small class="ht-d"></small><small class="ht-q"></small></div><div class="ht-r"><span class="ht-m"></span><button class="ht-w" title="Walk around Fernwick">${icon('M12 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM8 22l2-7-3-3 2-4h6l2 4-3 3 2 7',18)}<span>World</span></button><button class="ht-c"><span>Continue</span>${icon('M9 6l6 6-6 6',18)}</button></div></header><section class="hub-body"></section></main>
       <nav class="hub-tabs">${NAV.filter(n=>['home','squad','calendar','training','packs'].includes(n[0])).map(([k,t,d])=>`<button data-s="${k}">${icon(d,22)}<span>${t}</span></button>`).join('')}<button data-s="more">${icon('M5 12h.01M12 12h.01M19 12h.01',22)}<span>More</span></button></nav>`;
     document.body.appendChild(e);e.addEventListener('click',ev=>{const b=ev.target.closest('[data-s]');if(b){this.go(b.dataset.s);Audio2.sfx('select');return}const a=ev.target.closest('[data-a]');if(a){this.act(a.dataset.a,a.dataset);}});
     e.querySelector('.ht-c').onclick=()=>this.cont();e.querySelector('.ht-w').onclick=()=>this.toWorld();
     this.off=Input.on(k=>{if(this.modal)return;if(k==='b'||k==='menu'){Input.take('b');Input.take('menu');if(this.scr==='profile'||this.scr==='more')this.go(this.back||'home');else this.toWorld()}});
-    this.go(o.screen||'home');if(o.intro)this.intro()},
+    this.go(o.screen||'home');if(o.intro)this.intro();if(!o.noCheck)setTimeout(()=>Story.reconcile&&Story.reconcile(),50)},
   close(silent){if(!this.el)return;Game.save(true);this.off&&this.off();this.el.remove();this.el=null;document.body.classList.remove('inhub');Game.lock--;Game.mode=this.prevMode==='hub'?'world':(this.prevMode||'world')},
-  async toWorld(){Audio2.sfx('back');this.close();Game.mode='world';
+  async toWorld(){if(this.runPending())return;Audio2.sfx('back');this.close();Game.mode='world';
     /* time of day follows the story: night only while the lighthouse is calling */
     G.time=flag('lighthouse')&&!flag('moltres_done')?'night':(G.time==='night'?'morning':G.time);
     await Game.gotoMap(G.map,G.pos.x,G.pos.y,G.face||'down',{banner:false});Quest.draw()},
   head(t,sub){const e=this.el;e.querySelector('.ht-t h1').textContent=t;e.querySelector('.ht-d').textContent=sub||`${League.date(G.club.day)} · Season ${G.club.season}`;e.querySelector('.ht-m').innerHTML=`<small>Balance</small>₽${G.money.toLocaleString()}`;
     const pk=Packs.st().inv.length;e.querySelectorAll('[data-s=packs]').forEach(b=>{let x=b.querySelector('.pbadge');if(!x){x=document.createElement('em');x.className='badge pbadge';b.appendChild(x)}x.textContent=pk||'';x.style.display=pk?'':'none'});
+    const q=e.querySelector('.ht-q');q.innerHTML=G.quest?`<b>Objective</b> ${esc(G.quest)}`:'';q.style.display=G.quest?'':'none';
     const un=G.club.mail.filter(m=>!m.read).length;e.querySelectorAll('.badge:not(.pbadge)').forEach(b=>{b.textContent=un||'';b.style.display=un?'':'none'});
     e.querySelectorAll('[data-s]').forEach(b=>b.classList.toggle('on',b.dataset.s===this.scr||(this.scr==='profile'&&b.dataset.s==='squad')));
     const f=League.nextFixture();const today=f&&f.day===G.club.day;e.querySelector('.ht-c span').textContent=today?'Match day':'Continue';e.querySelector('.ht-c').classList.toggle('md',!!today)},
-  go(s,arg){if(s==='more'){this.more();return}if(s!=='profile')this.back=s;this.scr=s;const B=this.el.querySelector('.hub-body');B.scrollTop=0;B.innerHTML=this['s_'+s]?this['s_'+s](arg):'';B.classList.remove('in');void B.offsetWidth;B.classList.add('in');
+  go(s,arg){if(this.pending&&s!=='result'){this.runPending();return}if(s==='more'){this.more();return}if(s!=='profile')this.back=s;this.scr=s;const B=this.el.querySelector('.hub-body');B.scrollTop=0;B.innerHTML=this['s_'+s]?this['s_'+s](arg):'';B.classList.remove('in');void B.offsetWidth;B.classList.add('in');
     this.head(({home:'Home',squad:'Squad',calendar:'Calendar',training:'Training',packs:'Packs',lineup:'Lineup',fixtures:'Fixtures',table:'League table',market:'Transfers',club:'Club',inbox:'Inbox',profile:'Player profile',match:'Match day'})[s]||'');if(this['after_'+s])this['after_'+s](arg)},
   more(){const B=this.el.querySelector('.hub-body');this.scr='more';B.innerHTML=`<div class="grid1">${NAV.map(([k,t,d])=>`<button class="morebtn" data-s="${k}">${icon(d,22)}<span>${t}</span></button>`).join('')}</div>`;this.head('More')},
   /* ---------------- screens ---------------- */
@@ -13629,7 +13631,7 @@ const Hub={el:null,scr:'home',
   modalOpen(html){const m=this.modal=document.createElement('div');m.className='hmodal';m.innerHTML=`<div class="hm-card">${html}<div class="row-btns"><button class="btn gold" data-a="closeModal">Close</button></div></div>`;this.el.appendChild(m);m.onclick=e=>{if(e.target===m||e.target.closest('[data-a=closeModal]'))this.modalClose()};
     this.moff=Input.on(k=>{if(k==='b'||k==='a'){Input.take('b');Input.take('a');this.modalClose()}})},
   modalClose(){if(!this.modal)return;const mr=this._mres;this._mres=null;mr&&setTimeout(()=>mr(null));this.moff&&this.moff();this.modal.remove();this.modal=null;if(this.scr==='inbox'||this.scr==='home')this.go(this.scr)},
-  cont(){const L=G.club;const f=League.nextFixture();if(!f){UI.toast('Season complete.');return}if(f.day<=L.day){this.matchday();return}
+  cont(){if(this.runPending())return;const L=G.club;const f=League.nextFixture();if(!f){Act1.seasonEnd();return}if(f.day<=L.day){this.matchday();return}
     if(G.quest&&!flag('prologue_done')&&!flag('matchday1')){UI.toast('Finish the story in the world first: <b>'+esc(G.quest)+'</b>',2600);return}
     const d=League.advance();Audio2.sfx('select');const B=this.el.querySelector('.hub-body');B.classList.add('tick');setTimeout(()=>B.classList.remove('tick'),400);this.go(this.scr==='profile'?'home':this.scr);
     UI.toast(`${d} day${d>1?'s':''} pass. The squad trains.`,1500)},
@@ -13652,14 +13654,15 @@ const Hub={el:null,scr:'home',
   async playMatch(f,g,opp,lu,ol){const home=g.h==='fer';const O=League.club(opp);this.close();Game.mode='world';
     const res=await Battle3D.trainer({stage:'pitch',name:O.short,title:'',char:O.char,foe:ol.map(p=>({...p})),party:lu,fresh:true,music:'battle_trainer',walkout:f.md===1&&!flag('walkout1'),lose:'Good game. You lot are better than your record.',prize:0,league:true,time:'day'});
     flag('walkout1',true);const myK=res.pKO||0,theirK=res.rKO||0;const r=home?{hk:myK,wk:theirK,win:res.winner==='p'?'h':'w'}:{hk:theirK,wk:myK,win:res.winner==='p'?'w':'h'};
-    this.open({screen:'home'});await this.result(f,g,opp,r)},
+    this.open({screen:'home',noCheck:true});await this.result(f,g,opp,r)},
   async result(f,g,opp,r){const home=g.h==='fer';League.record(g,r);const won=League.afterMatch(f,r,g);const B=this.el.querySelector('.hub-body');const my=home?r.hk:r.wk,th=home?r.wk:r.hk;
     Audio2.music(won?'victory_trainer':'hub');if(won)Audio2.sfx('caught');
     const others=f.games.filter(x=>x!==g);
     B.innerHTML=`<div class="res ${won?'won':'lost'}"><div class="lbl">Full time · Matchday ${f.md}</div><div class="res-sc">${crest('fer',64)}<div><b>${my} – ${th}</b><span>${won?'Victory':'Defeat'}</span></div>${crest(opp,64)}</div><p>${won?(f.md===1?'Fernwick Rovers win a league match! The forty fans sound like four hundred.':'Three points for the Rovers.'):'A tough afternoon. Marlow says the squad will learn from it.'}</p></div>
       <div class="grid2"><div class="card"><div class="lbl">Other results</div>${others.map(x=>`<div class="or">${crest(x.h,20)}<span>${esc(League.club(x.h).short)}</span><b>${x.res.hk}–${x.res.wk}</b><span class="r">${esc(League.club(x.w).short)}</span>${crest(x.w,20)}</div>`).join('')}</div><div class="card"><div class="lbl">Table</div>${this.miniTable()}</div></div>
       <div class="md-btns"><button class="btn gold big" data-a="afterRes">Continue</button></div>`;
-    B.querySelector('[data-a=afterRes]').onclick=e=>{e.stopPropagation();this.afterResult(f,won)};this.head('Full time')},
+    this.scr='result';this.pending={f,won};B.querySelector('[data-a=afterRes]').onclick=e=>{e.stopPropagation();this.runPending()};this.head('Full time')},
+  runPending(){const p=this.pending;this.pending=null;if(p){this.afterResult(p.f,p.won);return true}return false},
   async afterResult(f,won){if(f.md===1&&!flag('prologue_done')){flag('prologue_done',true);G.quest='';Quest.draw();this.close();Game.mode='cut';await Cut.chapter('Act I','Rise');Game.mode='world';
       G.club.mail.push(League.mail('board','A first step',won?"A win in your first match. The board is delighted, and the town is talking. Keep it going and promotion isn't a dream.":"A defeat, but a spirited one. The board has faith. Build the squad and the results will come.",G.club.day),League.mail('marlow','Training',"Gaffer, I've set the squad on balanced training. Change the focus on the Club screen if you want. And get out on the routes, the squad's thin.",G.club.day));
       Act1.begin();this.open({screen:'home'});return}
@@ -13913,6 +13916,14 @@ Object.assign(Story.T,{
 {const prevStep=Story.onStep;Story.onStep=(x,y)=>{const m=Game.world.map;if(m.id==='fernwick'&&flag('lighthouse')&&!flag('moltres_done')&&x>=39&&x<=46&&y>=46&&y<=53){Act1.lighthouse();return true}return prevStep?prevStep(x,y):false}}
 {const prevLoad=Story.onLoad;Story.onLoad=id=>{prevLoad&&prevLoad(id);Act1.decorate(Game.world)}}
 
+/* safety net: whatever the player clicked, the story always catches up with the league */
+Story.reconcile=async()=>{if(!G||!G.club||Story._rec||(typeof Hub!=='undefined'&&(Hub.pending||Hub.el&&(Hub.scr==='result'||Hub.scr==='match'))))return;Story._rec=true;try{const L=G.club;
+  const f0=L.season===1&&L.fixtures&&L.fixtures[0];const g0=f0&&League.myGame(f0);
+  if(!flag('prologue_done')&&g0&&g0.res){const won=(g0.res.win==='h')===(g0.h==='fer');if(Hub.el){await Hub.afterResult(f0,won);return}flag('prologue_done',true)}
+  if(flag('prologue_done')&&!flag('act1')){Act1.begin();if(Hub.el)Hub.go(Hub.scr==='result'?'home':Hub.scr)}
+  if(Hub.el&&!Hub.pending&&L.fixtures&&L.fixtures.length&&!League.nextFixture()){await Act1.seasonEnd();return}
+  }finally{Story._rec=false}};
+
 'use strict';
 /* ================= boot, title, hero select, main loop ================= */
 const App={T:0,last:0};
@@ -13946,7 +13957,7 @@ async function title(){Game.mode='title';const W=Game.world=new World();G={...ne
   Audio2.sfx('select');Audio2.unlock();el.classList.add('out');await fadeOut(500);el.remove();document.body.classList.remove('notitle');W.focus=null;W.zoom=1;W.camSpeed=1;
   if(k==='cont'){G=Save.load();Game._t0=performance.now();
     /* saves from before Act I existed: start Act I where the player is */
-    if(flag('prologue_done')&&!flag('act1')&&G.club)Act1.begin();
+    if(G.club)await Story.reconcile();
     if(G.time==='night'&&!(flag('lighthouse')&&!flag('moltres_done')))G.time='morning';
     await Game.gotoMap(G.map,G.pos.x,G.pos.y,G.face,{fade:false});await fadeIn(500);if(G.quest)UI.toast('<b>Objective</b> · '+esc(G.quest),3200)}
   else await newJourney()}
