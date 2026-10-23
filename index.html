@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Champion Road"><meta name="theme-color" content="#0b0d12"><meta name="cr-version" content="0.3.5">
+<meta name="apple-mobile-web-app-title" content="Champion Road"><meta name="theme-color" content="#0b0d12"><meta name="cr-version" content="0.3.6">
 <title>Champion Road: The Last Champion</title>
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -72,7 +72,12 @@ body.notitle #menuBtn,body.hidehud #menuBtn,body.hidehud .touch,body.hidehud .ba
 .sheet{justify-content:center;align-items:center;padding:20px}
 .sh-card{width:min(480px,100%);max-height:86vh;display:flex;flex-direction:column;border-radius:18px;background:var(--panel);border:1px solid var(--line2);box-shadow:0 24px 60px rgba(0,0,0,.5);overflow:hidden}
 .sh-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line)}.sh-head h3{margin:0;font:600 20px var(--serif)}.sh-head .x{width:34px;height:34px;border-radius:10px;border:1px solid var(--line2)}
-.sh-body{padding:10px 18px 18px;overflow:auto}.dim{color:var(--dim);font-size:13px;line-height:1.5}
+.sh-body{padding:10px 18px 18px;overflow:auto;min-height:0}
+.sh-foot{display:none}
+/* phones: panels are bottom sheets that never reach the status bar, with a Done button in thumb reach */
+@media (max-width:600px){.sheet{align-items:flex-end;padding:calc(var(--sat) + 40px) 0 0}.sh-card{width:100%!important;max-height:min(80dvh,calc(100dvh - var(--sat) - 40px));border-radius:22px 22px 0 0;animation:shup .22s ease-out}
+  .sh-head{padding:12px 18px}.sh-head .x{width:40px;height:40px}.sh-foot{display:block;padding:10px 18px calc(12px + var(--sab));border-top:1px solid var(--line)}.sh-foot button{width:100%;padding:13px;border-radius:12px;border:1px solid var(--line2);background:rgba(255,255,255,.05);color:inherit;font:600 15px var(--sans)}}
+@keyframes shup{from{transform:translateY(40px);opacity:.4}}.dim{color:var(--dim);font-size:13px;line-height:1.5}
 .pr{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}.pr img{width:48px;height:48px;image-rendering:pixelated}.pr>div{flex:1}.pr b{font-weight:600}.pr small{display:block;color:var(--dim);font-size:12px}
 .pr .buy{padding:8px 14px;border-radius:9px;border:1px solid var(--gold);color:var(--gold);font-weight:600}
 .sheet.wide .sh-card{width:min(640px,100%)}
@@ -312,7 +317,13 @@ body.inhub #menuBtn,body.inhub .touch,body.inhub #quest,body.inhub .banner{displ
 .pc-top{display:flex;align-items:baseline;gap:4px;width:100%}.pc-top b{font:800 26px var(--sans)}.pc-top small{font:700 10px var(--sans);color:#d5dae2}.pc-top em{margin-left:auto;font:800 10px var(--sans);font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:var(--tc)}
 .pc-img{flex:1;display:grid;place-items:center}.pc-mon{width:96px;height:96px;image-rendering:pixelated}.pc-name{font:600 17px var(--serif)}.pc-sub{margin:4px 0}.pc-st{display:flex;justify-content:space-between;width:100%;font:600 12px var(--sans);color:#d5dae2}
 .t-gold .pc-front,.t-rare .pc-front,.t-pseudo .pc-front{animation:glow 2s ease-in-out infinite}@keyframes glow{50%{box-shadow:0 0 30px color-mix(in srgb,var(--tc) 60%,transparent)}}
-@media (max-width:560px){.pcard{width:104px;height:160px}.pc-mon{width:60px;height:60px}.pc-top b{font-size:18px}.pc-name{font-size:13px}.pc-st{font-size:10px;flex-direction:column;align-items:center}.pc-sub .tc{font-size:8px;padding:1px 4px}.po-row{gap:8px}}
+@media (max-width:560px){.po-row{gap:8px;flex-wrap:nowrap;padding:0 12px;width:100%;box-sizing:border-box}.pcard{flex:1 1 0;min-width:0;width:auto;max-width:126px;height:218px}.pc-front{padding:8px 6px}
+  .pc-top{flex-wrap:wrap;justify-content:center;gap:3px}.pc-top b{font-size:20px}.pc-top small{font-size:9px}.pc-top em{margin:0;width:100%;text-align:center;font-size:8px;letter-spacing:.12em}
+  .pc-mon{width:58px;height:58px}.pc-name{font-size:13px;text-align:center;line-height:1.15}.pc-sub{display:flex;flex-wrap:wrap;justify-content:center;gap:2px}.pc-sub .tc{font-size:8px;padding:1px 4px}
+  .pc-st{flex-direction:column;align-items:center;gap:2px;font-size:11px}.pc-st b{font-size:13px}.po-foot{flex-wrap:wrap;justify-content:center}}
+.offr{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}.offr:first-of-type{border-top:0}.offr>div{flex:1;min-width:0}.offr b{display:block}.offr small{color:var(--dim);font-size:12px}
+.offb{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.btn.sm{padding:7px 11px;font-size:12.5px}
+@media (max-width:560px){.offr{flex-wrap:wrap}.offb{width:100%;justify-content:flex-start}}
 .tpick{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.tpick .tc{font-size:12px;padding:6px 10px}
 /* battle damage preview */
 .mv{height:auto!important;min-height:58px;padding-top:8px;padding-bottom:8px}.mvd{display:flex;align-items:center;gap:6px;font:600 11px var(--sans)}.mvd .dmg{color:#e8ecf2;font-weight:800}.mvd .ko{font:800 9px var(--sans);padding:1px 5px;border-radius:4px;background:#d9604f;color:#fff}.mvd .ko.maybe{background:#8f5a2a}
@@ -7526,8 +7537,8 @@ Story.onStep=(x,y)=>{const m=Game.world.map;if(m.id==='fernwick'&&y<=19&&x>=13&&
 'use strict';
 /* ================= small overlay panels: party, bag, settings, shop ================= */
 const Panels={
-  sheet(title,html,{wide}={}){Game.lock++;const e=document.createElement('div');e.className='sheet'+(wide?' wide':'');e.innerHTML=`<div class="sh-card"><div class="sh-head"><h3>${title}</h3><button class="x" aria-label="Close">✕</button></div><div class="sh-body">${html}</div></div>`;document.body.appendChild(e);
-    const close=()=>{off();e.remove();Game.lock--;Audio2.sfx('back')};const off=Input.on(k=>{if(k==='b'||k==='menu'){Input.take('b');Input.take('menu');close()}});e.querySelector('.x').onclick=close;e.onclick=ev=>{if(ev.target===e)close()};return{e,close}},
+  sheet(title,html,{wide}={}){Game.lock++;const e=document.createElement('div');e.className='sheet'+(wide?' wide':'');e.innerHTML=`<div class="sh-card"><div class="sh-head"><h3>${title}</h3><button class="x" aria-label="Close">✕</button></div><div class="sh-body">${html}</div><div class="sh-foot"><button class="done">Done</button></div></div>`;document.body.appendChild(e);
+    const close=()=>{off();e.remove();Game.lock--;Audio2.sfx('back')};const off=Input.on(k=>{if(k==='b'||k==='menu'){Input.take('b');Input.take('menu');close()}});e.querySelector('.x').onclick=close;e.querySelector('.done').onclick=()=>e.querySelector('.x').click();e.onclick=ev=>{if(ev.target===e)close()};return{e,close}},
   /* party: tap one Pokémon, then another, to swap them (party order or party <-> box). The first one leads in battle. */
   party(){if(!G.party.length&&!G.box.length){this.sheet('Party','<p class="dim">No Pokémon yet. Rook is walking with you, but he belongs to Grandpa.</p>');return}
     const {e,close}=this.sheet('Party','',{wide:true});const body=e.querySelector('.sh-body');let sel=null,cur=0;
@@ -13461,6 +13472,8 @@ const League={
   /* after our match: money, morale, other results */
   afterMatch(f,res,mine){const L=G.club;const home=mine.h==='fer';const won=(res.win==='h')===home;
     if(home){const gate=Math.round(L.fans*L.ticket);G.money+=gate;L.lastGate=gate}
+    /* league prize money: paid for every result, more for a win */
+    const prize=won?400:100;G.money+=prize;L.lastPrize=prize;
     L.fans=Math.max(20,Math.round(L.fans*(won?1.12:.97)+(won?4:0)));
     for(const m of this.squad()){const played=L.lineup.includes(m.id);m.apps=(m.apps||0)+(played?1:0);if(played)m.cond=Math.max(40,(m.cond??100)-14);m.sharp=0}
     if(won)Packs.grant(f.md%4===0?'silver':'bronze',`Three points against ${League.club(home?mine.w:mine.h).short}.`);
@@ -13472,12 +13485,35 @@ const League={
   advance(){const L=G.club;const f=this.nextFixture();const target=f?f.day:L.day+1;const days=Math.max(1,Math.min(target-L.day,3));
     for(let i=0;i<days;i++){L.day++;this.dayTick()}return days},
   dayTick(){const L=G.club;const rep=Training.day(L.day-1);(L.reports=L.reports||[]).push({day:L.day-1,kind:rep.kind,lv:rep.lv.map(m=>m.id),learn:rep.learn.length});if(L.reports.length>60)L.reports.shift();
-    G.money-=this.wages();
+    G.money-=this.wages();this.offerTick();
     if(L.day%7===4){this.refreshMarket()}
     /* rival squads train too: a level a week so the league keeps pace with you */
     if(L.day%7===0)for(const id in L.clubs)for(const m of L.clubs[id].squad){if(m.lv<100){m.lv++;const nm=nextLearn(m);if(nm&&!m.moves.includes(nm)&&m.moves.length<4)m.moves.push(nm)}}
     if(L.day===5)L.mail.push(this.mail('pip','Rare sighting!',`Pip again! A fisherman swears he saw a Shinx sparking near the pond on Route 1 at dawn. Could be worth a look before Saturday.`,L.day));},
-  wages(){return 60},
+  /* wages: a small base plus a little per Pokémon on the books, so a bloated box costs money */
+  wages(){return 30+5*this.squad().length},
+  /* ---------- selling & transfer offers ---------- */
+  quickPrice(p){return Math.max(100,Math.round((p.value||500)*.55/50)*50)},
+  canSell(p){if(!p||p.owner!=='me')return 'Not yours to sell.';if(p.nick==='Rook')return "Rook is Grandpa's partner. He's not for sale.";if(this.squad().length<=1)return "You can't sell your only Pokémon.";return ''},
+  /* remove a Pokémon from the club: money in, and optionally it joins the buying club */
+  sell(p,amt,club){const L=G.club;G.party=G.party.filter(m=>m!==p);G.box=G.box.filter(m=>m!==p);if(!G.party.length&&G.box.length)G.party.push(G.box.shift());
+    L.lineup=(L.lineup||[]).filter(id=>id!==p.id);const T=L.training;if(T){delete T.ind[p.id];delete T.mentors[p.id];for(const k in T.mentors)if(T.mentors[k]===p.id)delete T.mentors[k]}
+    L.offers=(L.offers||[]).filter(o=>o.mon!==p.id);G.money+=amt;p.listed=false;
+    if(club&&L.clubs[club]){p.owner=club;L.clubs[club].squad.push(p)}
+    (L.sales=L.sales||[]).push({sp:p.sp,amt,club:club||null,day:L.day})},
+  offerTick(){const L=G.club;L.offers=(L.offers||[]).filter(o=>o.exp>L.day&&this.squad().some(m=>m.id===o.mon));
+    const ids=Object.keys(L.clubs);if(!ids.length)return;
+    const top=this.squad().slice().sort((a,b)=>(b.value||0)-(a.value||0)).slice(0,3).map(m=>m.id);
+    for(const m of this.squad()){if(m.nick==='Rook'||L.offers.some(o=>o.mon===m.id))continue;
+      const ch=m.listed?.22:top.includes(m.id)?.012:.004;if(Math.random()>=ch)continue;
+      const club=ids[Math.floor(Math.random()*ids.length)];const k=m.listed?.85+Math.random()*.35:1.15+Math.random()*.45;
+      const amt=Math.max(150,Math.round((m.value||500)*k/50)*50);const o={id:uid(),club,mon:m.id,amt,day:L.day,exp:L.day+5,asked:false};L.offers.push(o);
+      const C=this.club(club);const ml=this.mail(C.short||C.name,`Offer for ${pName(m)}: ₽${amt.toLocaleString()}`,`${C.name} would like to sign ${pName(m)} (Lv ${m.lv}) for ₽${amt.toLocaleString()}.${m.listed?' They saw it on the transfer list.':' It is not on your transfer list, so they have come in strong.'}\n\nThe offer stands for five days. Accept it, turn it down, or ask for more.`,L.day);ml.offer=o.id;L.mail.push(ml)}},
+  offerOf(id){return(G.club.offers||[]).find(o=>o.id===id)},
+  acceptOffer(id){const o=this.offerOf(id);const p=o&&this.squad().find(m=>m.id===o.mon);if(!o||!p)return null;if(this.canSell(p))return null;this.sell(p,o.amt,o.club);return{p,o}},
+  rejectOffer(id){const L=G.club;L.offers=(L.offers||[]).filter(o=>o.id!==id)},
+  /* ask for more: half the time they raise the bid by 10-25%, otherwise they walk away */
+  askMore(id){const o=this.offerOf(id);if(!o)return 'gone';if(o.asked)return 'final';o.asked=true;if(Math.random()<.5){o.amt=Math.round(o.amt*(1.1+Math.random()*.15)/50)*50;return 'raised'}this.rejectOffer(id);return 'walked'},
   refreshMarket(){const L=G.club;const pool=Object.keys(SPECIES).filter(n=>{const s=SPECIES[n];return s.dex<=493&&!s.legend&&learnList(n)&&s.base===n&&s.bst<=420});const r=srng(hashStr('mk'+L.day+L.season));L.market=[];
     for(let i=0;i<8;i++){let sp,lv,g=0;do{sp=pool[Math.floor(r()*pool.length)];lv=5+Math.floor(r()*6)}while(g++<25&&!learnableAt(SPECIES[sp],lv,[]).some(id=>MOVES[id].c!=='S'));const m=genMon(sp,lv,{owner:'market'});m.price=Math.round(m.value*.9/100)*100+500;L.market.push(m)}},
 };
@@ -13592,7 +13628,7 @@ const Packs={
   price(k){return Math.round(PACKS[k].price*this.mult()/100)*100},
   level(){const sq=League.squad();if(!sq.length)return 6;const top=sq.map(m=>m.lv).sort((a,b)=>b-a).slice(0,3);return Math.max(5,Math.round(top.reduce((a,b)=>a+b,0)/top.length)-2)},
   tierOf(p){const v=pot(p);return v>=82?'gold':v>=72?'silver':'bronze'},
-  pool(type){return Object.keys(SPECIES).filter(n=>{const s=SPECIES[n];if(s.dex>493||s.legend||s.base!==n||n==='Shedinja')return false;if(type){const fin=formAt(n,100)||n;if(!s.types.includes(type)&&!SPECIES[fin].types.includes(type))return false}return true})},
+  pool(type){return Object.keys(SPECIES).filter(n=>{const s=SPECIES[n];if(s.dex>493||s.legend||s.base!==n||n==='Shedinja'||(!learnList(n)&&!s.evo))return false;if(type){const fin=formAt(n,100)||n;if(!s.types.includes(type)&&!SPECIES[fin].types.includes(type))return false}return true})},
   roll(odds){let r=Math.random()*100;for(const [t,v] of Object.entries(odds)){r-=v;if(r<0)return t}return Object.keys(odds)[0]},
   card(tier,type){const lv=Math.max(3,this.level()-Math.floor(Math.random()*3));const pool=this.pool(type);const rares=pool.filter(n=>RARE.has(n)),ps=pool.filter(n=>PSEUDO.has(n));
     let src=tier==='rare'?rares:tier==='pseudo'?ps:pool;if(!src.length)src=pool;const want=(tier==='rare'||tier==='pseudo')?null:tier;const ivMin=want==='gold'?14:want==='silver'?6:tier==='pseudo'?10:0;
@@ -13679,7 +13715,7 @@ const Hub={el:null,scr:'home',
     const bar=(k,lbl)=>{const v=attr20(p,k);return`<div class="attr"><span>${lbl}</span><div class="ab"><i style="width:${v*5}%;background:${attrCol(v)}"></i></div><b style="color:${attrCol(v)}">${v}</b><small>${s[k]}</small></div>`};
     const need=xpNeed(p.lv);
     return`<div class="prof"><div class="card pf-hero" style="--t1:${TYPE_COL[sp.types[0]]};--t2:${TYPE_COL[sp.types[1]||sp.types[0]]}"><div class="pf-img"><img class="pf-anim" src="${sdUrl(sp.dex,false,p.shiny)}" onerror="this.src='${sprSrc(p.sp,false,p.shiny)||''}'" alt=""></div>
-        <div class="pf-id"><div class="lbl">${mk?'Transfer target':inLu?'Starter':'Reserve'} · #${String(sp.dex).padStart(3,'0')}</div><h2>${esc(pName(p))}</h2><div class="pf-sub">${p.nick?esc(p.sp)+' · ':''}Lv ${p.lv} · Age ${ageOf(p)} · ${sp.types.map(tchip).join('')}</div>
+        <div class="pf-id"><div class="lbl">${mk?'Transfer target':inLu?'Starter':'Reserve'}${p.listed?' · <span style="color:var(--gold)">Transfer listed</span>':''} · #${String(sp.dex).padStart(3,'0')}</div><h2>${esc(pName(p))}</h2><div class="pf-sub">${p.nick?esc(p.sp)+' · ':''}Lv ${p.lv} · Age ${ageOf(p)} · ${sp.types.map(tchip).join('')}</div>
         <div class="pf-r">${ovrPill(ovr(p))}${ovrPill(pot(p),'POT')}<span class="val"><small>Value</small>₽${(p.value||0).toLocaleString()}</span>${mk?'':`<span class="val"><small>Condition</small>${Math.round(p.cond??100)}%</span><span class="val"><small>Training</small>${({group:'Group',individual:'1-to-1 · '+SESSIONS[Training.focus(p)].n,rest:'Resting'})[Training.role(p)]}${Training.mentorOf(p)?' · mentor '+esc(pName(Training.mentorOf(p))):''}</span>`}</div>
         <div class="xpb"><i style="width:${clamp((p.xp||0)/need*100,0,100)}%"></i></div><small class="dim">${p.xp||0} / ${need} Exp to Lv ${p.lv+1}</small></div></div>
       <div class="flipwrap"><div class="flipper">
@@ -13692,7 +13728,7 @@ const Hub={el:null,scr:'home',
       <div class="card"><div class="lbl">Moves</div><div class="mvl">${p.moves.map(id=>{const m=MOVES[id];return`<div class="mvr" style="--t:${TYPE_COL[m.t]||'#888'}"><b>${esc(m.n)}</b><span>${m.t} · ${m.c==='S'?'Status':m.c==='P'?'Physical':'Special'}</span><em>${m.c==='S'?'—':m.p}</em></div>`}).join('')}</div>
         <div class="lbl" style="margin-top:16px">Ability</div><p class="ab-t"><b>${esc(p.ability||sp.ab)}</b> ${ABIL&&ABIL[p.ability||sp.ab]?'<span class="dim">'+esc(ABIL[p.ability||sp.ab].d||'')+'</span>':''}</p>
         <div class="lbl" style="margin-top:12px">Potential</div><p class="dim">IVs ${ivGrade(p)} (${ivTotal(p)}/186)${sp.evo?` · evolves into <b>${esc(sp.evo[0])}</b> at Lv ${sp.evo[1]}`:''}</p>
-        <div class="row-btns">${mk?`<button class="btn gold" data-a="buy" data-id="${p.id}">Sign for ₽${p.price.toLocaleString()}</button>`:`<button class="btn ${inLu?'':'gold'}" data-a="toggleLu" data-id="${p.id}">${inLu?'Drop to reserves':'Add to matchday squad'}</button><button class="btn" data-a="follow" data-id="${p.id}">Walk with me</button>`}<button class="btn ghost" data-s="${mk?'market':'squad'}">Back</button></div></div></div>`},
+        <div class="row-btns">${mk?`<button class="btn gold" data-a="buy" data-id="${p.id}">Sign for ₽${p.price.toLocaleString()}</button>`:`<button class="btn ${inLu?'':'gold'}" data-a="toggleLu" data-id="${p.id}">${inLu?'Drop to reserves':'Add to matchday squad'}</button><button class="btn" data-a="follow" data-id="${p.id}">Walk with me</button>${p.nick==='Rook'?'':`<button class="btn" data-a="list" data-id="${p.id}">${p.listed?'Remove from transfer list':'Transfer list'}</button><button class="btn" data-a="sell" data-id="${p.id}">Sell now · ₽${League.quickPrice(p).toLocaleString()}</button>`}`}<button class="btn ghost" data-s="${mk?'market':'squad'}">Back</button></div></div></div>`},
   s_lineup(){const n=DIV_FORMAT[G.club.div]||3;const lu=League.lineup();const sq=League.squad().filter(p=>!lu.includes(p));
     return`<div class="card"><div class="lbl">Matchday squad · ${n} Pokémon · singles</div><p class="dim">Your first Pokémon leads. Tap two Pokémon to swap them.</p><div class="lu">${lu.map((p,i)=>`<button class="luc ${this.sel===p.id?'pick':''}" data-a="luTap" data-id="${p.id}"><span class="lu-n">${i===0?'Lead':i+1}</span>${monImg(p)}<b>${esc(pName(p))}</b><small>Lv ${p.lv}</small>${ovrPill(ovr(p))}</button>`).join('')}</div></div>
       <div class="card"><div class="lbl">Reserves</div><div class="lu res">${sq.map(p=>`<button class="luc ${this.sel===p.id?'pick':''}" data-a="luTap" data-id="${p.id}">${monImg(p)}<b>${esc(pName(p))}</b><small>Lv ${p.lv}</small>${ovrPill(ovr(p))}</button>`).join('')||'<p class="dim">No reserves. Catch or sign more Pokémon.</p>'}</div></div>`},
@@ -13701,7 +13737,11 @@ const Hub={el:null,scr:'home',
   s_table(){const ids=League.sorted();const T=G.club.table;return`<div class="card flush"><div class="tscroll"><table class="tbl lg"><thead><tr><th>#</th><th class="l">Club</th><th>P</th><th>W</th><th>L</th><th class="hide-s">KO+</th><th class="hide-s">KO−</th><th>KD</th><th>Pts</th><th class="hide-s l">Form</th></tr></thead><tbody>
       ${ids.map((id,i)=>{const t=T[id];return`<tr class="${id==='fer'?'me':''} ${i===0?'promo':''} ${i===ids.length-1?'releg':''}"><td>${i+1}</td><td class="l">${crest(id,24)} ${esc(League.club(id).name)}</td><td>${t.p}</td><td>${t.w}</td><td>${t.l}</td><td class="hide-s">${t.kf}</td><td class="hide-s">${t.ka}</td><td>${t.kf-t.ka>0?'+':''}${t.kf-t.ka}</td><td><b>${t.pts}</b></td><td class="hide-s l">${t.form.map(x=>`<i class="f-${x}">${x}</i>`).join('')}</td></tr>`}).join('')}</tbody></table></div>
       <p class="dim pad">Win = 3 pts. Lose by one KO = 1 bonus point. Top spot is promoted to Division 3 and restores the Old Ground.</p></div>`},
-  s_market(){const L=G.club;if(!L.market.length)League.refreshMarket();return`<div class="card flush"><div class="sq-head"><span class="lbl">Transfer list</span><span class="dim">Refreshes every Thursday. Balance ₽${G.money.toLocaleString()}</span></div><div class="tscroll"><table class="tbl sq"><thead><tr><th class="l">Pokémon</th><th>Lv</th><th class="hide-s">Type</th><th>OVR</th><th>POT</th><th>Price</th></tr></thead><tbody>
+  offersCard(){const L=G.club;const os=(L.offers||[]).filter(o=>o.exp>L.day);const listed=League.squad().filter(m=>m.listed);
+    return`<div class="card"><div class="lbl">Incoming offers <span class="dim">${os.length?os.length+' open':'none right now'}</span></div>${os.length?os.map(o=>{const p=League.squad().find(m=>m.id===o.mon);if(!p)return'';const C=League.club(o.club);
+      return`<div class="offr">${monImg(p)}<div><b>${esc(pName(p))}</b><small>${esc(C.name)} · ₽${o.amt.toLocaleString()} · ${o.exp-L.day} day${o.exp-L.day>1?'s':''} left${o.asked?' · final offer':''}</small></div><span class="offb"><button class="btn gold sm" data-a="offerAcc" data-id="${o.id}">Accept</button>${o.asked?'':`<button class="btn sm" data-a="offerMore" data-id="${o.id}">Ask more</button>`}<button class="btn ghost sm" data-a="offerRej" data-id="${o.id}">Reject</button></span></div>`}).join(''):`<p class="dim">Put Pokémon on the transfer list (from their profile) and clubs will start bidding. Strong Pokémon sometimes get offers anyway.</p>`}
+      ${listed.length?`<p class="dim sm" style="margin-top:10px">On your transfer list: ${listed.map(m=>esc(pName(m))).join(', ')}</p>`:''}</div>`},
+  s_market(){const L=G.club;if(!L.market.length)League.refreshMarket();return this.offersCard()+`<div class="card flush"><div class="sq-head"><span class="lbl">Transfer list</span><span class="dim">Refreshes every Thursday. Balance ₽${G.money.toLocaleString()}</span></div><div class="tscroll"><table class="tbl sq"><thead><tr><th class="l">Pokémon</th><th>Lv</th><th class="hide-s">Type</th><th>OVR</th><th>POT</th><th>Price</th></tr></thead><tbody>
       ${L.market.map(p=>`<tr data-a="profile" data-id="${p.id}"><td class="l nm">${monImg(p)}<div><b>${esc(p.sp)}</b><small>${ivGrade(p)}</small></div></td><td>${p.lv}</td><td class="hide-s">${SPECIES[p.sp].types.map(tchip).join('')}</td><td>${ovrPill(ovr(p),'')}</td><td class="potc" style="color:${attrCol(Math.round(pot(p)/5))}">${pot(p)}</td><td><b>₽${p.price.toLocaleString()}</b></td></tr>`).join('')}</tbody></table></div></div>`},
   s_club(){const L=G.club;return`<div class="grid2"><div class="card"><div class="lbl">Finances</div><div class="kv"><span>Balance</span><b>₽${G.money.toLocaleString()}</b></div><div class="kv"><span>Daily wages</span><b>₽${League.wages()}</b></div><div class="kv"><span>Last gate receipts</span><b>${L.lastGate?'₽'+L.lastGate.toLocaleString():'—'}</b></div><div class="kv"><span>Ticket price</span><b>₽${L.ticket}</b></div></div>
       <div class="card"><div class="lbl">Supporters</div><div class="bignum">${L.fans}</div><p class="dim">Regulars at the ground. Wins bring more of the town out.</p></div>
@@ -13713,11 +13753,21 @@ const Hub={el:null,scr:'home',
   /* ---------------- actions ---------------- */
   act(a,d){const L=G.club;
     if(a==='profile')this.go('profile',d.id);
-    else if(a==='mail'){const m=L.mail.find(x=>x.id===d.id);if(!m)return;m.read=true;this.modalOpen(`<div class="lbl">${esc(this.from(m.from))} · ${League.date(m.day)}</div><h3>${esc(m.subj)}</h3><div class="mbody">${esc(m.body).replace(/\n/g,'<br>')}</div>`);this.head(this.el.querySelector('.ht-t h1').textContent)}
+    else if(a==='mail'){const m=L.mail.find(x=>x.id===d.id);if(!m)return;m.read=true;const o=m.offer&&League.offerOf(m.offer);
+      const ob=m.offer?(o&&o.exp>L.day?`<div class="row-btns"><button class="btn gold" data-a="offerAcc" data-id="${o.id}">Accept ₽${o.amt.toLocaleString()}</button>${o.asked?'':`<button class="btn" data-a="offerMore" data-id="${o.id}">Ask for more</button>`}<button class="btn ghost" data-a="offerRej" data-id="${o.id}">Reject</button></div>`:'<p class="dim">This offer has closed.</p>'):'';
+      this.modalOpen(`<div class="lbl">${esc(this.from(m.from))} · ${League.date(m.day)}</div><h3>${esc(m.subj)}</h3><div class="mbody">${esc(m.body).replace(/\n/g,'<br>')}</div>${ob}`);this.head(this.el.querySelector('.ht-t h1').textContent)}
     else if(a==='toggleLu'){const n=DIV_FORMAT[L.div]||3;const i=L.lineup.indexOf(d.id);if(i>=0)L.lineup.splice(i,1);else{if(L.lineup.length>=n)L.lineup.pop();L.lineup.push(d.id)}L.lineupLocked=true;this.go('profile',d.id)}
     else if(a==='luTap'){if(!this.sel){this.sel=d.id;this.go('lineup');return}if(this.sel===d.id){this.sel=null;this.go('lineup');return}const lu=L.lineup;const a1=lu.indexOf(this.sel),b1=lu.indexOf(d.id);
       if(a1>=0&&b1>=0){[lu[a1],lu[b1]]=[lu[b1],lu[a1]]}else if(a1>=0)lu[a1]=d.id;else if(b1>=0)lu[b1]=this.sel;this.sel=null;Audio2.sfx('select');this.go('lineup')}
     else if(a==='buy'){const p=L.market.find(m=>m.id===d.id);if(!p)return;if(G.money<p.price){UI.toast("The board won't sanction that. Not enough money.");Audio2.sfx('bump');return}G.money-=p.price;p.owner='me';delete p.price;L.market=L.market.filter(m=>m!==p);if(G.party.length<6)G.party.push(p);else G.box.push(p);Audio2.jingle('item');UI.toast(`<b>${esc(p.sp)}</b> signs for Fernwick Rovers!`);this.go('profile',p.id)}
+    else if(a==='list'){const p=League.squad().find(m=>m.id===d.id);if(!p)return;p.listed=!p.listed;Audio2.sfx('select');UI.toast(p.listed?`<b>${esc(pName(p))}</b> is on the transfer list. Clubs can now bid.`:`<b>${esc(pName(p))}</b> taken off the transfer list.`);this.go('profile',p.id)}
+    else if(a==='sell'){const p=League.squad().find(m=>m.id===d.id);if(!p)return;const why=League.canSell(p);if(why){UI.toast(why);Audio2.sfx('bump');return}const amt=League.quickPrice(p);
+      this.confirm(`<div class="lbl">Quick sale</div><h3>Sell ${esc(pName(p))}?</h3><div class="mbody">Lv ${p.lv} ${esc(p.sp)} goes to the Meridia transfer pool for <b>₽${amt.toLocaleString()}</b>, about half its value of ₽${(p.value||0).toLocaleString()}. For a better price, put it on the transfer list and wait for a bid.<br><br>This can't be undone.</div>`,`Sell for ₽${amt.toLocaleString()}`).then(ok=>{if(!ok)return;League.sell(p,amt,null);Audio2.jingle('item');UI.toast(`Sold <b>${esc(pName(p))}</b> for ₽${amt.toLocaleString()}.`);Game.save(true);this.go('squad')})}
+    else if(a==='offerAcc'){const o=League.offerOf(d.id);const p=o&&League.squad().find(m=>m.id===o.mon);if(!o||!p){UI.toast('That offer has closed.');this.modalClose();return}const why=League.canSell(p);if(why){UI.toast(why);Audio2.sfx('bump');return}
+      this.modalClose();League.acceptOffer(o.id);Audio2.jingle('item');UI.toast(`<b>${esc(pName(p))}</b> joins ${esc(League.club(o.club).name)}. ₽${o.amt.toLocaleString()} in the bank.`);Game.save(true);this.go(this.scr==='inbox'?'inbox':'market')}
+    else if(a==='offerRej'){League.rejectOffer(d.id);this.modalClose();Audio2.sfx('back');UI.toast('Offer turned down.');this.go(this.scr==='inbox'?'inbox':'market')}
+    else if(a==='offerMore'){const r=League.askMore(d.id);const o=League.offerOf(d.id);this.modalClose();
+      UI.toast(r==='raised'?`They've raised it to <b>₽${o.amt.toLocaleString()}</b>. That's their final offer.`:r==='walked'?'They walked away from the deal.':'That offer has closed.',3200);Audio2.sfx(r==='raised'?'select':'bump');this.go(this.scr==='inbox'?'inbox':'market')}
     else if(a==='flip'){const w=this.el.querySelector('.flipwrap');w&&w.classList.toggle('on');Audio2.sfx('move')}
     else if(a==='sess'){this.pickSession(+d.i)}
     else if(a==='inten'){Training.state().intensity=d.k;this.go('training')}
@@ -13730,7 +13780,9 @@ const Hub={el:null,scr:'home',
     else if(a==='follow'){UI.toast('Rook insists on walking with you for now.')}
     else if(a==='matchday')this.matchday();else if(a==='world')this.toWorld();
     else if(a==='closeModal')this.modalClose()},
-  modalOpen(html){const m=this.modal=document.createElement('div');m.className='hmodal';m.innerHTML=`<div class="hm-card">${html}<div class="row-btns"><button class="btn gold" data-a="closeModal">Close</button></div></div>`;this.el.appendChild(m);m.onclick=e=>{if(e.target===m||e.target.closest('[data-a=closeModal]'))this.modalClose()};
+  confirm(html,yes){return new Promise(res=>{this.modalOpen(html+`<div class="row-btns"><button class="btn gold" data-cy>${yes}</button></div>`);this._mres=res;const y=this.modal.querySelector('[data-cy]');const cl=this.modal.querySelector('.row-btns [data-a=closeModal]');if(cl){cl.textContent='Cancel';cl.className='btn ghost'}
+    y.onclick=e=>{e.stopPropagation();const r=this._mres;this._mres=null;this.modalClose();r&&r(true)}})},
+    modalOpen(html){const m=this.modal=document.createElement('div');m.className='hmodal';m.innerHTML=`<div class="hm-card">${html}<div class="row-btns"><button class="btn gold" data-a="closeModal">Close</button></div></div>`;this.el.appendChild(m);m.onclick=e=>{if(e.target===m||e.target.closest('[data-a=closeModal]'))this.modalClose()};
     this.moff=Input.on(k=>{if(k==='b'||k==='a'){Input.take('b');Input.take('a');this.modalClose()}})},
   modalClose(){if(!this.modal)return;const mr=this._mres;this._mres=null;mr&&setTimeout(()=>mr(null));this.moff&&this.moff();this.modal.remove();this.modal=null;if(this.scr==='inbox'||this.scr==='home')this.go(this.scr)},
   cont(){if(this.runPending())return;const L=G.club;const f=League.nextFixture();if(!f){Act1.seasonEnd();return}if(f.day<=L.day){this.matchday();return}
@@ -13760,7 +13812,7 @@ const Hub={el:null,scr:'home',
   async result(f,g,opp,r){const home=g.h==='fer';League.record(g,r);const won=League.afterMatch(f,r,g);const B=this.el.querySelector('.hub-body');const my=home?r.hk:r.wk,th=home?r.wk:r.hk;
     Audio2.music(won?'victory_trainer':'hub');if(won)Audio2.sfx('caught');
     const others=f.games.filter(x=>x!==g);
-    B.innerHTML=`<div class="res ${won?'won':'lost'}"><div class="lbl">Full time · Matchday ${f.md}</div><div class="res-sc">${crest('fer',64)}<div><b>${my} – ${th}</b><span>${won?'Victory':'Defeat'}</span></div>${crest(opp,64)}</div><p>${won?(f.md===1?'Fernwick Rovers win a league match! The forty fans sound like four hundred.':'Three points for the Rovers.'):'A tough afternoon. Marlow says the squad will learn from it.'}</p></div>
+    B.innerHTML=`<div class="res ${won?'won':'lost'}"><div class="lbl">Full time · Matchday ${f.md}</div><div class="res-sc">${crest('fer',64)}<div><b>${my} – ${th}</b><span>${won?'Victory':'Defeat'}</span></div>${crest(opp,64)}</div><p>${won?(f.md===1?'Fernwick Rovers win a league match! The forty fans sound like four hundred.':'Three points for the Rovers.'):'A tough afternoon. Marlow says the squad will learn from it.'}</p><p class="dim sm">Prize money ₽${(G.club.lastPrize||0).toLocaleString()}${home&&G.club.lastGate?` · gate receipts ₽${G.club.lastGate.toLocaleString()}`:''}</p></div>
       <div class="grid2"><div class="card"><div class="lbl">Other results</div>${others.map(x=>`<div class="or">${crest(x.h,20)}<span>${esc(League.club(x.h).short)}</span><b>${x.res.hk}–${x.res.wk}</b><span class="r">${esc(League.club(x.w).short)}</span>${crest(x.w,20)}</div>`).join('')}</div><div class="card"><div class="lbl">Table</div>${this.miniTable()}</div></div>
       <div class="md-btns"><button class="btn gold big" data-a="afterRes">Continue</button></div>`;
     this.scr='result';this.pending={f,won};B.querySelector('[data-a=afterRes]').onclick=e=>{e.stopPropagation();this.runPending()};this.head('Full time')},
