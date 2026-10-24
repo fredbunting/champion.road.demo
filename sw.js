@@ -1,5 +1,5 @@
 /* Champion Road service worker: offline play + cached sprites. VERSION is stamped at build time. */
-const VERSION='0.4.0';const CORE='cr-core-'+VERSION,ART='cr-art-v1';
+const VERSION='0.4.1';const CORE='cr-core-'+VERSION,ART='cr-art-v1';
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CORE).then(c=>c.addAll(['./','./index.html','./music.js?v='+VERSION,'./icon.png']).catch(()=>{})).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k.startsWith('cr-core-')&&k!==CORE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.method!=='GET')return;

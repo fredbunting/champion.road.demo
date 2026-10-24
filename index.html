@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Champion Road"><meta name="theme-color" content="#0b0d12"><meta name="cr-version" content="0.4.0">
+<meta name="apple-mobile-web-app-title" content="Champion Road"><meta name="theme-color" content="#0b0d12"><meta name="cr-version" content="0.4.1">
 <title>Champion Road: The Last Champion</title>
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -237,7 +237,7 @@ body.hidehud #quest,body.inbattle #quest{opacity:0}
 .or{display:grid;grid-template-columns:20px 1fr auto 1fr 20px;align-items:center;gap:8px;padding:7px 0;font-size:13.5px}.or b{font-variant-numeric:tabular-nums}.or .r{text-align:right}
 @media (max-width:860px){
   .hub{grid-template-columns:1fr;grid-template-rows:1fr auto}.hub-nav{display:none}
-  .hub-top{padding:calc(12px + var(--sat)) calc(14px + var(--sar)) 10px calc(16px + var(--sal));gap:8px}.ht-t h1{font-size:21px}.ht-t small{font-size:11px}.ht-m{display:none}
+  .hub-top{padding:calc(12px + var(--sat)) calc(14px + var(--sar)) 10px calc(16px + var(--sal));gap:8px}.ht-t h1{font-size:21px}.ht-t small{font-size:11px}.ht-m{display:flex;margin-right:2px;font-size:13px}.ht-m small{font-size:9px}
   .ht-w{padding:0 11px}.ht-w span{display:none}.ht-c{padding:0 14px}
   .hub-body{padding:14px calc(12px + var(--sar)) 18px calc(12px + var(--sal))}
   .hub-tabs{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--line);background:rgba(8,10,14,.92);padding:6px 4px calc(6px + var(--sab))}
@@ -6609,10 +6609,10 @@ function vegInit(){
 }
 function leafMat(tex){const m=new THREE.MeshStandardMaterial({map:tex,alphaTest:.5,side:THREE.DoubleSide,roughness:.9,metalness:0});windify(m,{amp:.05,freq:1.1,yScale:3});seeThrough(m);return m}
 /* build all trees of a map as instanced meshes */
-function buildTrees(group,trees,heightAt){
+function buildTrees(group,trees,heightAt,{shadows=true}={}){
   vegInit();const out={meshes:[]};const byKind={oak:[],pine:[],snowpine:[]};for(const t of trees)(byKind[t.v==='pine'?'pine':t.v==='snowpine'?'snowpine':'oak']).push(t);
   const dummy=new THREE.Object3D();
-  const put=(geo,mat,list,depth,yofs=0)=>{if(!list.length)return;const im=new THREE.InstancedMesh(geo,mat,list.length);im.castShadow=true;im.receiveShadow=true;if(depth)im.customDepthMaterial=depth;
+  const put=(geo,mat,list,depth,yofs=0)=>{if(!list.length)return;const im=new THREE.InstancedMesh(geo,mat,list.length);im.castShadow=shadows;im.receiveShadow=true;if(depth)im.customDepthMaterial=depth;
     list.forEach((t,i)=>{const r=hash2(t.x,t.y,3);dummy.position.set(t.x+.5+(r-.5)*.25,heightAt(t.x,t.y)+yofs,t.y+.55+(hash2(t.x,t.y,4)-.5)*.2);dummy.rotation.set(0,r*6.28,0);const s=(t.s||1)*.82;dummy.scale.set(s,s*(.92+r*.16),s);dummy.updateMatrix();im.setMatrixAt(i,dummy.matrix);
       const cc=new THREE.Color().setHSL(0,0,.88+hash2(t.x,t.y,5)*.24);im.setColorAt&&im.setColorAt(i,cc)});
     im.instanceMatrix.needsUpdate=true;group.add(im);out.meshes.push(im)};
@@ -7173,8 +7173,8 @@ MAPS.tidegym=(()=>{const m=Room('tidegym','Tide Gym',13,13,'t',{to:'fernwick',tx
 
 /* ---------------- Route 2: Stormcrest Pass ---------------- */
 MAPS.route2=(()=>{const W=40,Hh=72;const m=MapGrid(W,Hh,'.');m.id='route2';m.name='Route 2';m.outdoor=true;m.region=HIGH;m.encFixed=true;m.weather='snow';m.mountains=true;
-  m.cliffCol='#8a8f96';m.outerCol=0x6f8a74;m.outerTree=r=>r<.75?'snowpine':'pine';m.outerGap=(x,y)=>y>=Hh&&x>=16&&x<=24;
-  m.frost=(x,y)=>clamp((60-y)/22,0,1)*.95;m.outerColN=0xdfe7ee;
+  m.cliffCol='#8a8f96';m.outerTree=r=>r<.75?'snowpine':'pine';
+  m.frost=(x,y)=>clamp((60-y)/22,0,1)*.95;m.borderN='n';m.borderS='.';
   /* three terraces climbing north, joined by stone stairs */
   const e1=x=>53+Math.round(Math.sin(x*.45)*1.5+Math.sin(x*1.3)*.6),e2=x=>35+Math.round(Math.sin(x*.37+1)*1.6+Math.sin(x*1.1)*.6);
   levels(m,x=>(x>=11&&x<=17)?53:e1(x),1,0);levels(m,x=>(x>=23&&x<=29)?35:e2(x),2,1,0,W-1,0,53);
@@ -7203,7 +7203,7 @@ MAPS.route2=(()=>{const W=40,Hh=72;const m=MapGrid(W,Hh,'.');m.id='route2';m.nam
   m.zones.push({x0:0,y0:0,x1:W-1,y1:Hh-1,name:'Route 2',music:'highlands',enc:'grass'},{x0:0,y0:0,x1:W-1,y1:35,name:'Stormcrest Pass',music:'highlands',enc:'snow'});
   m.enc={grass:[['Mareep',13,16,16],['Electrike',13,16,14],['Machop',13,16,12],['Geodude',13,16,12],['Pidgeotto',14,17,10],['Phanpy',13,16,9],['Spoink',13,15,8],['Ponyta',14,16,8],['Staravia',15,17,6],['Shinx',13,15,6],['Plusle',14,15,2],['Minun',14,15,2],['Hoothoot',13,16,0,'night'],['Murkrow',14,16,0,'night']],
     snow:[['Swinub',15,18,18],['Snover',15,18,14],['Snorunt',15,18,12],['Mareep',15,17,10],['Sneasel',16,18,6],['Smoochum',15,17,6],['Electrike',15,17,8],['Spheal',15,17,6],['Geodude',15,18,8],['Sneasel',16,19,0,'night'],['Misdreavus',16,18,0,'night']],
-    visible:[{sp:'Mareep',dex:179,zone:[26,62,31,66]},{sp:'Electrike',dex:309,zone:[27,46,33,50]},{sp:'Swinub',dex:220,zone:[30,24,36,28]},{sp:'Snover',dex:459,zone:[6,17,12,21]}]};
+    visible:[{sp:'Mareep',dex:179,zone:[26,62,31,66],lv:[13,15]},{sp:'Electrike',dex:309,zone:[27,46,33,50],lv:[14,16]},{sp:'Swinub',dex:220,zone:[30,24,36,28],lv:[15,17]},{sp:'Snover',dex:459,zone:[6,17,12,21],lv:[16,18]}]};
   m.triggers.push({x0:17,y0:71,x1:23,y1:71,kind:'warp',to:'fernwick',tx:32,ty:1,face:'down'},{x0:20,y0:0,x1:24,y1:0,kind:'warp',to:'voltspire',tx:21,ty:44,face:'up'});
   forestFill(m,61,{kind:(r,x,y)=>y<40?(r<.85?'snowpine':'pine'):y<56?(r<.45?'snowpine':'pine'):(r<.4?'pine':'oak'),
     extra:(x,y)=>{if(Math.abs(m.hgt[y][x]-(m.hgt[y+1]?.[x]??m.hgt[y][x]))>0)return 0;return (x<5||x>34)?.55:(hash2(x,y,5)>.93?.6:0)},
@@ -7212,7 +7212,7 @@ MAPS.route2=(()=>{const W=40,Hh=72;const m=MapGrid(W,Hh,'.');m.id='route2';m.nam
 
 /* ---------------- Voltspire: Town of a Thousand Winds ---------------- */
 MAPS.voltspire=(()=>{const W=44,Hh=46;const m=MapGrid(W,Hh,'.');m.id='voltspire';m.name='Voltspire';m.outdoor=true;m.region=HIGH;m.encFixed=true;m.weather='overcast';m.mountains=true;m.snowRoofs=.35;
-  m.cliffCol='#8a8f96';m.outerCol=0x6f8a74;m.outerColN=0xdfe7ee;m.outerTree=r=>r<.6?'snowpine':'pine';m.outerGap=(x,y)=>y>=Hh&&x>=18&&x<=24;m.frost=(x,y)=>.3+clamp((16-y)/16,0,.55);
+  m.cliffCol='#8a8f96';m.borderN='n';m.borderS='.';m.outerTree=r=>r<.6?'snowpine':'pine';m.frost=(x,y)=>.3+clamp((16-y)/16,0,.55);
   /* the wind farm on the high ground to the north-east */
   levels(m,x=>x>=24?13+Math.round(Math.sin(x*.5)):-1,1,0);
   for(let y=0;y<=14;y++)for(let x=24;x<W;x++)if(fbm(x*.2,y*.2,51)>.42)m.set(x,y,'n');
@@ -7278,7 +7278,7 @@ MAPS.hut_v=(()=>{const m=Room('hut_v','Wind Farm Control Hut',6,6,'t',{to:'volts
 
 /* ---------------- Frostmere: the village under the snow line ---------------- */
 MAPS.frostmere=(()=>{const W=44,Hh=60;const m=MapGrid(W,Hh,'n');m.id='frostmere';m.name='Frostmere';m.outdoor=true;m.region=HIGH;m.encFixed=true;m.weather='snow';m.mountains=true;m.snowRoofs=.85;
-  m.cliffCol='#9aa3ad';m.outerCol=0xdfe7ee;m.grassTint='#cfe0dc';m.outerTree=r=>'snowpine';m.outerGap=(x,y)=>y>=Hh&&x>=19&&x<=24;m.frost=.9;
+  m.cliffCol='#9aa3ad';m.border='n';m.grassTint='#cfe0dc';m.outerTree=r=>'snowpine';m.frost=.9;
   for(let y=0;y<Hh;y++)for(let x=0;x<W;x++)if(fbm(x*.15,y*.15,81,3)<.38)m.set(x,y,'.');
   /* the village sits low; the ridge to Skyline Bowl climbs north */
   levels(m,x=>24+Math.round(Math.sin(x*.4)*1.5),1,0);levels(m,x=>8+Math.round(Math.sin(x*.5+2)),2,1,0,W-1,0,24);
@@ -7308,7 +7308,7 @@ MAPS.frostmere=(()=>{const W=44,Hh=60;const m=MapGrid(W,Hh,'n');m.id='frostmere'
     tr('fr2','blackbelt',16,20,'right',{name:'Black Belt Oren',char:'blackbelt',quote:'Hiyah!',lose:'My form slipped...',foe:mons(['Machoke',20],['Hitmontop',19]),prize:600,sight:4,after:'Only those with the Frost Badge may climb to the Bowl. Isolde guards the ridge gate.'}));
   m.zones.push({x0:0,y0:0,x1:W-1,y1:Hh-1,name:'Frostmere',music:'frostmere'},{x0:0,y0:0,x1:W-1,y1:30,name:'Skyline Ridge',music:'highlands',enc:'snow'});
   m.blob(7,26,3,2,'"',91);m.blob(34,22,3,2.4,'"',93);m.blob(8,10,2.6,2,'"',95);m.blob(33,10,2.6,2,'"',97);
-  m.enc={snow:[['Swinub',18,21,16],['Snorunt',18,21,14],['Snover',18,21,14],['Sneasel',19,21,10],['Spheal',18,20,10],['Smoochum',18,20,6],['Piloswine',21,22,3],['Glalie',21,22,2],['Seel',18,20,8],['Jynx',20,21,2],['Misdreavus',19,21,0,'night']],visible:[{sp:'Swinub',dex:220,zone:[31,20,37,24]},{sp:'Snover',dex:459,zone:[5,8,11,12]}]};
+  m.enc={snow:[['Swinub',18,21,16],['Snorunt',18,21,14],['Snover',18,21,14],['Sneasel',19,21,10],['Spheal',18,20,10],['Smoochum',18,20,6],['Piloswine',21,22,3],['Glalie',21,22,2],['Seel',18,20,8],['Jynx',20,21,2],['Misdreavus',19,21,0,'night']],visible:[{sp:'Swinub',dex:220,zone:[31,20,37,24],lv:[18,20]},{sp:'Snover',dex:459,zone:[5,8,11,12],lv:[19,21]}]};
   m.triggers.push({x0:19,y0:59,x1:23,y1:59,kind:'warp',to:'voltspire',tx:4,ty:1,face:'down'},{x0:21,y0:0,x1:23,y1:0,kind:'warp',to:'skyline',tx:16,ty:32,face:'up',if:'frost_badge'},
     {x0:21,y0:1,x1:23,y1:1,kind:'block',unless:'frost_badge',t:'A gate of iced timber blocks the ridge path. A plaque: <i>"By order of Leader Isolde: none pass to the Bowl without the Frost Badge. The storms are not for the unready."</i>'});
   forestFill(m,85,{kind:()=>'snowpine',edgeP:[1,.85,.4,.12],avoid:(x,y)=>{for(let j=-1;j<=1;j++)for(let i=-1;i<=1;i++){const c=m.get(x+i,y+j);if(c===':'||c==='='||c==='p'||c==='^'||c==='"'||c==='o')return true}return y>31&&y<54&&x>2&&x<40}});
@@ -7333,21 +7333,21 @@ MAPS.house_f1=(()=>{const m=Room('house_f1','Mereside House',7,6,'w',{to:'frostm
 
 /* ---------------- Skyline Bowl: the ruined stadium in the clouds ---------------- */
 MAPS.skyline=()=>{const W=34,Hh=34;const m=MapGrid(W,Hh,'n');m.id='skyline';m.name='Skyline Bowl';m.outdoor=true;m.region=HIGH;m.encFixed=true;m.mountains=true;m.weather=flag('skyline_calm')?'snow':'storm';
-  m.cliffCol='#9aa3ad';m.outerCol=0xdfe7ee;m.grassTint='#cfe0dc';m.outerTree=()=>'snowpine';m.outerDensity=.3;m.outerGap=(x,y)=>y>=Hh&&x>=14&&x<=19;m.frost=.95;
+  m.cliffCol='#9aa3ad';m.border='n';m.grassTint='#cfe0dc';m.outerTree=()=>'snowpine';m.frost=.95;
   for(let y=0;y<Hh;y++)for(let x=0;x<W;x++){const d=Math.hypot((x-16.5)/10.5,(y-14.5)/9);if(d<.95)m.set(x,y,fbm(x*.4,y*.4,101)>.5?'r':'n');if(d<.62)m.set(x,y,'.')}
   m.line([[16,33],[16,24]],3,':');
   m.prop('ruin',16.5,14.5,{rx:11,ry:9.4,flag:'skyline_restored',floodFlag:'skyline_lights'});
   for(const [x,y,c,f] of [[10,10,'#9ad0ff','calm_articuno'],[16,7,'#ffe066','calm_zapdos'],[23,10,'#ff8a3a','calm_moltres']])m.prop('perch',x,y,{c,lit:f,h:2.4});
   m.zones.push({x0:0,y0:0,x1:W-1,y1:Hh-1,name:'Skyline Bowl',music:flag('skyline_calm')?'ruins':'storm'});
   m.triggers.push({x0:14,y0:33,x1:18,y1:33,kind:'warp',to:'frostmere',tx:22,ty:2,face:'down'});
-  m.npcs.push({id:'b_articuno',pmd:144,x:10,y:12,face:'down',talk:'bird',bird:'Articuno',show:'skyline_calm',hide:'gone_articuno'},{id:'b_zapdos',pmd:145,x:16,y:9,face:'down',talk:'bird',bird:'Zapdos',show:'skyline_calm',hide:'gone_zapdos'},
-    {id:'b_moltres',pmd:146,x:23,y:12,face:'down',talk:'bird',bird:'Moltres',show:'skyline_calm',hide:'gone_moltres'});
+  m.npcs.push({id:'b_articuno',pmd:144,x:10,y:12,face:'down',talk:'bird',bird:'Articuno',show:'skyline_wren',hide:'gone_articuno'},{id:'b_zapdos',pmd:145,x:16,y:9,face:'down',talk:'bird',bird:'Zapdos',show:'skyline_wren',hide:'gone_zapdos'},
+    {id:'b_moltres',pmd:146,x:23,y:12,face:'down',talk:'bird',bird:'Moltres',show:'skyline_wren',hide:'gone_moltres'});
   m.enc={};return m};
 
 /* ---------------- battle dioramas for the Highlands and the new gyms ---------------- */
 {const baseStage=stageMap;stageMap=function(kind){
   if(kind==='snow'||kind==='skyline'){const N=34,c=17;const m=MapGrid(N,N,'n');m.id='stage_'+kind;m.name='';m.outdoor=true;m.stage=kind;const r=srng(kind.length*41+3);
-    m.weather=kind==='skyline'&&!flag('skyline_calm')?'storm':'snow';m.mountains=true;m.outerCol=0xdfe7ee;m.grassTint='#cfe0dc';m.frost=.9;m.cliffCol='#9aa3ad';
+    m.weather=kind==='skyline'&&!flag('skyline_calm')?'storm':'snow';m.mountains=true;m.border='n';m.grassTint='#cfe0dc';m.frost=.9;m.cliffCol='#9aa3ad';
     m.blob(c,c,4.4,6.4,kind==='skyline'?'r':'.',3,.25);
     for(let y=0;y<N;y++)for(let x=0;x<N;x++){const d=Math.hypot(x-c,(y-c)/1.2);if(d>7.4&&d<10.5&&kind==='snow'&&fbm(x*.3,y*.3,5)>.45)m.set(x,y,'"')}
     if(kind==='skyline')m.prop('ruin',c,c,{rx:9.5,ry:10.5,flag:'skyline_restored',floodFlag:'skyline_lights'});
@@ -7363,6 +7363,7 @@ MAPS.skyline=()=>{const W=34,Hh=34;const m=MapGrid(W,Hh,'n');m.id='skyline';m.na
 
 'use strict';
 /* ================= the world: builds a map into a lit 3D diorama and runs it ================= */
+const W_BT={};/* border ground textures, cached by tile kind */
 const TIMES={
   morning:{sky:'#f6c79a',fog:'#e8c8a8',fogN:26,fogF:62,hemi:['#ffe2c0','#5a6b4a',.75],sun:['#ffd2a0',2.3,[-10,9,7]],exp:1.02,bloom:.28,lamp:0,win:0,sat:1.08,warm:.05,lift:[.03,.025,.04],water:['#6fa8c8','#f2c9a0']},
   day:{sky:'#a8d4f5',fog:'#b8dcf2',fogN:30,fogF:70,hemi:['#d4e9ff','#4f6b3e',.85],sun:['#fff2dc',2.6,[-8,14,6]],exp:1.0,bloom:.22,lamp:0,win:0,sat:1.1,warm:.025,lift:[.02,.03,.05],water:['#7cc2e8','#ffffff']},
@@ -7416,8 +7417,13 @@ class World{
     for(const p of m.props){if(p.skip)continue;if(p.k==='tree'){trees.push(p);this.blocked.add(p.x+','+p.y);continue}
       const r=buildProp(p,m,hAt,this.lights,sc);if(!r)continue;for(const [x,y] of r.block)this.blocked.add(x+','+y);this.anims.push(...r.anim)}
     /* outer forest beyond the map edges */
-    if(!m.room&&!m.stage){const rr=srng(99);for(let y=-4;y<m.h+2;y++)for(let x=-4;x<m.w+4;x++){if(x>=0&&x<m.w&&y>=0&&y<m.h)continue;if(m.seaY!=null&&y>=m.seaY)continue;if(m.outerGap&&m.outerGap(x,y))continue;if(rr()<(m.outerDensity??.42))trees.push({x,y,v:m.outerTree?m.outerTree(rr()):(rr()<.3?'pine':'oak'),s:.9+rr()*.5,outer:true})}}
-    buildTrees(sc,trees,(x,y)=>x<0||y<0||x>=m.w||y>=m.h?0:hAt(x,y));
+    /* the border, the way the games do it: a solid wall of trees all round the map (gaps only where a road leads on) */
+    if(!m.room&&!m.stage){const rr=srng(99);const B=6;const gap=this.edgeGap(m);
+      for(let y=-B;y<m.h+B;y++)for(let x=-B;x<m.w+B;x++){if(x>=0&&x<m.w&&y>=0&&y<m.h)continue;if(m.seaY!=null&&y>=m.seaY)continue;if(gap(x,y)||(m.outerGap&&m.outerGap(x,y)))continue;
+        const d=Math.max(x<0?-x:x>=m.w?x-m.w+1:0,y<0?-y:y>=m.h?y-m.h+1:0);const south=y>=m.h;
+        const p=south?(d<=1?.55:d<=3?.85:.5):(d<=1?.9:d<=3?1:.5);if(rr()<p)trees.push({x,y,v:m.outerTree?m.outerTree(rr()):(rr()<.3?'pine':'oak'),s:(south?.78:.9)+rr()*.4,outer:true})}}
+    /* the deep border doesn't need shadows (cheaper on phones and laptops) */
+    const hA=(x,y)=>x<0||y<0||x>=m.w||y>=m.h?0:hAt(x,y);const far=t=>t.outer&&(t.x<-2||t.y<-2||t.x>m.w+1||t.y>m.h+1);buildTrees(sc,trees.filter(t=>!far(t)),hA);buildTrees(sc,trees.filter(far),hA,{shadows:false});
     const tg=[];for(let y=0;y<m.h;y++)for(let x=0;x<m.w;x++)if(m.get(x,y)==='"')tg.push([x,y]);this.grassMesh=buildTallGrass(sc,tg,hAt,m.grassTint);
     if(!m.room)buildTufts(sc,m,hAt,(x,y)=>this.blocked.has(x+','+y));
     for(const s of m.signs||[])this.blocked.add(s.x+','+s.y);
@@ -7478,8 +7484,22 @@ class World{
           gl_FragColor=vec4(c,mix(.82,.95,smoothstep(0.,.6,sd)));\n#include <fog_fragment>\n}`});
     mat.uniforms.shore.value=sdT;
     const wp=new THREE.Mesh(new THREE.PlaneGeometry(m.w+120,m.h+120),mat);wp.rotation.x=-Math.PI/2;wp.position.set(m.w/2,-.06,m.h/2+40);this.scene.add(wp);this.water=wp}
-  buildOuter(){const m=this.map;const mt=stdMat({color:m.outerCol||0x3b7431,roughness:1});const add=(x0,z0,x1,z1)=>{const g=new THREE.Mesh(new THREE.PlaneGeometry(x1-x0,z1-z0),mt);g.rotation.x=-Math.PI/2;g.position.set((x0+x1)/2,-.01,(z0+z1)/2);g.receiveShadow=true;this.scene.add(g)};
-    const shore=m.stage?m.h+40:(m.seaY??m.h+40);if(m.outerColN){const mt2=stdMat({color:m.outerColN,roughness:1});const g=new THREE.Mesh(new THREE.PlaneGeometry(m.w+120,40),mt2);g.rotation.x=-Math.PI/2;g.position.set(m.w/2,-.01,-20);g.receiveShadow=true;this.scene.add(g)}else add(-60,-40,m.w+60,0);add(-60,0,0,shore);add(m.w,0,m.w+60,shore);if(m.stage||m.seaY==null)add(0,m.h,m.w,m.h+40)}
+  /* where a road leaves the map (a warp or a closed road at the edge), the border trees part and the road runs on */
+  edgeGap(m){const G2=[];for(const t of m.triggers||[]){if(t.kind!=='warp'&&t.kind!=='block')continue;
+      const r=this.roadSpan(m,t);if(t.y0===0)G2.push([r[0],r[1],-99,-1]);if(t.y1===m.h-1)G2.push([r[0],r[1],m.h,m.h+99]);if(t.x0===0)G2.push([-99,-1,r[0],r[1]]);if(t.x1===m.w-1)G2.push([m.w,m.w+99,r[0],r[1]])}
+    return(x,y)=>G2.some(([x0,x1,y0,y1])=>x>=x0&&x<=x1&&y>=y0&&y<=y1)}
+  /* the road tiles along an edge trigger (so the clearing and the road beyond match the road's real width) */
+  roadSpan(m,t){const road=c=>c===':'||c==='='||c==='r'||c==='p';const horiz=t.y0===0||t.y1===m.h-1;const row=t.y0===0?0:m.h-1,col=t.x0===0?0:m.w-1;const a=horiz?t.x0:t.y0,b=horiz?t.x1:t.y1;let lo=null,hi=null;
+    for(let k=a;k<=b;k++){if(road(horiz?m.get(k,row):m.get(col,k))){if(lo==null)lo=k;hi=k}}return lo==null?[a,b]:[lo,hi]}
+  /* the ground beyond the map edge: the map's own grass/snow texture, tiled, plus the road continuing into the trees */
+  borderTex(c,frost){const k=c+'|'+frost;W_BT[k]=W_BT[k]||(()=>{const mm=MapGrid(8,8,c);mm.frost=frost;mm.id='border';const t=new THREE.CanvasTexture(paintGround(mm).col);t.colorSpace=THREE.SRGBColorSpace;t.wrapS=t.wrapT=THREE.RepeatWrapping;t.magFilter=THREE.NearestFilter;t.minFilter=THREE.LinearMipmapLinearFilter;t.userData.keep=true;return t})();return W_BT[k]}
+  buildOuter(){const m=this.map;const add=(x0,z0,x1,z1,c,fr,y=-.01)=>{const tex=this.borderTex(c,fr).clone();tex.needsUpdate=true;tex.repeat.set((x1-x0)/8,(z1-z0)/8);tex.offset.set(x0/8,-z1/8);
+      const g=new THREE.Mesh(new THREE.PlaneGeometry(x1-x0,z1-z0),stdMat({map:tex,roughness:1}));g.rotation.x=-Math.PI/2;g.position.set((x0+x1)/2,y,(z0+z1)/2);g.receiveShadow=true;this.scene.add(g)};
+    const fr=v=>typeof m.frost==='function'?m.frost(0,v):(m.frost||0);const cN=m.borderN||m.border||'.',cS=m.borderS||m.border||'.';
+    const shore=m.stage?m.h+40:(m.seaY??m.h+40);add(-60,-40,m.w+60,0,cN,fr(0));add(-60,0,0,shore,cS,fr(m.h-1));add(m.w,0,m.w+60,shore,cS,fr(m.h-1));if(m.stage||m.seaY==null)add(0,m.h,m.w,m.h+40,cS,fr(m.h-1));
+    /* roads leading off the edge */
+    for(const t of m.triggers||[]){if(t.kind!=='warp')continue;const w=t.x1-t.x0+1,h=t.y1-t.y0+1;
+      const r=this.roadSpan(m,t);if(t.y0===0)add(r[0],-8,r[1]+1,0,':',0,-.005);if(t.y1===m.h-1)add(r[0],m.h,r[1]+1,m.h+8,':',0,-.005);if(t.x0===0)add(-8,r[0],0,r[1]+1,':',0,-.005);if(t.x1===m.w-1)add(m.w,r[0],m.w+8,r[1]+1,':',0,-.005)}}
   buildSky(){const m=this.map;const mat=this.skyMat=new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,fog:false,uniforms:{top:{value:new THREE.Color('#5aa0e8')},hor:{value:new THREE.Color('#cfe8ff')},sun:{value:new THREE.Color('#fff2d0')},sdir:{value:new THREE.Vector3(0,.5,-1)},time:{value:0}},
       vertexShader:'varying vec3 vD;void main(){vD=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
       fragmentShader:`uniform vec3 top,hor,sun,sdir;uniform float time;varying vec3 vD;float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5);}float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}
@@ -7548,7 +7568,7 @@ class World{
     /* weather: the Highlands sit under a grey sky; a storm is darker still */
     const wx=this.map.weather;if(wx&&!this.room){const dark=wx==='storm'?.7:wx==='snow'?.2:.12;const grey=new THREE.Color(wx==='storm'?'#2e3644':'#c3ccd6');
       sc.background.lerp(grey,.55);sc.fog.color.lerp(grey,.6);if(this.skyMat){this.skyMat.uniforms.top.value.lerp(new THREE.Color(wx==='storm'?'#2a3140':'#9fb0c2'),.65);this.skyMat.uniforms.hor.value.lerp(grey,.7)}
-      this.sun.intensity*=1-dark;this.hemi.intensity*=1-dark*(wx==='storm'?.55:.35);if(wx==='storm'){R3.r.toneMappingExposure*=.66;sc.fog.color.set('#3c4454');this.hemi.color.set('#8a9ab8')}U.sat.value*=wx==='storm'?.7:.92;this.fogMul=wx==='storm'?.6:wx==='snow'?.78:.9}else this.fogMul=1}
+      this.sun.intensity*=1-dark;this.hemi.intensity*=1-dark*(wx==='storm'?.55:.35);if(wx==='storm'){R3.r.toneMappingExposure*=.66;sc.fog.color.set('#3c4454');this.hemi.color.set('#8a9ab8')}U.sat.value*=wx==='storm'?.7:.92;this.fogMul=wx==='storm'?.9:wx==='snow'?.85:.95}else this.fogMul=1}
   /* ---------- per frame ---------- */
   update(dt,T){this.T=T;WIND.time.value=T;if(this.skyMat){this.skyMat.uniforms.time.value=T;if(this.cam)this.sky.position.set(this.cam.position.x,0,this.cam.position.z)}if(this.waterMat)this.waterMat.uniforms.time.value=T;
     for(const a of this.actors)a.update(dt);for(const f of this.anims)f(T,dt);
@@ -7595,7 +7615,7 @@ const UI={root:null,
     const t=document.createElement('div');t.className='toast2';root.appendChild(t);this.tst=t;
     d.addEventListener('pointerdown',e=>{e.preventDefault();Input.press('a');setTimeout(()=>Input.release('a'),50)});
     /* while someone is talking, a tap anywhere on the scene moves the conversation on */
-    $('#gl').addEventListener('pointerdown',()=>{if(d.classList.contains('on')){Input.press('a');setTimeout(()=>Input.release('a'),50)}})},
+    $('#gl').addEventListener('pointerdown',()=>{if(d.classList.contains('on')||document.body.classList.contains('cine')){Input.press('a');setTimeout(()=>Input.release('a'),50)}})},
   portrait(who,emo){const p=PEOPLE[who];if(!p)return'';if(p.port){const P=ASSETS.ports[p.port];const src=P&&(P[emo||'Normal']||P.Normal);return src?`<img class="pmdport" src="${src}" alt="">`:''}
     const src=ASSETS.tpics[p.pic];return src?`<div class="tport"><img src="${src}" alt=""></div>`:''},
   /* say: who may be a PEOPLE key, a free name, or null for narration */
@@ -7675,7 +7695,9 @@ const Cut={
   async begin(){Game.lock++;UI.bars(true);document.body.classList.add('hidehud');await wait(350)},
   async end(){UI.bars(false);document.body.classList.remove('hidehud');const W=Game.world;if(W){W.focus=null;W.zoom=1;W.camSpeed=1}await wait(300);Game.lock--;Game.save(true)},
   /* camera: look at a tile (or actor) with an optional zoom; resolves when the camera has mostly arrived */
-  async look(x,y,{zoom=1,speed=.6,ms=900}={}){const W=Game.world;W.focus=new THREE.Vector3(x+.5,W.heightAt(Math.floor(x),Math.floor(y)),y+.5);W.zoom=zoom;W.camSpeed=speed;await wait(ms)},
+  /* a pause in a cutscene that a tap / Space cuts short (the camera jumps to where it was heading) */
+  wait(ms){return new Promise(res=>{let done=false;const fin=()=>{if(done)return;done=true;off();clearTimeout(t);res()};const t=setTimeout(fin,ms);const off=Input.on(k=>{if(k==='a'){Input.take('a');if(Game.world)Game.world.snapCam=true;fin()}})})},
+  async look(x,y,{zoom=1,speed=.6,ms=900}={}){const W=Game.world;W.focus=new THREE.Vector3(x+.5,W.heightAt(Math.floor(x),Math.floor(y)),y+.5);W.zoom=zoom;W.camSpeed=speed;await this.wait(ms)},
   async lookAt(a,o){return this.look(a.x,a.y,o)},
   actor(id){return Game.world.actors.find(a=>a.id===id)},
   spawn(o){const W=Game.world;const a=new Actor(W,o);a.npc=o.npc||null;a.home={x:o.x,y:o.y};W.actors.push(a);return a},
@@ -7683,7 +7705,7 @@ const Cut={
     const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:T3(c,{nearest:false}),depthTest:false}));sp.scale.setScalar(.7);sp.renderOrder=10;W.scene.add(sp);Audio2.tone(ch==='!'?1200:800,.12,{vol:.08});
     const t0=W.T;const f=t=>{const k=t-t0;sp.position.set(a.px,W.heightAtPos(a.px,a.pz)+2.3+Math.min(.2,k*1.5)-.2,a.pz);if(k>1.3){W.scene.remove(sp);W.anims=W.anims.filter(x=>x!==f)}};W.anims.push(f);return wait(700)},
   async timeTo(t,label){await fadeOut(600);G.time=t;Game.world.setTime(t);if(label){const el=document.createElement('div');el.className='chapter';el.innerHTML=`<span>${label}</span>`;document.body.appendChild(el);await wait(1700);el.classList.add('out');setTimeout(()=>el.remove(),900)}await fadeIn(700)},
-  async chapter(kicker,title){const el=document.createElement('div');el.className='chapter big';el.innerHTML=`<small>${esc(kicker)}</small><span>${esc(title)}</span>`;document.body.appendChild(el);await wait(2600);el.classList.add('out');await wait(800);el.remove()},
+  async chapter(kicker,title){const el=document.createElement('div');el.className='chapter big';el.innerHTML=`<small>${esc(kicker)}</small><span>${esc(title)}</span>`;document.body.appendChild(el);await this.wait(2600);el.classList.add('out');await wait(500);el.remove()},
   async getItem(text){Audio2.jingle('item');await UI.say(null,text)},
 };
 const Quest={set(t){G.quest=t;this.draw()},draw(){let el=$('#quest');if(!el){el=document.createElement('div');el.id='quest';$('#ui').appendChild(el)}el.innerHTML=G&&G.quest?`<small>Objective</small><span>${esc(G.quest)}</span>`:'';el.classList.toggle('on',!!(G&&G.quest))}};
@@ -7914,7 +7936,7 @@ const Game={mode:'boot',world:null,lock:0,turnT:0,stepsSinceEnc:0,zone:null,
     W.scene.add(g);const t0=W.T;const f=(t,dt)=>{const k=t-t0;for(const l of g.children){l.position.addScaledVector(l.userData.v,dt);l.userData.v.y-=5*dt;l.rotation.z+=dt*8}if(k>.6){W.scene.remove(g);W.anims=W.anims.filter(x=>x!==f)}};W.anims.push(f)},
   wildAI(a,dt){a.tt=(a.tt||0)-dt;if(a.tt>0)return;a.tt=.8+Math.random()*2.2;const z=a.wild.zone;const d=['up','down','left','right'][Math.random()*4|0];const [dx,dy]=DIRV[d];const nx=a.x+dx,ny=a.y+dy;
     if(Math.random()<.35){a.forceAnim=Math.random()<.5?'Hop':null;return}a.forceAnim=null;if(nx>=z[0]&&nx<=z[2]&&ny>=z[1]&&ny<=z[3])a.go(d);else a.face=d},
-  async touchWild(a){this.lock++;a.faceTo(this.world.player);Audio2.cry(a.wild.dex);await wait(300);this.lock--;await Battle3D.wild(a.wild.sp,wildLv(4,6),{visible:a})},
+  async touchWild(a){this.lock++;a.faceTo(this.world.player);Audio2.cry(a.wild.dex);await wait(300);this.lock--;const lv=a.wild.lv||[4,6];await Battle3D.wild(a.wild.sp,wildLv(lv[0],lv[1]),{visible:a})},
   randomEncounter(kind){const m=this.world.map;const T=G.time==='night'?'night':'day';const list=(m.enc[kind]||m.enc.grass).filter(e=>e[3]>0&&(!e[4]||e[4]===T));let tot=list.reduce((s,e)=>s+e[3],0);let r=Math.random()*tot;let pick=list[0];for(const e of list){r-=e[3];if(r<=0){pick=e;break}}
     Battle3D.wild(pick[0],wildLv(pick[1],pick[2]))},
   /* ---------- talking & looking ---------- */
@@ -13415,7 +13437,8 @@ class Battler{
     const tex=new THREE.CanvasTexture(S.img);tex.colorSpace=THREE.SRGBColorSpace;tex.magFilter=THREE.NearestFilter;tex.minFilter=THREE.LinearFilter;tex.generateMipmaps=false;tex.repeat.set(1/S.cols,1/S.rows);
     if(this.tex)this.tex.dispose();this.tex=tex;this.mat.map=tex;this.mat.emissiveMap=tex;this.dmat.map=tex;this.mat.needsUpdate=this.dmat.needsUpdate=true;
     /* sized by the Pokémon's real height (a trainer is about 2 units), so Pikachu is small and Onix towers */
-    const hm=(typeof MON_HEIGHT!=='undefined'&&MON_HEIGHT[SPECIES[mon.sp].dex]||10)/10;const want=clamp(.8+1.0*Math.sqrt(hm),1.05,4.6);this.scale=want/Math.max(8,S.feet-(S.top||0))*(back?.68:1);this.mesh.scale.set(S.W*this.scale,S.H*this.scale,1);this.mesh.position.y=-(S.H-S.feet)*this.scale;
+    /* one fixed scale for every Pokémon, like the games: the sprite's own pixels decide its size, so Pikachu is small and Onix towers. Back sprites a touch smaller (they're nearer the camera) */
+    this.scale=(S.anim?1/26:1/23)*(back?.72:1);this.mesh.scale.set(S.W*this.scale,S.H*this.scale,1);this.mesh.position.y=-(S.H-S.feet)*this.scale;
     const w=Math.max(.9,S.W*this.scale*.55);this.blob.scale.set(w/1.6*1.4,w/1.6*1.4,1);this.frame=0;this.frameIdx=0;this.t=0;this.fx={dx:0,dy:0,k:1,op:1};this.sink=0}
   height(){return this.S?(this.S.feet)*this.scale:1.5}
   update(dt,cam){if(!this.S)return;this.t+=dt*1000;const S=this.S;let k=this.frameIdx||0;if(k>=S.n)k=0;while(this.t>S.durs[k]){this.t-=S.durs[k];k=(k+1)%S.n}this.frameIdx=k;
@@ -13456,7 +13479,7 @@ function sdRender(now){const t=(now-SDX.t0)*SDX.acc;const M=SDX.map;
     if(q.kind==='bg'){n.style.opacity=st.opacity;continue}
     if(q.kind==='shake'){const d=(st.top??-90)+90;Battle3D.shake=d*M.s;continue}
     if(q.kind==='fx'){const c=M.pt(st.left+st.width/2,st.top+st.height/2);const w=st.width*M.s,h=st.height*M.s;n.style.width=w+'px';n.style.height=h+'px';n.style.transform=`translate(${c.x-w/2}px,${c.y-h/2}px)`;n.style.opacity=st.opacity;continue}
-    if(q.kind==='mon'){const b=q.base;const cx=st.left+st.width/2,cy=st.top+st.height/2,bx=b.left+b.width/2,by=b.top+b.height/2;const k=b.width?st.width/b.width:1;n.fx.dx=(cx-bx)*M.sx;n.fx.dy=(cy-by)*M.sy;n.fx.k=k;n.fx.op=st.opacity}}
+    if(q.kind==='mon'){const b=q.base;const cx=st.left+st.width/2,cy=st.top+st.height/2,bx=b.left+b.width/2,by=b.top+b.height/2;const k=b.width?st.width/b.width:1;n.fx.dx=(cx-bx)*M.sx;n.fx.dy=(cy-by)*M.sy;n.fx.k=clamp(k,.85,1.18);n.fx.op=st.opacity}}
   if(t<SDX.end)SDX.raf=requestAnimationFrame(sdRender);else sdCleanup()}
 function sdCleanup(){cancelAnimationFrame(SDX.raf);SDX.raf=0;for(const q of SDX.qs){if(!q.node)continue;if(q.kind==='shake'){Battle3D.shake=0;continue}if(q.kind==='mon'){q.node.fx={dx:0,dy:0,k:1,op:1}}else q.node.remove()}SDX.qs=[];const cb=SDX.done;SDX.done=null;cb&&cb()}
 /* moves without their own Showdown script borrow the closest one: by name first, then by type and power */
@@ -14567,67 +14590,62 @@ const Act2={
   /* ---------- 5. Skyline Bowl ---------- */
   async arriveSkyline(){if(flag('skyline_calm'))return;const W=Game.world,P=W.player,F=W.follower;
     if(!flag('skyline_wren')){await this.storm(W,P,F);return}
-    /* a calming battle was lost: walking back up to the centre picks it up again */
-    Quest.set('Calm the three guardians at the centre of Skyline Bowl')},
-  async storm(W,P,F){await Cut.begin();Audio2.music('storm',{fade:600});W.noLightning=false;
-    const birds=[];const orbit=(sp,dex,ph,col)=>{const B=new Battler(W.scene,'r');B.set({sp,shiny:false},false).then(()=>{B.show(true);B.group.scale.setScalar(2)});const L=new THREE.PointLight(col,14,16,1.5);W.scene.add(L);
+    this.calmQuest()},
+  calmQuest(){const left=['Articuno','Zapdos','Moltres'].filter(b=>!flag('calm_'+b.toLowerCase()));if(left.length)Quest.set(`Calm the guardians of Skyline Bowl: walk up to ${left.join(', ')} on their perches`)},
+  /* the storm: short, skippable, and you get control back as soon as Requiem leave */
+  async storm(W,P,F){await Cut.begin();Audio2.music('storm',{fade:600});
+    const birds=[];const orbit=(sp,ph,col)=>{const B=new Battler(W.scene,'r');B.set({sp,shiny:false},false).then(()=>{if(B.gone)return;B.show(true);B.group.scale.setScalar(2)});const L=new THREE.PointLight(col,14,16,1.5);W.scene.add(L);
       const f=(t,dt)=>{const a=t*.45+ph;B.group.position.set(16.5+Math.cos(a)*8,9+Math.sin(t*1.3+ph)*.8,13+Math.sin(a)*6);L.position.copy(B.group.position);B.update(dt,W.cam)};W.anims.push(f);birds.push({B,L,f})};
-    orbit('Articuno',144,0,0x9ad0ff);orbit('Zapdos',145,2.09,0xffe066);orbit('Moltres',146,4.19,0xff8a3a);
-    P.walkTo(16,22,{force:true});await Cut.look(16,12,{zoom:1.6,speed:.3,ms:2400});W.lightning();
-    await say(null,"Skyline Bowl. The old stadium sits on the roof of the world, open to the sky. And above it, three great birds wheel through the storm: ice, lightning and fire.");
-    Audio2.cry(144);await wait(500);Audio2.cry(145);await wait(500);Audio2.cry(146);
-    if(F){F.forceAnim='LookUp';await say('rook',"Rook watches Moltres circle. Moltres is watching him back.",{emo:'Worried'});F.forceAnim=null}
-    /* Requiem at the centre */
+    const clear=()=>{for(const b of birds){b.B.gone=true;W.anims=W.anims.filter(x=>x!==b.f);W.scene.remove(b.B.group);W.scene.remove(b.L)}birds.length=0};
+    orbit('Articuno',0,0x9ad0ff);orbit('Zapdos',2.09,0xffe066);orbit('Moltres',4.19,0xff8a3a);
     const wr=Cut.spawn({id:'wren',key:'wren',x:16,y:15,face:'up'}),sb=Cut.spawn({id:'sable2',key:'sable',x:14,y:16,face:'up'}),g1=Cut.spawn({id:'rqa',key:'grunt',x:19,y:16,face:'up'}),g2=Cut.spawn({id:'rqb',key:'grunt_f',x:13,y:14,face:'up'});
-    await Cut.look(16,16,{zoom:.85,ms:1000});sb.faceTo(P);await Cut.emote(sb,'!');
-    await say('sable',"Commander. The child from the coast.");
-    wr.faceTo(P);await Cut.look(16,17,{zoom:.75,ms:700});
-    await say('wren',"So this is Elias Thorne's grandchild. Cassius Wren. I lead the people your newspapers call Team Requiem.");
-    await say('wren',"Do you know where you're standing? The old League built this stadium on the birds' own nesting ground. Fifty years of football on top of a nest. That's the Meridia League in a sentence.",{chain:true});
-    await say('wren',"I was a historian once. I read the files they buried. The Shattering wasn't an accident. Someone did it, and the people who did it are still in charge.",{chain:true});
-    await say('wren',"So I'm going to wake every guardian they ever caged, and let them take back what was stolen. A reset. A clean sky.");
-    if(F){await say('rook',"Rook's aura flares bright blue.",{emo:'Determined'})}
-    await say('wren',"The Lucario remembers. Of course he does. Sable, keep our guest busy. I've what I came for.");
-    let ok=await storyBattle({name:'Sable',title:'Requiem Admin',char:'sable',quote:"Again? Fine!",lose:"Commander... I'm sorry.",foe:[mon('Golbat',22),mon('Skuntank',22),mon('Houndoom',23),mon('Mightyena',23)],prize:2000,music:'battle_wren',tier:'smart',time:G.time});
-    if(!ok){for(const b of birds){W.anims=W.anims.filter(x=>x!==b.f);W.scene.remove(b.B.group);W.scene.remove(b.L)}Cut.end();return}
-    await Cut.look(16,16,{zoom:.8,ms:500});
-    await say('wren',"Hm. You fight like him.");
-    await say('wren',"It doesn't matter. The birds are awake and they are furious, and they'll stay furious until someone gives them a reason not to be. Good luck with that, Thorne.",{chain:true});
-    await say('wren',"We'll meet in the Vale. The beasts are next. And then the lakes.");
-    for(const a of [wr,sb,g1,g2]){a.solid=false;a.walk(['down','down','down','down','down','down','down','down','down','down'],{force:true}).then(()=>a.remove())}await wait(1800);
-    flag('skyline_wren',true);
-    /* the birds dive */
-    W.shakeAmt=.15;W.lightning();for(const b of birds){W.anims=W.anims.filter(x=>x!==b.f);W.scene.remove(b.B.group);W.scene.remove(b.L)}W.shakeAmt=0;
-    await say(null,"With Requiem gone, the storm has nothing left to fight but you. Three shadows drop out of the clouds.");
-    await Cut.end();await this.calm()},
-  /* three calming battles in turn; a loss sends you to Frostmere's Center and you pick up where you left off */
-  async calm(){const order=[['calm_articuno','Articuno',144,'An icy wind freezes the air solid. <b>Articuno</b> lands in the snow, wings spread!'],['calm_zapdos','Zapdos',145,'Lightning splits the ground. <b>Zapdos</b> crashes down in front of you!'],['calm_moltres','Moltres',146,'Fire rolls across the stones. <b>Moltres</b>! It knows Rook. It doesn\'t care.']];
-    for(const [f,sp,dex,line] of order){if(flag(f))continue;Quest.set(`Calm the guardians of Skyline Bowl: ${sp} next`);
-      await Game.lockSay(null,line);
+    P.walkTo(16,21,{force:true});await Cut.look(16,12,{zoom:1.5,speed:.5,ms:1200});W.lightning();Audio2.cry(144);
+    await say(null,"Skyline Bowl, on the roof of the world. Above it, three great birds wheel through the storm: ice, lightning and fire. Below them, grey masks.");
+    if(F){F.forceAnim='LookUp';await say('rook',"Rook watches Moltres circle. Moltres is watching him back.",{emo:'Worried'});F.forceAnim=null}
+    await Cut.look(16,17,{zoom:.8,ms:500});sb.faceTo(P);wr.faceTo(P);
+    await say('wren',"Elias Thorne's grandchild. Cassius Wren. I lead the people your newspapers call Team Requiem.");
+    await say('wren',"The old League built this stadium on the birds' own nest, and the Shattering was no accident. The people who caused it still run the League. So I'm waking every guardian they caged. A reset. A clean sky.",{chain:true});
+    if(F)await say('rook',"Rook's aura flares bright blue.",{emo:'Determined'});
+    await say('wren',"The Lucario remembers. Of course he does. Sable, keep our guest busy.");
+    const ok=await storyBattle({name:'Sable',title:'Requiem Admin',char:'sable',quote:"Again? Fine!",lose:"Commander... I'm sorry.",foe:[mon('Golbat',22),mon('Skuntank',22),mon('Houndoom',23),mon('Mightyena',23)],prize:2000,music:'battle_wren',tier:'smart',time:G.time});
+    if(!ok){clear();await Cut.end();return}
+    await Cut.look(16,17,{zoom:.8,ms:400});
+    await say('wren',"You fight like him. No matter: the birds are furious, and they'll stay furious until someone gives them a reason not to be. We'll meet in the Vale, Thorne. The beasts are next.");
+    for(const a of [wr,sb,g1,g2]){a.solid=false;a.walk(['down','down','down','down','down','down','down','down','down','down','down','down'],{force:true}).then(()=>a.remove())}
+    /* the birds land on their perches, still angry */
+    flag('skyline_wren',true);W.shakeAmt=.15;W.lightning();clear();W.shakeAmt=0;this.perchBirds(W);
+    await Cut.look(16,10,{zoom:1.2,ms:700});
+    await say(null,"Three shadows drop out of the clouds and land on the broken pillars: Articuno, Zapdos and Moltres, crackling with fury. Walk up to each one when you're ready to calm it.");
+    this.calmQuest();await Cut.end()},
+  /* put the birds on their perches live (on a reload the map's own NPC list does it) */
+  perchBirds(W){for(const [id,dex,x,y,b] of [['b_articuno',144,10,12,'Articuno'],['b_zapdos',145,16,9,'Zapdos'],['b_moltres',146,23,12,'Moltres']]){if(flag('gone_'+b.toLowerCase())||W.actors.some(a=>a.id===id))continue;
+    Cut.spawn({id,kind:'pmd',key:dex,x,y,face:'down',npc:{id,talk:'bird',bird:b}})}},
+  /* one guardian: calm it first, then (once all three are calm) you may try to catch it */
+  async bird(a){const sp=a.npc.bird,k=sp.toLowerCase(),dex={Articuno:144,Zapdos:145,Moltres:146}[sp];a.faceTo(Game.world.player);Audio2.cry(dex);
+    if(!flag('calm_'+k)){await say(null,`${sp} glares down at you, ${({Articuno:'frost spilling from its wings',Zapdos:'sparks crackling through its feathers',Moltres:'flames roaring along its back'})[sp]}.`,{noWait:true});
+      const c=await UI.choose([`Calm ${sp}`,'Not yet'],{cancel:1});if(c!==0)return;
       const r=await Battle3D.wild(sp,28,{canCatch:false,music:'battle_legend',kind:'legend',stage:'skyline'});
-      if(!r||r.winner!=='p'){return}
-      flag(f,true);Game.save(true);
-      await Game.lockSay(null,`${sp} stops fighting. It folds its wings and settles on its perch above the stands, watching you.`)}
-    await this.skylineCalm()},
-  async skylineCalm(){if(flag('skyline_calm'))return;flag('skyline_calm',true);await Cut.begin();const P=Game.world.player;
-    await fadeOut(800);await Game.gotoMap('skyline',16,20,'up',{fade:false,banner:false});await fadeIn(900);const W=Game.world,F=W.follower;
-    await Cut.look(16,11,{zoom:1.3,speed:.3,ms:1800});
-    await say(null,"The storm breaks. For the first time in a week, the sun falls on Skyline Bowl. Snow drifts softly onto the old stands.");
-    await say(null,"Articuno, Zapdos and Moltres sit on the three broken pillars, calm, as if they'd been waiting there fifty years for someone to come home.",{chain:true});
-    const mo=Cut.actor('b_moltres');if(F&&mo){F.scripted=true;await F.walkTo(mo.x,mo.y+2,{force:true});F.face='up';F.forceAnim='Nod';await say('rook',"Rook walks to the foot of Moltres's pillar and bows. Moltres lowers its burning head until they almost touch.",{emo:'Inspired'});F.forceAnim=null;F.scripted=false}
-    await Cut.look(P.x,P.y,{zoom:.9,ms:700});
-    await say(null,"The guardians are calm. If one of them chooses to join you, it's your call. Talk to them when you're ready.");
+      if(!r||r.winner!=='p')return;
+      flag('calm_'+k,true);Game.save(true);
+      const left=['articuno','zapdos','moltres'].filter(b=>!flag('calm_'+b));
+      if(left.length){await Game.lockSay(null,`${sp} stops fighting and folds its wings. It watches you quietly from its perch.`);this.calmQuest();return}
+      await this.skylineCalm();return}
+    if(!flag('skyline_calm')){await say(null,`${sp} is calm, watching the other guardians.`);return}
+    await say(null,`${sp} watches you calmly from its perch.`,{noWait:true});const c=await UI.choose([`Try to catch ${sp}`,'Leave it be'],{cancel:1});
+    if(c!==0){await say(null,`You leave ${sp} in peace.`);return}
+    const r=await Battle3D.wild(sp,30,{canCatch:true,music:'battle_legend',kind:'legend',stage:'skyline'});
+    if(r&&r.caught){flag('gone_'+k,true);const x=Cut.actor(a.id);if(x)x.remove();Game.save(true)}
+    else if(r&&r.winner==='p'){await Game.lockSay(null,`${sp} fainted... A moment later it shakes itself, flies up, and settles back on its perch. It'll be here when you're ready to try again.`)}},
+  async skylineCalm(){if(flag('skyline_calm'))return;flag('skyline_calm',true);await Cut.begin();const P0=Game.world.player;const px=P0.x,py=P0.y;
+    await fadeOut(500);await Game.gotoMap('skyline',px,py,'up',{fade:false,banner:false});await fadeIn(600);const W=Game.world,P=W.player,F=W.follower;
+    await Cut.look(16,10,{zoom:1.2,speed:.5,ms:900});
+    await say(null,"The storm breaks. For the first time in a week, sunlight falls on Skyline Bowl, and the three guardians sit quietly on their pillars, as if they'd been waiting fifty years for someone to come home.");
+    const mo=Cut.actor('b_moltres');if(F&&mo){F.scripted=true;await F.walkTo(mo.x,mo.y+1,{force:true});F.face='up';F.forceAnim='Nod';await say('rook',"Rook bows at the foot of Moltres's pillar. Moltres lowers its burning head until they almost touch.",{emo:'Inspired'});F.forceAnim=null;F.scripted=false}
     G.club.mail.push(League.mail('pip','YOU DID WHAT',"Isolde told me EVERYTHING. The storm's gone! Gaffer, Wren said the BEASTS are next. That's the Ashen Vale, east of Voltspire. The road's snowed in until the thaw. As soon as it opens, we're going. Right? RIGHT??",G.club.day),
       League.mail('league','Memo: Skyline Bowl',"The Meridia League reminds all clubs that the Skyline Bowl site remains closed to the public. Reports of \"legendary Pokémon\" in the Stormcrest Highlands are being reviewed. — Office of Commissioner A. Graves",G.club.day));
     await Cut.chapter('Act II · Part 1 complete','Stormcrest Highlands');
     Quest.set('Act II continues in Ashen Vale (Part 2). Until then: the Meridia Cup and the league, up to the winter break');
-    await Cut.end()},
-  async bird(a){const sp=a.npc.bird,dex={Articuno:144,Zapdos:145,Moltres:146}[sp];a.faceTo(Game.world.player);Audio2.cry(dex);
-    await say(null,`${sp} watches you calmly from its perch.`,{noWait:true});const c=await UI.choose([`Try to catch ${sp}`,'Leave it be'],{cancel:1});
-    if(c!==0){await say(null,`You leave ${sp} in peace.`);return}
-    const r=await Battle3D.wild(sp,30,{canCatch:true,music:'battle_legend',kind:'legend',stage:'skyline'});
-    if(r&&r.caught){flag('gone_'+sp.toLowerCase(),true);const x=Cut.actor(a.id);if(x)x.remove();Game.save(true)}
-    else if(r&&r.winner==='p'){await Game.lockSay(null,`${sp} fainted... A moment later it shakes itself, flies up, and settles back on its perch. It'll be here when you're ready to try again.`)}},
+    await Cut.end();UI.toast('The guardians are calm. Talk to one if you want to try to catch it.',3600)},
   /* ---------- hooks ---------- */
   onArrive(id){if(id==='voltspire')G.lastCenter='center_v';if(id==='frostmere'||id==='skyline')G.lastCenter='center_f';if(id==='fernwick')G.lastCenter='center';if(id==='route2'&&!flag('r2_intro'))this.enterRoute2();else if(id==='voltspire'&&!flag('volt_arrived'))this.arriveVoltspire();else if(id==='frostmere'&&!flag('frost_arrived'))this.arriveFrostmere();else if(id==='skyline'&&!flag('skyline_calm'))this.arriveSkyline()},
 };
@@ -14669,7 +14687,6 @@ Object.assign(Story.T,{
 });
 /* hooks: chain onto the existing ones */
 {const prevStep=Story.onStep;Story.onStep=(x,y)=>{if(prevStep&&prevStep(x,y))return true;const m=Game.world.map;
-  if(m.id==='skyline'&&flag('skyline_wren')&&!flag('skyline_calm')&&y<=18&&!Act2._calming){Act2._calming=true;Act2.calm().finally(()=>Act2._calming=false);return true}
   return Trainers.spot(x,y)}}
 {const prevEnter=Story.onEnter;Story.onEnter=id=>{if(/^center/.test(id))G.lastCenter=id;prevEnter&&prevEnter(id)}}
 Story.onArrive=id=>Act2.onArrive(id);
