@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Champion Road"><meta name="theme-color" content="#0b0d12"><meta name="cr-version" content="0.4.2">
+<meta name="apple-mobile-web-app-title" content="Champion Road"><meta name="theme-color" content="#0b0d12"><meta name="cr-version" content="0.5.0">
 <title>Champion Road: The Last Champion</title>
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -333,6 +333,79 @@ body.inhub #menuBtn,body.inhub .touch,body.inhub #quest,body.inhub .banner{displ
 .ht-q{display:block;margin-top:4px;font-size:12px;color:#e9e4da;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62vw}.ht-q b{color:var(--gold);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:10px;margin-right:6px}
 
 .odw{color:#e0604f;font-weight:700;letter-spacing:.02em}
+/* ===== squad management (0.5) ===== */
+.sqx{display:flex;flex-direction:column;gap:14px;max-width:980px}
+.lu2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.lu2c{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:22px 8px 10px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.025)}
+.lu2c .mi{width:56px;height:56px}.lu2c b{font-weight:600;font-size:14px}.lu2c small{color:var(--dim);font-size:11.5px;margin-bottom:4px}
+.lbtn{float:right;font:700 10.5px var(--sans);letter-spacing:.1em;color:var(--gold);padding:2px 0;text-transform:uppercase}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#f06a5a;vertical-align:middle}
+.tips{display:flex;flex-direction:column;gap:2px}.tips .lbl{margin-bottom:6px}
+.tip{display:flex;align-items:center;gap:12px;padding:10px 4px;border-top:1px solid var(--line);text-align:left;width:100%}.tip:first-of-type{border-top:0}
+.tip>i{flex:0 0 32px;height:32px;border-radius:9px;display:grid;place-items:center;font-style:normal;font-weight:800;color:var(--gold);background:rgba(227,194,122,.12)}
+.tip span{flex:1;min-width:0}.tip b{display:block;font:600 14px var(--sans)}.tip small{display:block;color:var(--dim);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tip>em{font-style:normal;color:var(--gold);font-size:18px}
+.sq-tools{position:sticky;top:-20px;z-index:3;display:flex;gap:8px;padding:8px 0;background:linear-gradient(180deg,#0d1016 80%,rgba(13,16,22,0))}
+.sq-q{flex:1;min-width:0;height:36px;padding:0 12px;border-radius:10px;border:1px solid var(--line2);background:rgba(255,255,255,.04);color:var(--text);font:500 14px var(--sans);user-select:text}
+.btn.sm{height:36px;padding:0 12px;font-size:13px;border-radius:10px;white-space:nowrap}
+.chips,.sortg{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-top:-6px;padding-bottom:2px}.chips::-webkit-scrollbar{display:none}.sortg{flex-wrap:wrap;margin:0}
+.chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:16px;border:1px solid var(--line2);font:600 12.5px var(--sans);color:#cfd5de;white-space:nowrap}
+.chip em{font-style:normal;font-size:11px;color:var(--dim)}.chip.on{background:var(--gold);border-color:var(--gold);color:#1d160a}.chip.on em{color:#5a4419}
+.sql{display:flex;flex-direction:column}
+.sqr{display:flex;align-items:center;gap:10px;width:100%;padding:8px 14px;border-bottom:1px solid rgba(255,255,255,.05);text-align:left;min-height:62px}.sqr:hover{background:rgba(255,255,255,.03)}
+.sqr .mi{flex:0 0 46px;width:46px;height:46px}
+.sqr-ck{display:none;flex:0 0 20px;height:20px;border-radius:6px;border:2px solid var(--line2)}.sqr.selm .sqr-ck{display:block}.sqr.on .sqr-ck{background:var(--gold);border-color:var(--gold);box-shadow:inset 0 0 0 3px #12161d}.sqr.on{background:rgba(227,194,122,.07)}
+.sqr-id{flex:1;min-width:0}.sqr-id b{display:block;font:600 15px var(--sans);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sqr-id small{display:flex;align-items:center;gap:6px;color:var(--dim);font-size:12px;margin-top:2px;white-space:nowrap}
+.sqr-t{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
+.sqr-n{flex:0 0 44px;text-align:center}.sqr-n small{display:block;font:700 9px var(--sans);letter-spacing:.12em;color:var(--dim)}.sqr-n b{font:800 17px var(--sans);font-variant-numeric:tabular-nums}
+.rtag{font-style:normal;font:700 10px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--rc);padding:2px 6px;border-radius:5px;background:color-mix(in srgb,var(--rc) 14%,transparent);margin-right:6px}
+.bt{font-style:normal;font:700 10.5px var(--sans);padding:2px 7px;border-radius:5px}.bt.b-evo{background:var(--gold);color:#1d160a}.bt.b-mv{background:rgba(167,123,240,.2);color:#c9b0ff}.bt.b-tired{background:rgba(217,96,79,.18);color:#ff9f92}
+.pri{font-style:normal;color:var(--gold);margin-left:5px}
+.sq-empty{padding:18px}
+.selbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + var(--sab));z-index:30;display:flex;align-items:center;gap:6px;padding:8px 8px 8px 14px;border-radius:14px;background:#171c25;border:1px solid var(--line2);box-shadow:0 14px 40px rgba(0,0,0,.6);max-width:calc(100% - 16px)}
+.selbar>span{font-size:13px;color:var(--dim);margin-right:4px;white-space:nowrap}.selbar b{color:var(--text)}
+.dev .ovpot{display:flex;align-items:center;gap:12px}.ovpot>div:not(.op-bar){text-align:center}.ovpot small{display:block;font:700 9.5px var(--sans);letter-spacing:.12em;color:var(--dim);text-transform:uppercase}.ovpot b{font:800 26px var(--sans)}
+.op-bar{flex:1;height:10px;border-radius:5px;background:rgba(255,255,255,.07);overflow:hidden}.op-bar i{display:block;height:100%;background:linear-gradient(90deg,#d9b15f,#4cd38a)}
+.planrow{display:flex;align-items:center;gap:12px;width:100%;margin-top:12px;padding:12px;border-radius:12px;border:1px solid var(--line2);text-align:left}
+.planrow>i,.tr2-p>i,.fb>i,.tally i{font-style:normal;display:grid;place-items:center;flex:0 0 34px;height:34px;border-radius:9px;background:color-mix(in srgb,var(--fc) 18%,transparent);color:var(--fc);font-weight:800}
+.planrow span{flex:1;min-width:0}.planrow b{display:block;font:600 15px var(--sans)}.planrow small{display:block;color:var(--dim);font-size:12.5px;margin-top:2px}.planrow>em{font-style:normal;color:var(--gold);font:700 12px var(--sans)}
+.evl{margin:12px 0 0;font-size:13.5px}.dev .btn.gold{margin-top:10px;width:100%}
+.pf-acts{margin:0}
+.mvx{display:flex;flex-direction:column;gap:12px;max-width:760px}
+.mvsg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mvs,.mvx-r{display:flex;align-items:center;gap:10px;text-align:left;width:100%}
+.mvs{padding:10px;border-radius:12px;border:1px solid var(--line2);background:linear-gradient(90deg,color-mix(in srgb,var(--t,#555) 16%,transparent),transparent)}.mvs.on{border-color:var(--gold);box-shadow:0 0 0 2px rgba(227,194,122,.35)}.mvs.empty{border-style:dashed}
+.mvs .mvx-t{display:none}
+.mvx-r{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.05)}.mvx-r:hover{background:rgba(255,255,255,.03)}
+.mvx-t{flex:0 0 64px;text-align:center;font:700 10.5px var(--sans);padding:4px 0;border-radius:6px;background:var(--t);color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.4)}
+.mvx-n{flex:1;min-width:0}.mvx-n b{display:block;font:600 14.5px var(--sans)}.mvx-n small{display:block;color:var(--dim);font-size:12px;margin-top:2px}
+.mvx-c{font-style:normal;font:700 12.5px var(--sans);color:var(--gold);white-space:nowrap}.stab{font-style:normal;font:700 9.5px var(--sans);color:#4cd38a;margin-left:4px}
+.mvtab{margin:0}.mvtab button{flex:1}.mvtab em{font-style:normal;opacity:.7;margin-left:4px}.mvhelp{margin:-4px 2px 0}
+.tr-how{margin:0 0 12px;font-size:14px;line-height:1.55;color:#d9dee6}
+.tally{display:flex;flex-wrap:wrap;gap:6px}.tally span{display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 4px;border-radius:10px;background:rgba(255,255,255,.04);font-size:12.5px}.tally i{flex-basis:24px;height:24px;font-size:12px}
+.trl2{display:flex;flex-direction:column}
+.tr2{display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid rgba(255,255,255,.05)}.card:not(.flush) .tr2{padding:8px 0}
+.tr2-id{flex:1;display:flex;align-items:center;gap:8px;min-width:0;text-align:left}.tr2-id .mi{flex:0 0 40px;width:40px;height:40px}.tr2-id span{min-width:0}.tr2-id b{display:block;font:600 14px var(--sans);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tr2-id small{display:flex;align-items:center;color:var(--dim);font-size:11.5px;white-space:nowrap;overflow:hidden}.tr2-id small .bt{margin-left:4px}
+.tr2-p{flex:0 0 46%;display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:10px;border:1px solid var(--line2);text-align:left;min-width:0}.tr2-p>i{flex-basis:28px;height:28px}.tr2-p span{min-width:0}.tr2-p b{display:block;font:600 13px var(--sans)}.tr2-p small{display:block;color:var(--dim);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr2-s{flex:0 0 36px;height:36px;border-radius:10px;border:1px solid var(--line2);color:#5c6370;font-size:17px}.tr2-s.on{background:rgba(227,194,122,.16);border-color:var(--gold);color:var(--gold)}
+.facil{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-size:13px;color:var(--dim)}.facil b{color:var(--text)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fb{display:grid;grid-template-columns:34px 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;padding:10px;border-radius:12px;border:1px solid var(--line2);text-align:left}.fb>i{grid-row:span 2}.fb b{font:600 14px var(--sans)}.fb small{color:var(--dim);font-size:11.5px;line-height:1.3}
+.fb.on{border-color:var(--fc);background:color-mix(in srgb,var(--fc) 12%,transparent)}
+.pritog{display:flex;align-items:center;gap:12px;width:100%;margin-top:12px;padding:12px;border-radius:12px;border:1px solid var(--line2);text-align:left}.pritog>i{font-style:normal;font-size:20px;color:#5c6370;width:34px;text-align:center}.pritog b{display:block;font:600 14.5px var(--sans)}.pritog small{color:var(--dim);font-size:12px}
+.pritog.on{border-color:var(--gold);background:rgba(227,194,122,.1)}.pritog.on>i{color:var(--gold)}
+@media (max-width:600px){.hmodal.sheet{place-items:end stretch;padding:0}.hmodal.sheet .hm-card{width:100%;border-radius:22px 22px 0 0;max-height:88dvh;padding:18px 16px calc(16px + var(--sab));animation:shup .22s ease-out}
+  .hmodal.sheet .hm-card h3{font-size:20px}.fb small{display:none}.fb{grid-template-rows:auto}.hide-xs{display:none}
+  .lu2{grid-template-columns:repeat(3,1fr)}.lu2c{padding:20px 4px 8px}.lu2c .mi{width:46px;height:46px}.lu2c b{font-size:12.5px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lu2c .ovr{transform:scale(.9)}
+  .sqr{padding:8px 10px;gap:8px}.sq-tools{top:-14px}.tr2{padding:8px 10px}.tr2-p{flex-basis:47%}.tr2 .rtag{display:none}.tr .drills{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.tr .drb small{display:none}.tr .drb{padding:10px 6px;text-align:center}.mvsg{gap:6px}.mvs{padding:8px}.mvx-t{flex-basis:56px}}
+/* evolution */
+.evo{position:fixed;inset:0;z-index:95;display:grid;place-items:center;background:radial-gradient(70% 60% at 50% 45%,#1b2333,#06070a);animation:fi .25s;padding:20px}
+.evo-c{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;width:min(520px,100%)}.evo-c h3{margin:0;font:600 22px var(--serif)}
+.evo-st{position:relative;width:200px;height:200px}.evo-st>span{position:absolute;inset:0;display:grid;place-items:center;transition:transform .08s}.evo-st img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+.evo-b{opacity:0}.evo.glow .evo-st img{filter:brightness(0) invert(1) drop-shadow(0 0 18px #9fd8ff)}.evo.flash .evo-st{animation:evf .6s}@keyframes evf{0%{filter:brightness(4)}100%{filter:none}}
+.evo-t{margin:0;font:500 17px/1.5 var(--sans);color:var(--text);min-height:52px}.evo-t b{color:var(--gold)}.evo-btns{display:flex;flex-direction:column;align-items:center;gap:6px}
+.evo-pick{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;width:100%;max-height:60vh;overflow:auto}
+.evo-pick button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px;border-radius:12px;border:1px solid var(--line2);background:rgba(255,255,255,.03)}.evo-pick img{width:80px;height:80px;object-fit:contain;image-rendering:pixelated}.evo-pick b{font:600 14px var(--sans)}
 
 </style></head><body>
 <canvas id="gl"></canvas><div id="ui"><button id="menuBtn" aria-label="Menu"><i></i></button></div>
@@ -13682,7 +13755,7 @@ const Battle3D={b:null,shake:0,
       else if(b.phase==='switch'){const idx=this.auto?b.aiReplace?b.aiReplace('p'):b.sides.p.team.findIndex(m=>m.hp>0):await this.chooseSwitch();await this.play(b.act({type:'switch',idx}))}
       else break}
     return await this.finish()},
-  async finish(){const b=this.b;this.view=b.snap();const r=b.result||{};const cfg=this.cfg;const sp=this.speed();
+  async finish(){this._lvd=new Set();const b=this.b;this.view=b.snap();const r=b.result||{};const cfg=this.cfg;const sp=this.speed();
     /* write HP/PP back to the party */
     if(!cfg.fresh)for(const m of b.sides.p.team){const p=G.party.find(x=>x.id===m.id);if(p){p.chp=m.hp;p.cst=m.status||'';p.cpp=m.moves.map(x=>x.pp)}}
     if(b.bag){for(const k in b.bag)G.bag[k]=b.bag[k]}
@@ -13695,7 +13768,7 @@ const Battle3D={b:null,shake:0,
       for(const [m,gain] of gets){const p=this.partyMon(m);p.xp=(p.xp||0)+gain;
         if(m.on){this.msg(`${esc(m.name)} gained ${gain} Exp. Points!`);this.hud('p');await wait(900/sp)}
         else if(!told){told=true;this.msg(`The rest of your team gained ${gain} Exp. Points thanks to the Exp. Share!`);await wait(1100/sp)}
-        while(p.xp>=xpNeed(p.lv)&&p.lv<100){p.xp-=xpNeed(p.lv);p.lv++;const before=calcStats(p);Audio2.sfx('levelup');this.msg(`${esc(pName(p))} grew to Lv. ${p.lv}!`);const after=calcStats(p);if(p.chp!=null)p.chp=Math.min(after.hp,p.chp+(after.hp-before.hp));
+        while(p.xp>=xpNeed(p.lv)&&p.lv<100){p.xp-=xpNeed(p.lv);p.lv++;this._lvd.add(p);const before=calcStats(p);Audio2.sfx('levelup');this.msg(`${esc(pName(p))} grew to Lv. ${p.lv}!`);const after=calcStats(p);if(p.chp!=null)p.chp=Math.min(after.hp,p.chp+(after.hp-before.hp));
           const nm=nextLearn(p);if(nm&&!p.moves.includes(nm)){await wait(800/sp);if(p.moves.length<4){p.moves.push(nm);this.msg(`${esc(pName(p))} learned <b>${esc(MOVES[nm].n)}</b>!`)}else{const sc=p.moves.map(id=>MOVES[id].c==='S'?40:moveScore(MOVES[id],SPECIES[p.sp],{atk:SPECIES[p.sp].bs[1],spa:SPECIES[p.sp].bs[3]}));const wi=sc.indexOf(Math.min(...sc));const old=p.moves[wi];p.moves[wi]=nm;this.msg(`${esc(pName(p))} forgot ${esc(MOVES[old].n)} and learned <b>${esc(MOVES[nm].n)}</b>!`)}}
           await wait(1100/sp)}}
       if(!cfg.wild&&cfg.prize){G.money+=cfg.prize;this.msg(`You got ₽${cfg.prize.toLocaleString()} for winning!`);await wait(1200/sp)}}
@@ -13703,6 +13776,8 @@ const Battle3D={b:null,shake:0,
     await fadeOut(400);this.teardown();
     if(r.winner==='r'&&cfg.wild&&!cfg.rook){/* whiteout */healParty();G.money=Math.floor(G.money*.8);this.restoreWorld();Game.lock--;Game.mode='world';await Game.gotoMap(typeof healMap==='function'?healMap():'center',5,5,'up',{fade:false});await fadeIn(400);await Game.lockSay('nurse','Your Pokémon were exhausted, so you hurried here. We\'ve restored them to full health.');return r}
     this.restoreWorld();Game.mode='world';Game.lock--;Audio2.music(Game.world.map.room?Game.world.map.music:(Game.zone?Game.zone.music:'town'));await fadeIn(400);
+    /* like the games: anything that levelled up and can evolve does so now (Stop holds it until the next level) */
+    if(this._lvd.size&&typeof Evo!=='undefined'){Game.lock++;try{await Evo.after([...this._lvd])}catch(e){console.error(e)}Game.lock--}
     r.caughtMon=caught;Game.save(true);if(this.cfg.after)await this.cfg.after(r);return r},
   teardown(){this.st=null;this.cam=null;OCC.near.value=0;if(this.BW){this.BW.dispose();this.BW=null}this.ball=null;this.trainerP=this.rookA=this.trainerR=null;if(SDX.raf)sdCleanup();this.ui&&this.ui.remove();document.body.classList.remove('hidehud','inbattle');WIND.clear&&WIND.clear.value.set(0,0,0,0);this.auto=false},
   restoreWorld(){const W=Game.world;W.setTime(G.time);W.snapCam=true;if(this.cfg.visible&&this.b.result&&this.b.result.winner==='p'&&!this.b.result.caught){this.cfg.visible.remove();flag('wild_'+this.cfg.visible.wild.sp,true)}}
@@ -13856,7 +13931,8 @@ const League={
 /* ---------- ratings: OVR (now) and POT (ceiling), FM-style 1–20 attributes ---------- */
 function quality(p){const sp=SPECIES[p.sp];const iv=p.iv.reduce((a,b)=>a+b,0);return(sp.bst+iv/2)/693}
 function ovr(p){return clamp(Math.round(quality(p)*99*.55+Math.min(99,p.lv*1.35+24)*.45),1,99)}
-function pot(p){const fb=finalBST(p.sp);const iv=p.iv.reduce((a,b)=>a+b,0);return clamp(Math.round((fb+iv/2)/693*99),1,99)}
+/* POT is the OVR it can actually reach: fully evolved and fully trained (Lv 56+) */
+function pot(p){const fb=finalBST(p.sp);const iv=p.iv.reduce((a,b)=>a+b,0);return clamp(Math.max(ovr(p),Math.round((fb+iv/2)/693*99*.55+99*.45)),1,99)}
 /* attribute 1–20 from base stat + IV, so it reads the same at any level (FM-style "how good is this, really") */
 function attr20(p,k){const i=STATS.indexOf(k);const b=SPECIES[p.sp].bs[i];const v=2*b+(p.iv[i]||0)+((p.ev&&p.ev[i])||0)/8;return clamp(Math.round(1+19*(v-20)/291),1,20)}
 function attrCol(v){return v>=16?'#4cd38a':v>=11?'#a9d65a':v>=6?'#e3b04b':'#d9604f'}
@@ -13864,53 +13940,68 @@ function ageOf(p){return p.age!=null?p.age:(p.age=2+Math.floor(hash2(p.id.length
 
 'use strict';
 /* ================= training: weekly plans, intensity, one-to-one coaching, mentoring, drills ================= */
+/* the week has four kinds of day; on training days every Pokémon works on its own plan */
 const SESSIONS={
-  attack:{n:'Attack',ic:'⚔',col:'#e0604f',ev:[1],d:'Power work. Builds Attack.'},
-  special:{n:'Special',ic:'✦',col:'#a77bf0',ev:[3],d:'Energy control. Builds Sp. Attack.'},
-  defence:{n:'Defence',ic:'⛨',col:'#5fa0e8',ev:[2,4],d:'Taking hits. Builds Defence and Sp. Defence.'},
-  speed:{n:'Speed',ic:'➤',col:'#4fd07a',ev:[5],d:'Sprints and reactions. Builds Speed.'},
-  stamina:{n:'Stamina',ic:'♥',col:'#e3b04b',ev:[0],d:'Endurance. Builds HP.'},
-  tactics:{n:'Tactics',ic:'◎',col:'#7fd0d8',ev:[],xp:1.25,d:'Type match-ups and move choice. More Exp, small chance to learn a move.'},
-  matchprep:{n:'Match prep',ic:'⚑',col:'#f0d390',ev:[],xp:.5,cond:6,sharp:true,d:'Light session before a match. Sharpness boost for the next game.'},
-  recovery:{n:'Recovery',ic:'☾',col:'#8a93a3',ev:[],xp:.2,cond:18,d:'Rest and treatment. Restores condition.'},
-  rest:{n:'Day off',ic:'·',col:'#4a4f5a',ev:[],xp:0,cond:12,d:'No training. Condition recovers.'},
+  train:{n:'Training',ic:'▲',col:'#e3b04b',d:'Every Pokémon works on its own training plan.'},
+  matchprep:{n:'Match prep',ic:'⚑',col:'#f0d390',d:'Light session before a match. Sharpness boost for the next game.'},
+  recovery:{n:'Recovery',ic:'☾',col:'#8a93a3',d:'Rest and treatment. Condition comes back fast.'},
+  rest:{n:'Day off',ic:'·',col:'#4a4f5a',d:'No training. Condition recovers.'},
+};
+/* what each Pokémon works on: which stats grow (EVs) */
+const FOCUS={
+  balanced:{n:'Balanced',ic:'◇',col:'#c9b07a',ev:[0,1,2,3,4,5],per:1,d:'A bit of everything. Good default.'},
+  attack:{n:'Attack',ic:'⚔',col:'#e0604f',ev:[1],per:4,d:'Builds Attack. For physical hitters.'},
+  special:{n:'Sp. Atk',ic:'✦',col:'#a77bf0',ev:[3],per:4,d:'Builds Sp. Attack. For special attackers.'},
+  defence:{n:'Defence',ic:'⛨',col:'#5fa0e8',ev:[2,4],per:2,d:'Builds Defence and Sp. Defence.'},
+  speed:{n:'Speed',ic:'➤',col:'#4fd07a',ev:[5],per:4,d:'Builds Speed. Move first.'},
+  stamina:{n:'HP',ic:'♥',col:'#e3b04b',ev:[0],per:4,d:'Builds HP. Lasts longer.'},
+  rest:{n:'Rest',ic:'☾',col:'#8a93a3',ev:[],per:0,d:'No Exp. Condition recovers fast.'},
 };
 const DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const INTENSITY={light:{n:'Light',xp:.75,cost:2,d:'Gentle. Little fatigue.'},normal:{n:'Normal',xp:1,cost:5,d:'Balanced load.'},intense:{n:'Intense',xp:1.4,cost:11,risk:.04,d:'Big gains, heavy fatigue, small knock risk.'}};
-const ONE_TO_ONE_SLOTS=3;
+const TRAIN_XP=.2,PRI_MULT=1.6,FACIL=[{slots:4},{slots:6,cost:25000},{slots:8,cost:60000}];
 const Training={
-  state(){const L=G.club;if(!L.training)L.training={plan:['recovery','attack','special','defence','speed','matchprep','rest'],intensity:'normal',ind:{},mentors:{},drillDay:-1,drillBoost:1,drillFor:null,log:[]};return L.training},
+  state(){const L=G.club;if(!L.training)L.training={plan:['recovery','train','train','train','train','matchprep','rest'],intensity:'normal',ind:{},drillDay:-1,drillBoost:1,drillFor:null,v:2,facil:1};const T=L.training;
+    /* older saves: stat sessions become training days, one-to-one becomes priority, mentors retire */
+    if(T.v!==2){T.plan=(T.plan||[]).map(k=>['matchprep','recovery','rest'].includes(k)?k:'train');while(T.plan.length<7)T.plan.push('train');
+      for(const id in T.ind){const o=T.ind[id]||{};const f=FOCUS[o.focus]&&o.focus!=='rest'?o.focus:'balanced';T.ind[id]=o.role==='rest'?{focus:'rest'}:{focus:o.role==='individual'?f:'balanced',pri:o.role==='individual'}}
+      T.mentors={};T.v=2}
+    if(!T.facil)T.facil=1;if(!INTENSITY[T.intensity])T.intensity='normal';return T},
+  slots(){return FACIL[(this.state().facil||1)-1].slots},
   dow(day){return new Date(2026,9,1+day).getDay()},
-  sessionOn(day){const T=this.state();const f=League.nextFixture();const isMatch=G.club.fixtures.some(x=>x.day===day);return isMatch?'match':T.plan[this.dow(day)]},
-  role(p){const T=this.state();return(T.ind[p.id]&&T.ind[p.id].role)||'group'},
-  focus(p){const T=this.state();return T.ind[p.id]&&T.ind[p.id].focus||'attack'},
-  oneToOneCount(){const T=this.state();return Object.values(T.ind).filter(x=>x.role==='individual').length},
-  mentorOf(p){const T=this.state();const id=T.mentors[p.id];return id?League.squad().find(m=>m.id===id):null},
-  menteesOf(p){const T=this.state();return League.squad().filter(m=>T.mentors[m.id]===p.id)},
-  /* one day of training for the whole squad; returns a short report */
-  day(day){const T=this.state();const L=G.club;let kind=this.sessionOn(day);const I=INTENSITY[T.intensity]||INTENSITY.normal;const rep={kind,lv:[],learn:[],knock:[]};
+  sessionOn(day){const T=this.state();if(G.club.fixtures.some(x=>x.day===day))return'match';return SESSIONS[T.plan[this.dow(day)]]?T.plan[this.dow(day)]:'train'},
+  plan(p){return this.state().ind[p.id]||{focus:'balanced'}},
+  focus(p){const f=this.plan(p).focus;return FOCUS[f]?f:'balanced'},
+  pri(p){return !!this.plan(p).pri&&this.focus(p)!=='rest'},
+  setPlan(p,o){const T=this.state();const c={...this.plan(p),...o};if(c.focus==='rest')c.pri=false;T.ind[p.id]=c},
+  priList(){return League.squad().filter(m=>this.pri(m))},
+  role(p){return this.focus(p)==='rest'?'rest':this.pri(p)?'individual':'group'},
+  mentorOf(){return null},menteesOf(){return[]},
+  mult(p){return this.focus(p)==='rest'?0:this.pri(p)?PRI_MULT:1},
+  rate(p){const I=INTENSITY[this.state().intensity];return TRAIN_XP*I.xp*this.mult(p)},/* levels per training day */
+  xpPerDay(p){return Math.round(xpNeed(p.lv)*this.rate(p))},
+  trainDays(){const T=this.state();return T.plan.filter((k,i)=>k==='train'&&i!==6).length},
+  /* calendar days to reach a level, from the plan as it stands */
+  daysTo(p,lv){const r=this.rate(p),tw=this.trainDays();if(!r||!tw||lv<=p.lv)return lv<=p.lv?0:null;const td=(1-(p.xp||0)/xpNeed(p.lv))/r+(lv-p.lv-1)/r;return Math.max(1,Math.ceil(td*7/tw))},
+  day(day){const T=this.state();const L=G.club;const kind=this.sessionOn(day);const I=INTENSITY[T.intensity];const rep={kind,lv:[],learn:[],knock:[],evo:[]};
     if(kind==='match')return rep;
-    const drill=T.drillDay===day?T.drillBoost:1;
-    for(const m of League.squad()){const role=this.role(m);let k=kind;let mult=1;
-      if(role==='rest')k='rest';else if(role==='individual'){k=this.focus(m);mult=1.4}else mult=1; /* group sessions follow the plan; one-to-one gets extra attention */
-      const S=SESSIONS[k];if(!S)continue;
-      const mentor=this.mentorOf(m);if(mentor&&k!=='rest'&&k!=='recovery')mult*=1.25;
-      const db=(T.drillFor==null||T.drillFor===m.id||(T.drillFor==='group'&&role==='group'))?drill:1;
-      const need=xpNeed(m.lv);const xp=Math.round(need*.1*(S.xp??1)*(k==='rest'?0:I.xp)*mult*db);
-      m.xp=(m.xp||0)+xp;const lv0=m.lv;
-      while(m.xp>=xpNeed(m.lv)&&m.lv<100){m.xp-=xpNeed(m.lv);m.lv++;const nm=nextLearn(m);if(nm&&!m.moves.includes(nm)&&m.moves.length<4)m.moves.push(nm)}
+    const drill=T.drillDay===day?T.drillBoost:1;const lu=L.lineup||[];
+    for(const m of League.squad()){const f=this.focus(m);let xp=0,cond=0;
+      if(kind==='train'&&f!=='rest'){const mult=this.mult(m);xp=xpNeed(m.lv)*TRAIN_XP*I.xp*mult*drill;
+        const F=FOCUS[f];const ev=m.ev||[0,0,0,0,0,0];for(const i of F.ev)ev[i]=Math.min(252,(ev[i]||0)+Math.round(F.per*mult*I.xp*drill));m.ev=ev;
+        cond=-I.cost*(this.pri(m)?1.25:1)+4;
+        if(I.risk&&Math.random()<I.risk*((m.cond??100)<70?2:1)){cond-=20;rep.knock.push(m)}}
+      else if(kind==='matchprep'){xp=xpNeed(m.lv)*.05;cond=6;if(lu.includes(m.id))m.sharp=1}
+      else if(kind==='recovery'){xp=xpNeed(m.lv)*.02;cond=18}
+      else cond=f==='rest'?16:12;
+      m.cond=clamp((m.cond??100)+cond,40,100);
+      m.xp=(m.xp||0)+Math.round(xp);const lv0=m.lv;
+      while(m.xp>=xpNeed(m.lv)&&m.lv<100){m.xp-=xpNeed(m.lv);m.lv++;const nm=nextLearn(m);if(nm&&!m.moves.includes(nm)){if(m.moves.length<4)m.moves.push(nm);else m.newMv=1}}
       if(m.lv>lv0)rep.lv.push(m);
-      const ev=m.ev||[0,0,0,0,0,0];for(const i of S.ev)ev[i]=Math.min(252,(ev[i]||0)+Math.round(3*mult*I.xp*db));m.ev=ev;
-      const cost=S.cond?-S.cond:(k==='rest'?-12:I.cost);m.cond=clamp((m.cond??100)-cost+4,40,100);
-      if(S.sharp)m.sharp=1;
-      if(I.risk&&k!=='rest'&&k!=='recovery'&&Math.random()<I.risk*(m.cond<70?2:1)){m.cond=Math.max(40,m.cond-20);rep.knock.push(m)}
-      /* tactics and mentoring can teach a move */
-      const learnChance=(k==='tactics'?.04:0)+(mentor?.03:0);if(learnChance&&Math.random()<learnChance*db){const src=mentor?mentor.moves:learnableAt(SPECIES[m.sp],m.lv,m.moves).slice(0,30);
-        const can=mentor?canLearn(SPECIES[m.sp],m.lv,m.moves):learnableAt(SPECIES[m.sp],m.lv,m.moves);const pickId=src.find(id=>can.includes(id)&&!m.moves.includes(id));
-        if(pickId){if(m.moves.length<4)m.moves.push(pickId);else{const sc=m.moves.map(id=>MOVES[id].c==='S'?40:moveScore(MOVES[id],SPECIES[m.sp],{atk:SPECIES[m.sp].bs[1],spa:SPECIES[m.sp].bs[3]}));const w=sc.indexOf(Math.min(...sc));if(moveScore(MOVES[pickId],SPECIES[m.sp],{atk:SPECIES[m.sp].bs[1],spa:SPECIES[m.sp].bs[3]})>sc[w])m.moves[w]=pickId;else continue}rep.learn.push([m,pickId,mentor])}}
+      if(typeof Evo!=='undefined'&&Evo.ready(m)&&!m.evoNote){m.evoNote=1;rep.evo.push(m)}
       updateValue(m)}
-    if(rep.learn.length)for(const [m,id,men] of rep.learn)L.mail.push(League.mail('marlow',`${pName(m)} learned ${MOVES[id].n}`,men?`${pName(men)} has been showing ${pName(m)} the ropes. Today it clicked: ${pName(m)} can now use ${MOVES[id].n}.`:`A good tactics session. ${pName(m)} picked up ${MOVES[id].n}.`,day));
-    if(rep.knock.length)L.mail.push(League.mail('marlow','A knock in training',`${rep.knock.map(pName).join(', ')} took a knock in today's intense session. Condition is down. Ease off or give them a recovery day.`,day));
+    if(rep.evo.length)L.mail.push(League.mail('marlow',rep.evo.length>1?`${rep.evo.length} Pokémon are ready to evolve`:`${pName(rep.evo[0])} is ready to evolve`,`${rep.evo.map(m=>`${pName(m)} (Lv ${m.lv}) can evolve into ${Evo.targets(m).join(' or ')}.`).join('\n')}\n\nOpen their profile and tap Evolve when you're ready. Some managers wait: you can hold off as long as you like.`,day));
+    if(rep.knock.length)L.mail.push(League.mail('marlow','A knock in training',`${rep.knock.map(pName).join(', ')} took a knock in today's intense session. Condition is down. Ease off or put them on Rest.`,day));
     T.drillDay=-1;T.drillBoost=1;T.drillFor=null;return rep},
 };
 /* condition and match sharpness affect stats in every battle */
@@ -13963,7 +14054,7 @@ const Packs={
   mult(){return{4:1,3:1.8,2:3,1:5}[G.club.div]||1},
   price(k){return Math.round(PACKS[k].price*this.mult()/100)*100},
   level(){const sq=League.squad();if(!sq.length)return 6;const top=sq.map(m=>m.lv).sort((a,b)=>b-a).slice(0,3);return Math.max(5,Math.round(top.reduce((a,b)=>a+b,0)/top.length)-2)},
-  tierOf(p){const v=pot(p);return v>=82?'gold':v>=72?'silver':'bronze'},
+  tierOf(p){const v=pot(p);return v>=90?'gold':v>=84?'silver':'bronze'},
   pool(type){return Object.keys(SPECIES).filter(n=>{const s=SPECIES[n];if(s.dex>493||s.legend||s.base!==n||n==='Shedinja'||(!learnList(n)&&!s.evo))return false;if(type){const fin=formAt(n,100)||n;if(!s.types.includes(type)&&!SPECIES[fin].types.includes(type))return false}return true})},
   roll(odds){let r=Math.random()*100;for(const [t,v] of Object.entries(odds)){r-=v;if(r<0)return t}return Object.keys(odds)[0]},
   card(tier,type){const lv=Math.max(3,this.level()-Math.floor(Math.random()*3));const pool=this.pool(type);const rares=pool.filter(n=>RARE.has(n)),ps=pool.filter(n=>PSEUDO.has(n));
@@ -14011,7 +14102,7 @@ const Hub={el:null,scr:'home',
       <nav class="hub-tabs">${NAV.filter(n=>['home','squad','calendar','training','packs'].includes(n[0])).map(([k,t,d])=>`<button data-s="${k}">${icon(d,22)}<span>${t}</span></button>`).join('')}<button data-s="more">${icon('M5 12h.01M12 12h.01M19 12h.01',22)}<span>More</span></button></nav>`;
     document.body.appendChild(e);e.addEventListener('click',ev=>{const b=ev.target.closest('[data-s]');if(b){this.go(b.dataset.s);Audio2.sfx('select');return}const a=ev.target.closest('[data-a]');if(a){this.act(a.dataset.a,a.dataset);}});
     e.querySelector('.ht-c').onclick=()=>this.cont();e.querySelector('.ht-w').onclick=()=>this.toWorld();
-    this.off=Input.on(k=>{if(this.modal)return;if(k==='b'||k==='menu'){Input.take('b');Input.take('menu');if(this.scr==='profile'||this.scr==='more')this.go(this.back||'home');else this.toWorld()}});
+    this.off=Input.on(k=>{if(this.modal)return;if(k==='b'||k==='menu'){Input.take('b');Input.take('menu');if(this.scr==='moves')this.go('profile',this.mvId);else if(this.scr==='profile'||this.scr==='more')this.go(this.back||'home');else this.toWorld()}});
     this.go(o.screen||'home');if(o.intro)this.intro();if(!o.noCheck)setTimeout(()=>Story.reconcile&&Story.reconcile(),50)},
   close(silent){if(!this.el)return;Game.save(true);this.off&&this.off();this.el.remove();this.el=null;document.body.classList.remove('inhub');Game.lock--;Game.mode=this.prevMode==='hub'?'world':(this.prevMode||'world')},
   async toWorld(){if(this.runPending())return;Audio2.sfx('back');this.close();Game.mode='world';
@@ -14084,7 +14175,7 @@ const Hub={el:null,scr:'home',
   s_club(){const L=G.club;return`<div class="grid2"><div class="card"><div class="lbl">Finances</div><div class="kv"><span>Balance</span><b>₽${G.money.toLocaleString()}</b></div><div class="kv"><span>Daily wages</span><b>₽${League.wages()}</b></div><div class="kv"><span>Last gate receipts</span><b>${L.lastGate?'₽'+L.lastGate.toLocaleString():'—'}</b></div><div class="kv"><span>Ticket price</span><b>₽${L.ticket}</b></div></div>
       <div class="card"><div class="lbl">Supporters</div><div class="bignum">${L.fans}</div><p class="dim">Regulars at the ground. Wins bring more of the town out.</p></div>
       <div class="card"><div class="lbl">Staff</div><div class="kv"><span>Coach</span><b>Marlow</b></div><div class="kv"><span>Scout</span><b>Pip</b></div><div class="kv"><span>Groundskeeper</span><b>Old Bram</b></div></div>
-      <div class="card"><div class="lbl">Training</div><p class="dim">Weekly plan, intensity, one-to-one coaching, mentors and drills.</p><button class="btn gold" data-s="training">Open training</button></div>
+      <div class="card"><div class="lbl">Training</div><p class="dim">Training plans, the priority group, intensity and drills.</p><button class="btn gold" data-s="training">Open training</button></div>
       <div class="card wide"><div class="lbl">Ground</div><p><b>Fernwick Old Ground</b> <span class="dim">· capacity 60,000 (ruined, closed since 1976)</span></p><p class="dim">The Rovers play on a temporary pitch next to the ruins. Promotion would bring the money, and the reason, to restore it.</p></div></div>`},
   s_inbox(){const L=G.club;return`<div class="card flush">${L.mail.slice().reverse().map(m=>`<button class="mail big ${m.read?'':'unread'}" data-a="mail" data-id="${m.id}"><b>${esc(this.from(m.from))}</b><span>${esc(m.subj)}</span><small>${League.date(m.day)}</small></button>`).join('')}</div>`},
   from(k){return({board:'The Board',marlow:'Coach Marlow',pip:'Pip (Scout)',press:'Meridia Press',league:'Meridia League'})[k]||k},
@@ -14181,7 +14272,7 @@ const Hub={el:null,scr:'home',
       ${sel>today?`<div class="row-btns"><button class="btn gold" data-a="simTo" data-day="${sel}">${stopAt!=null?'Continue to next match':'Continue to this day'}</button>${S&&!sg?`<button class="btn" data-a="sess" data-i="${Training.dow(sel)}">Change ${DOW[Training.dow(sel)]} sessions</button>`:''}</div>${stopAt!=null?`<p class="dim sm">The calendar stops on match days so you can pick your team.</p>`:''}`:sel===today&&sg&&!sg.res?`<div class="row-btns"><button class="btn gold" data-a="matchday">Go to match day</button></div>`:''}</div>`;
     return`<div class="cal"><div class="card cal-card"><div class="cal-h"><button class="btn ghost" data-a="calMonth" data-dir="-1">‹</button><b>${first.toLocaleDateString('en-GB',{month:'long',year:'numeric'})}</b><button class="btn ghost" data-a="calMonth" data-dir="1">›</button></div>
       <div class="cal-g">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(x=>`<span class="cd-h">${x}</span>`).join('')}${cells}</div>
-      <div class="cal-key">${['attack','special','defence','speed','stamina','tactics','matchprep','recovery'].map(k=>`<span style="--sc:${SESSIONS[k].col}"><b>${SESSIONS[k].ic}</b>${SESSIONS[k].n}</span>`).join('')}<span><i class="ev mk"></i>Transfer list</span></div></div>${detail}</div>`},
+      <div class="cal-key">${['train','matchprep','recovery','rest'].map(k=>`<span style="--sc:${SESSIONS[k].col}"><b>${SESSIONS[k].ic}</b>${SESSIONS[k].n}</span>`).join('')}<span><i class="ev mk"></i>Transfer list</span></div></div>${detail}</div>`},
   async simTo(target){const L=G.club;const nf=League.nextFixture();if(nf&&League.isBreak(nf)){target=Math.min(target,nf.day-1);if(target<=L.day){this.winterBreak();return}}if(nf&&nf.day<target)target=nf.day;if(target<=L.day)return;
     if(G.quest&&!flag('prologue_done')&&!flag('matchday1')){UI.toast('Finish the story in the world first: <b>'+esc(G.quest)+'</b>',2600);return}
     const ov=document.createElement('div');ov.className='simov';ov.innerHTML=`<div class="so-c"><div class="lbl">Continuing</div><b class="so-d"></b><div class="so-b"><i></i></div><small class="dim so-s"></small></div>`;this.el.appendChild(ov);
@@ -14225,6 +14316,228 @@ const Hub={el:null,scr:'home',
       this.modal.querySelectorAll('[data-t]').forEach(b=>b.onclick=e=>{e.stopPropagation();const t=b.dataset.t;this._mres=null;this.modalClose();res(t)})});if(!type)return}
     S.inv.splice(i,1);Audio2.sfx('ball');const r=await Packs.reveal(this.el,x.k,type);UI.toast(`<b>${r.kept.map(p=>esc(p.sp)).join(' & ')}</b> joined the squad${r.back?` · ₽${r.back.toLocaleString()} for the rest`:''}`,2600);Game.save(true);this.go('packs')},
 };
+
+'use strict';
+/* ================= squad management: evolution, move tutoring, squad roles, filters/sorting, training plans ================= */
+
+/* ---------- evolution ---------- */
+const Evo={
+  targets(p){const sp=SPECIES[p.sp];if(!sp||!sp.evo)return[];const t=Array.isArray(sp.evo[0])?sp.evo[0]:[sp.evo[0]];return t.filter(n=>SPECIES[n])},
+  level(p){const sp=SPECIES[p.sp];return sp&&sp.evo?sp.evo[1]:null},
+  /* hold=true: respect "not now" from the last level-up (the games ask again on the next level) */
+  ready(p,hold){if(!p||p.owner==='market'||p.item==='Everstone')return false;const L=this.level(p);if(L==null||p.lv<L||!this.targets(p).length)return false;return !hold||p.evoHold==null||p.lv>p.evoHold},
+  apply(p,to){const before=calcStats(p);const from=p.sp;p.sp=to;p.ability=SPECIES[to].ab;const after=calcStats(p);
+    if(p.chp!=null)p.chp=Math.max(1,Math.min(after.hp,p.chp+(after.hp-before.hp)));
+    /* moves a Pokémon learns on evolving (or at this level as the new form) */
+    const L=learnList(to)||[];const fresh=L.filter(x=>(x[0]===0||x[0]===p.lv)&&!p.moves.includes(x[1])).map(x=>x[1]);let learned=null;
+    for(const id of fresh){if(p.moves.length<4){p.moves.push(id);learned=learned||id}else p.newMv=1}
+    delete p.evoHold;delete p.evoNote;updateValue(p);
+    if(G.dex){G.dex[to]=G.dex[to]||{};G.dex[to].caught=true}
+    return{from,to,learned}},
+  img(sp,shiny){return`<img src="${sdUrl(SPECIES[sp].dex,false,shiny)}" onerror="this.onerror=null;this.src='${sprSrc(sp,false,shiny)||''}'" alt="">`},
+  /* choose a branch (Eevee, Kirlia, Snorunt...) */
+  pick(p){const t=this.targets(p);if(t.length<2)return Promise.resolve(t[0]||null);
+    return new Promise(res=>{const o=document.createElement('div');o.className='evo';o.innerHTML=`<div class="evo-c"><div class="lbl">Evolution</div><h3>${esc(pName(p))} can evolve into…</h3><div class="evo-pick">${t.map(n=>`<button data-n="${n}">${this.img(n,p.shiny)}<b>${esc(n)}</b><span>${SPECIES[n].types.map(tchip).join('')}</span></button>`).join('')}</div><button class="btn ghost" data-n="">Not now</button></div>`;
+      document.body.appendChild(o);o.onclick=e=>{const b=e.target.closest('[data-n]');if(!b)return;o.remove();Audio2.sfx(b.dataset.n?'select':'back');res(b.dataset.n||null)}})},
+  /* the classic sequence: tap to skip, Stop button only after a battle */
+  async run(p,o={}){const to=await this.pick(p);if(!to){if(o.cancel)p.evoHold=p.lv;return null}
+    const from=p.sp,name=pName(p);const ov=document.createElement('div');ov.className='evo';
+    ov.innerHTML=`<div class="evo-c"><div class="evo-st"><span class="evo-a">${this.img(from,p.shiny)}</span><span class="evo-b">${this.img(to,p.shiny)}</span></div><p class="evo-t">What? <b>${esc(name)}</b> is evolving!</p><div class="evo-btns">${o.cancel?'<button class="btn ghost" data-stop>Stop</button>':''}<small class="dim">Tap to skip</small></div></div>`;
+    document.body.appendChild(ov);Audio2.cry(SPECIES[from].dex);
+    let skip=false,stop=false;ov.onclick=e=>{if(e.target.closest('[data-stop]'))stop=true;else skip=true};const offI=Input.on(k=>{if(k==='a'){Input.take('a');skip=true}if(k==='b'&&o.cancel){Input.take('b');stop=true}});
+    const A=ov.querySelector('.evo-a'),B=ov.querySelector('.evo-b');ov.classList.add('glow');
+    const t0=performance.now(),T=3200;
+    while(!skip&&!stop){const k=(performance.now()-t0)/T;if(k>=1)break;const f=2+k*k*14;const showB=Math.sin(k*f*Math.PI*2)>0;A.style.opacity=showB?0:1;B.style.opacity=showB?1:0;const sc=showB?.85+.15*k:1;B.style.transform=`scale(${sc})`;A.style.transform=`scale(${showB?1:1-.15*k})`;await frame()}
+    if(stop){ov.classList.remove('glow');A.style.opacity=1;B.style.opacity=0;A.style.transform=B.style.transform='';ov.querySelector('.evo-t').innerHTML=`Huh? <b>${esc(name)}</b> stopped evolving!`;ov.querySelector('.evo-btns').innerHTML='<small class="dim">Tap to continue</small>';p.evoHold=p.lv;Audio2.sfx('back');await this.tap(ov);offI();ov.remove();return null}
+    const r=this.apply(p,to);ov.classList.remove('glow');ov.classList.add('flash');A.style.opacity=0;B.style.opacity=1;B.style.transform='';Audio2.cry(SPECIES[to].dex);Audio2.jingle('item');
+    ov.querySelector('.evo-t').innerHTML=`Congratulations! <b>${esc(name)}</b> evolved into <b>${esc(to)}</b>!${r.learned?`<br><small>${esc(name)} learned <b>${esc(MOVES[r.learned].n)}</b>!</small>`:''}`;ov.querySelector('.evo-btns').innerHTML='<small class="dim">Tap to continue</small>';
+    await wait(350);await this.tap(ov);offI();ov.remove();Game.save(true);return r},
+  tap(ov){return new Promise(res=>{const off=Input.on(k=>{if(k==='a'||k==='b'){Input.take('a');Input.take('b');off();res()}});ov.onclick=()=>{off();res()}})},
+  /* after a battle in the world: every Pokémon that levelled and can evolve */
+  async after(list){for(const p of list)if(this.ready(p,true))await this.run(p,{cancel:true})},
+};
+
+/* ---------- moves: free relearning of level-up moves, paid tutoring for TM / tutor / egg moves ---------- */
+const Tutor={
+  free(p){const sp=SPECIES[p.sp];const out=new Set();for(const x of preChain(sp))for(const id of learnableAt(x,p.lv,[]))out.add(id);for(const id of p.moves)out.delete(id);return[...out].filter(id=>MOVES[id])},
+  paid(p){const sp=SPECIES[p.sp];const fr=new Set(this.free(p));const out=new Set();for(const x of preChain(sp))for(const id of learnOther(x.n))if(!fr.has(id)&&!p.moves.includes(id))out.add(id);return[...out].filter(id=>MOVES[id]&&MOVES[id].lv!==99)},
+  cost(id){const m=MOVES[id];if(m.c==='S')return 800;return m.p<=60?1000:m.p<=90?2000:3500},
+  owned(p,id){return(p.taught||[]).includes(id)},
+  stab(p,id){return MOVES[id].c!=='S'&&SPECIES[p.sp].types.includes(MOVES[id].t)},
+  /* rough usefulness for sorting: power × accuracy × STAB × the Pokémon's matching attack stat */
+  score(p,id){const m=MOVES[id];if(m.c==='S')return 30;const sp=SPECIES[p.sp];return moveScore(m,sp,{atk:sp.bs[1],spa:sp.bs[3]})},
+};
+
+/* ---------- squad roles: where each Pokémon stands, so you know who to build around ---------- */
+const ROLES={starter:['Starter','#4cd38a'],rotation:['Rotation','#a9d65a'],prospect:['Prospect','#7fd0d8'],squad:['Squad','#9aa3b2'],surplus:['Surplus','#d9604f'],listed:['Listed','#e3b04b']};
+function sqCtx(){const sq=League.squad();const lu=League.lineup();const luIds=lu.map(p=>p.id);const n=lu.length||3;const T=lu.length?lu.reduce((a,p)=>a+ovr(p),0)/lu.length:0;
+  const pots=sq.map(pot).sort((a,b)=>b-a);const ref=pots[Math.min(pots.length-1,n+2)]||0;return{sq,lu,luIds,n,T,ref}}
+function sqRole(p,c){if(c.luIds.includes(p.id))return'starter';if(p.listed)return'listed';const o=ovr(p),pt=pot(p);
+  if(pt>=c.ref-1&&o<c.T-4)return'prospect';if(o>=c.T-6)return'rotation';if(pt<c.ref-6&&o<c.T-8&&p.nick!=='Rook')return'surplus';return'squad'}
+function roleTag(r){const R=ROLES[r];return`<i class="rtag" style="--rc:${R[1]}">${R[0]}</i>`}
+function ratCol(v){return v>=85?'#4cd38a':v>=75?'#a9d65a':v>=62?'#e3b04b':'#d9604f'}
+
+const SQ={sort:'ovr',filter:'all',type:null,q:'',sel:null};
+const SORTS={ovr:'OVR',pot:'Potential',growth:'Room to grow',lv:'Level',value:'Value',cond:'Condition',name:'Name',newest:'Newest'};
+const FILTERS=[['all','All'],['starter','Starters'],['pri','Priority ★'],['evolve','Can evolve'],['newmv','New moves'],['prospect','Prospects'],['rotation','Rotation'],['surplus','Surplus'],['listed','Listed']];
+
+Object.assign(Hub,{
+  sqList(c){c=c||sqCtx();const idx=new Map(c.sq.map((p,i)=>[p.id,i]));const q=SQ.q.trim().toLowerCase();
+    const keep=p=>{const f=SQ.filter;if(q&&!(pName(p).toLowerCase().includes(q)||p.sp.toLowerCase().includes(q)))return false;if(SQ.type&&!SPECIES[p.sp].types.includes(SQ.type))return false;
+      if(f==='all')return true;if(f==='pri')return Training.pri(p);if(f==='evolve')return Evo.ready(p);if(f==='newmv')return !!p.newMv;return sqRole(p,c)===f};
+    const key={ovr:p=>-ovr(p)*1000-p.lv,pot:p=>-pot(p)*1000-ovr(p),growth:p=>-(pot(p)-ovr(p)),lv:p=>-p.lv,value:p=>-(p.value||0),cond:p=>(p.cond??100),name:p=>pName(p).toLowerCase(),newest:p=>-idx.get(p.id)}[SQ.sort]||(p=>-ovr(p));
+    return c.sq.filter(keep).map(p=>[key(p),p]).sort((a,b)=>a[0]<b[0]?-1:a[0]>b[0]?1:0).map(x=>x[1])},
+  sqRow(p,c){const r=sqRole(p,c);const on=SQ.sel&&SQ.sel.has(p.id);const cnd=Math.round(p.cond??100);
+    const metric={value:['Value','₽'+((p.value||0)>=1000?Math.round(p.value/1000)+'k':p.value)],cond:['Cond',cnd+'%'],growth:['Grow','+'+(pot(p)-ovr(p))]}[SQ.sort]||['POT',pot(p)];
+    const tags=[Evo.ready(p)?'<em class="bt b-evo">⬆ Evolve</em>':'',p.newMv?'<em class="bt b-mv">New move</em>':'',cnd<70?`<em class="bt b-tired">${cnd}%</em>`:''].join('');
+    return`<button class="sqr ${on?'on':''} ${SQ.sel?'selm':''}" data-a="sqTap" data-id="${p.id}"><span class="sqr-ck"></span>${monImg(p)}<span class="sqr-id"><b>${esc(pName(p))}${Training.pri(p)?'<em class="pri">★</em>':''}</b><small>${roleTag(r)}<span>Lv ${p.lv}</span><span class="hide-xs">${esc(p.nick?p.sp:SPECIES[p.sp].types.join('/'))}</span></small>${tags?`<span class="sqr-t">${tags}</span>`:''}</span>
+      <span class="sqr-n"><small>OVR</small><b style="color:${ratCol(ovr(p))}">${ovr(p)}</b></span><span class="sqr-n"><small>${metric[0]}</small><b ${metric[0]==='POT'?`style="color:${ratCol(pot(p))}"`:''}>${metric[1]}</b></span></button>`},
+  sqRows(c){const l=this.sqList(c);return l.length?l.map(p=>this.sqRow(p,c)).join(''):'<p class="dim sq-empty">No Pokémon match. Try another filter.</p>'},
+  s_squad(){const c=sqCtx();const n=DIV_FORMAT[G.club.div]||3;
+    const cnt=k=>k==='all'?c.sq.length:k==='pri'?c.sq.filter(p=>Training.pri(p)).length:k==='evolve'?c.sq.filter(p=>Evo.ready(p)).length:k==='newmv'?c.sq.filter(p=>p.newMv).length:c.sq.filter(p=>sqRole(p,c)===k).length;
+    const chips=FILTERS.map(([k,t])=>{const v=cnt(k);return(v||k==='all'||SQ.filter===k)?`<button class="chip ${SQ.filter===k?'on':''}" data-a="sqF" data-f="${k}">${t}<em>${v}</em></button>`:''}).join('')+(SQ.type?`<button class="chip on" data-a="sqType" data-t="">${SQ.type} ✕</button>`:'');
+    return`<div class="sqx">
+      <div class="card luc2"><div class="lbl">Matchday squad <span class="dim">${n} Pokémon · singles · first one leads</span></div>
+        <div class="lu2">${c.lu.map((p,i)=>`<button class="lu2c" data-a="profile" data-id="${p.id}"><span class="lu-n">${i===0?'Lead':i+1}</span>${monImg(p)}<b>${esc(pName(p))}</b><small>Lv ${p.lv} · ${Math.round(p.cond??100)}%</small>${ovrPill(ovr(p))}</button>`).join('')}</div>
+        <div class="row-btns"><button class="btn" data-a="bestXI">Pick strongest</button><button class="btn" data-s="lineup">Change order ›</button></div></div>
+      ${this.coachTips(c)}
+      <div class="sq-tools"><input class="sq-q" type="search" placeholder="Search ${c.sq.length} Pokémon" value="${esc(SQ.q)}"><button class="btn sm" data-a="sqSort">⇅ ${SORTS[SQ.sort]}</button><button class="btn sm ${SQ.sel?'gold':''}" data-a="sqSel">${SQ.sel?'Done':'Select'}</button></div>
+      <div class="chips">${chips}</div>
+      <div class="card flush"><div class="sql">${this.sqRows(c)}</div></div>
+      ${SQ.sel?this.selBar():''}</div>`},
+  after_squad(){const i=this.el.querySelector('.sq-q');if(i)i.oninput=()=>{SQ.q=i.value;this.el.querySelector('.sql').innerHTML=this.sqRows()}},
+  selBar(){const ids=[...SQ.sel];const sq=League.squad().filter(p=>SQ.sel.has(p.id));const sellable=sq.filter(p=>!League.canSell(p));const tot=sellable.reduce((a,p)=>a+League.quickPrice(p),0);
+    return`<div class="selbar"><span><b>${ids.length}</b> selected</span><button class="btn sm" data-a="selAll">All shown</button><button class="btn sm" data-a="selPlan" ${ids.length?'':'disabled'}>Plan</button><button class="btn sm" data-a="selSell" ${sellable.length?'':'disabled'}>Sell${tot?' ₽'+tot.toLocaleString():''}</button></div>`},
+  /* Coach Marlow's to-do: the few things worth doing next */
+  coachTips(c,home){const t=[];const ev=c.sq.filter(p=>Evo.ready(p));const nm=c.sq.filter(p=>p.newMv);const pl=Training.priList().length,sl=Training.slots();const sur=c.sq.filter(p=>sqRole(p,c)==='surplus');const pros=c.sq.filter(p=>sqRole(p,c)==='prospect'&&!Training.pri(p));
+    const tired=c.lu.filter(p=>(p.cond??100)<75);const offers=(G.club.offers||[]).filter(o=>o.exp>G.club.day).length;
+    if(ev.length)t.push(['evolve','⬆',`${ev.length} ready to evolve`,ev.slice(0,3).map(pName).join(', ')+(ev.length>3?'…':'')]);
+    if(pl<sl)t.push(['pri','★',`${sl-pl} priority training slot${sl-pl>1?'s':''} free`,pros.length?`Prospects to push: ${pros.slice(0,2).map(pName).join(', ')}`:'1.6× Exp for your picks']);
+    if(tired.length)t.push(['tired','☾',`${tired.map(pName).join(', ')} ${tired.length>1?'are':'is'} tired`,'Rest them or bring in fresh legs']);
+    if(nm.length)t.push(['newmv','✦',`${nm.length} can learn a new move`,nm.slice(0,3).map(pName).join(', ')]);
+    if(offers&&home)t.push(['offers','₽',`${offers} transfer offer${offers>1?'s':''}`,'Review them in Transfers']);
+    if(sur.length>=4)t.push(['surplus','✕',`${sur.length} surplus Pokémon`,`Unlikely to make your team. Quick-sale ₽${sur.filter(p=>!League.canSell(p)).reduce((a,p)=>a+League.quickPrice(p),0).toLocaleString()}`]);
+    if(!t.length)return home?'':'';
+    return`<div class="card tips"><div class="lbl">Coach Marlow · to do</div>${t.slice(0,home?5:4).map(([k,ic,a,b])=>`<button class="tip" data-a="tip" data-k="${k}"><i>${ic}</i><span><b>${esc(a)}</b><small>${esc(b)}</small></span><em>›</em></button>`).join('')}</div>`},
+
+  /* ---------- profile ---------- */
+  s_profile(id){const p=League.squad().find(m=>m.id===id)||G.club.market.find(m=>m.id===id);if(!p)return'';const sp=SPECIES[p.sp];const s=calcStats(p);const c=sqCtx();const inLu=c.luIds.includes(p.id);const mk=p.owner==='market';
+    const bar=(k,lbl)=>{const v=attr20(p,k);return`<div class="attr"><span>${lbl}</span><div class="ab"><i style="width:${v*5}%;background:${attrCol(v)}"></i></div><b style="color:${attrCol(v)}">${v}</b><small>${s[k]}</small></div>`};
+    const need=xpNeed(p.lv);const o=ovr(p),pt=pot(p);const tg=Evo.targets(p),el=Evo.level(p);const f=Training.focus(p),F=FOCUS[f];
+    const evoLine=!tg.length?'<span class="dim">Fully evolved</span>':Evo.ready(p)?`<b style="color:var(--gold)">Ready to evolve into ${tg.map(esc).join(' or ')}</b>`:`Evolves into <b>${tg.map(esc).join(' / ')}</b> at Lv ${el}${!mk&&Training.daysTo(p,el)!=null?` · about ${Training.daysTo(p,el)} days in training`:''}`;
+    const dev=mk?'':`<div class="card dev"><div class="lbl">Development</div>
+        <div class="ovpot"><div><small>Now</small><b style="color:${ratCol(o)}">${o}</b></div><div class="op-bar"><i style="width:${clamp(o/pt*100,0,100)}%"></i></div><div><small>Potential</small><b style="color:${ratCol(pt)}">${pt}</b></div></div>
+        <p class="dim sm">POT is the OVR it reaches fully evolved and around Lv 56. ${pt-o>0?`<b>${pt-o}</b> to go.`:'It has reached its ceiling.'}</p>
+        <button class="planrow" data-a="planSheet" data-id="${p.id}"><i style="--fc:${F.col}">${F.ic}</i><span><b>${F.n}${Training.pri(p)?' · <em class="pri">★ Priority</em>':''}</b><small>${f==='rest'?'Resting: condition recovers, no Exp':`+${Training.xpPerDay(p).toLocaleString()} Exp per training day${Training.daysTo(p,p.lv+1)!=null?` · next level in about ${Training.daysTo(p,p.lv+1)} day${Training.daysTo(p,p.lv+1)>1?'s':''}`:''}`}</small></span><em>Change</em></button>
+        <p class="evl">${evoLine}</p>${Evo.ready(p)?`<button class="btn gold" data-a="evolve" data-id="${p.id}">⬆ Evolve now</button>`:''}</div>`;
+    return`<div class="prof"><div class="card pf-hero" style="--t1:${TYPE_COL[sp.types[0]]};--t2:${TYPE_COL[sp.types[1]||sp.types[0]]}"><div class="pf-img"><img class="pf-anim" src="${sdUrl(sp.dex,false,p.shiny)}" onerror="this.src='${sprSrc(p.sp,false,p.shiny)||''}'" alt=""></div>
+        <div class="pf-id"><div class="lbl">${mk?'Transfer target':roleTag(sqRole(p,c))}${p.listed&&!mk?' · <span style="color:var(--gold)">Transfer listed</span>':''} · #${String(sp.dex).padStart(3,'0')}</div><h2>${esc(pName(p))}</h2><div class="pf-sub">${p.nick?esc(p.sp)+' · ':''}Lv ${p.lv} · Age ${ageOf(p)} · ${sp.types.map(tchip).join('')}</div>
+        <div class="pf-r">${ovrPill(o)}${ovrPill(pt,'POT')}<span class="val"><small>Value</small>₽${(p.value||0).toLocaleString()}</span>${mk?'':`<span class="val"><small>Condition</small>${Math.round(p.cond??100)}%</span>`}</div>
+        <div class="xpb"><i style="width:${clamp((p.xp||0)/need*100,0,100)}%"></i></div><small class="dim">${(p.xp||0).toLocaleString()} / ${need.toLocaleString()} Exp to Lv ${p.lv+1}</small></div></div>
+      ${mk?'':`<div class="row-btns pf-acts"><button class="btn ${inLu?'':'gold'}" data-a="toggleLu" data-id="${p.id}">${inLu?'Drop to reserves':'Add to matchday squad'}</button>${p.nick==='Rook'?'':`<button class="btn" data-a="list" data-id="${p.id}">${p.listed?'Unlist':'Transfer list'}</button><button class="btn" data-a="sell" data-id="${p.id}">Sell · ₽${League.quickPrice(p).toLocaleString()}</button>`}</div>`}
+      ${dev}
+      <div class="card"><div class="lbl">Moves ${mk?'':`<button class="lbtn" data-a="moves" data-id="${p.id}">Edit moves${p.newMv?' <em class="dot"></em>':''} ›</button>`}</div><div class="mvl">${p.moves.map(id=>{const m=MOVES[id];return`<div class="mvr" style="--t:${TYPE_COL[m.t]||'#888'}"><b>${esc(m.n)}</b><span>${m.t} · ${m.c==='S'?'Status':m.c==='P'?'Physical':'Special'}</span><em>${m.c==='S'?'—':m.p}</em></div>`}).join('')}</div>
+        <div class="lbl" style="margin-top:16px">Ability</div><p class="ab-t"><b>${esc(p.ability||sp.ab)}</b> ${typeof ABIL!=='undefined'&&ABIL[p.ability||sp.ab]?'<span class="dim">'+esc(ABIL[p.ability||sp.ab].d||'')+'</span>':''}</p>
+        <p class="dim sm">IVs ${ivGrade(p)} (${ivTotal(p)}/186)</p></div>
+      <div class="flipwrap"><div class="flipper">
+        <div class="card face f1"><div class="lbl">Attributes <button class="flipbtn" data-a="flip">Stats ⇄</button></div><p class="dim sm">1–20 · natural quality in each stat (species, IVs, training)</p>${bar('hp','HP')}${bar('atk','Attack')}${bar('def','Defence')}${bar('spa','Sp. Attack')}${bar('spd','Sp. Defence')}${bar('spe','Speed')}</div>
+        <div class="card face f2"><div class="lbl">Stats at Lv ${p.lv} <button class="flipbtn" data-a="flip">Attributes ⇄</button></div><p class="dim sm">The real numbers used in battle</p>
+          <div class="sth"><span></span><span>Base</span><span>IV</span><span>EV</span><span>Stat</span></div>${STATS.map((k,i)=>{const max=k==='hp'?(2*150+31+63)*p.lv/100+p.lv+10:(2*150+31+63)*p.lv/100+5;const pc=clamp(s[k]/max*100,4,100);
+          return`<div class="str"><span>${({hp:'HP',atk:'Attack',def:'Defence',spa:'Sp. Atk',spd:'Sp. Def',spe:'Speed'})[k]}</span><span>${sp.bs[i]}</span><span class="iv" style="color:${attrCol(Math.round(p.iv[i]/31*20))}">${p.iv[i]}</span><span>${(p.ev&&p.ev[i])||0}</span><b>${s[k]}</b><div class="sb"><i style="width:${pc}%;background:${attrCol(Math.round(pc/5))}"></i></div></div>`}).join('')}</div>
+      </div></div>
+      <div class="row-btns">${mk?`<button class="btn gold" data-a="buy" data-id="${p.id}">Sign for ₽${p.price.toLocaleString()}</button>`:''}<button class="btn ghost" data-s="${mk?'market':this.back==='training'?'training':this.back==='home'?'home':'squad'}">Back</button></div></div>`},
+
+  /* ---------- move editor ---------- */
+  s_moves(id){const p=League.squad().find(m=>m.id===id);if(!p)return'';this.mvId=id;if(p.newMv)delete p.newMv;const tab=this.mvTab||'free';const si=this.mvSlot;
+    const row=(mid,extra)=>{const m=MOVES[mid];return`<span class="mvx-t" style="--t:${TYPE_COL[m.t]||'#888'}">${m.t}</span><span class="mvx-n"><b>${esc(m.n)}${Tutor.stab(p,mid)?' <em class="stab">STAB</em>':''}</b><small>${m.c==='S'?'Status':m.c==='P'?'Physical':'Special'} · ${m.c==='S'?'—':m.p<=1?'Pow varies':'Pow '+m.p} · ${m.a===true||!m.a?'—':'Acc '+m.a}${extra||''}</small></span>`};
+    const free=Tutor.free(p).sort((a,b)=>Tutor.score(p,b)-Tutor.score(p,a)),paid=Tutor.paid(p).sort((a,b)=>Tutor.score(p,b)-Tutor.score(p,a));const list=tab==='free'?free:paid;
+    const slots=[0,1,2,3].map(i=>{const mid=p.moves[i];return mid?`<button class="mvs ${si===i?'on':''}" data-a="mvSlot" data-i="${i}" style="--t:${TYPE_COL[MOVES[mid].t]||'#888'}">${row(mid)}</button>`:`<button class="mvs empty ${si===i?'on':''}" data-a="mvSlot" data-i="${i}"><span class="mvx-n"><b>Empty slot</b><small>Pick a move below</small></span></button>`}).join('');
+    return`<div class="mvx"><div class="card"><div class="lbl">${esc(pName(p))} · Lv ${p.lv} · ${SPECIES[p.sp].types.map(tchip).join('')}</div>
+        <p class="dim sm">${si!=null?`Now pick a move below to replace <b>${p.moves[si]?esc(MOVES[p.moves[si]].n):'the empty slot'}</b>.`:'Tap one of the four moves to swap it out.'}</p><div class="mvsg">${slots}</div></div>
+      <div class="seg2 mvtab"><button data-a="mvTab" data-t="free" class="${tab==='free'?'on':''}">Level-up · free <em>${free.length}</em></button><button data-a="mvTab" data-t="paid" class="${tab==='paid'?'on':''}">Tutor · TMs <em>${paid.length}</em></button></div>
+      <p class="dim sm mvhelp">${tab==='free'?'Moves it has learned by levelling up. Swap them in and out whenever you like.':'Moves a tutor can teach for a one-off fee. Once taught, it can swap that move back in for free.'} Sorted by how hard they'd hit for ${esc(pName(p))}.</p>
+      <div class="card flush"><div class="mvxl">${list.map(mid=>`<button class="mvx-r" data-a="mvPick" data-m="${mid}">${row(mid,tab==='free'?(learnLv(SPECIES[p.sp],mid)<999&&learnLv(SPECIES[p.sp],mid)>0?' · Lv '+learnLv(SPECIES[p.sp],mid):''):'')}<em class="mvx-c">${tab==='free'||Tutor.owned(p,mid)?'Free':'₽'+Tutor.cost(mid).toLocaleString()}</em></button>`).join('')||'<p class="dim sq-empty">Nothing else to learn here yet.</p>'}</div></div>
+      <div class="row-btns"><button class="btn ghost" data-a="profile" data-id="${p.id}">Back to ${esc(pName(p))}</button></div></div>`},
+
+  /* ---------- training ---------- */
+  s_training(){const T=Training.state();const L=G.club;const c=sqCtx();const todayK=Training.sessionOn(L.day);const drilled=T.drillDay===L.day;const pl=Training.priList();const sl=Training.slots();const fl=T.facil||1;
+    const sq=c.sq.slice().sort((a,b)=>(c.luIds.includes(b.id)-c.luIds.includes(a.id))||Training.pri(b)-Training.pri(a)||ovr(b)-ovr(a));
+    const tally={};for(const p of sq){const f=Training.focus(p);tally[f]=(tally[f]||0)+1}
+    const trow=p=>{const f=Training.focus(p),F=FOCUS[f];const d=Training.daysTo(p,p.lv+1);const el=Evo.level(p);const de=Evo.targets(p).length&&!Evo.ready(p)?Training.daysTo(p,el):null;
+      return`<div class="tr2"><button class="tr2-id" data-a="profile" data-id="${p.id}">${monImg(p)}<span><b>${esc(pName(p))}</b><small>${roleTag(sqRole(p,c))}Lv ${p.lv}${(p.cond??100)<75?` · <em class="bt b-tired">${Math.round(p.cond)}%</em>`:''}</small></span></button>
+        <button class="tr2-p" data-a="planSheet" data-id="${p.id}" style="--fc:${F.col}"><i>${F.ic}</i><span><b>${F.n}</b><small>${f==='rest'?'Recovering':Evo.ready(p)?'Ready to evolve':d!=null?`Lv ${p.lv+1} in ${d}d${de!=null?` · evolves in ${de}d`:''}`:'No training days'}</small></span></button>
+        <button class="tr2-s ${Training.pri(p)?'on':''}" data-a="priTog" data-id="${p.id}" title="Priority">★</button></div>`};
+    return`<div class="grid2 tr">
+      <div class="card wide"><div class="lbl">How training works</div><p class="tr-how">On <b>training days</b> every Pokémon works on its own <b>plan</b> (which stats grow). Your <b>★ priority group</b> gets <b>${PRI_MULT}× Exp</b>: put the Pokémon you're building your team around there. Tap a plan to change it.</p>
+        <div class="tally">${Object.entries(tally).map(([k,v])=>`<span style="--fc:${FOCUS[k].col}"><i>${FOCUS[k].ic}</i>${FOCUS[k].n} <b>${v}</b></span>`).join('')}</div></div>
+      <div class="card wide"><div class="lbl">Priority group <span class="dim">${pl.length}/${sl} · ${PRI_MULT}× Exp</span></div>
+        ${pl.length?`<div class="trl2">${pl.map(trow).join('')}</div>`:'<p class="dim">Nobody yet. Tap the ★ next to a Pokémon below to add it.</p>'}
+        ${fl<FACIL.length?`<div class="facil"><span>Upgrade the training ground to <b>${FACIL[fl].slots} priority slots</b></span><button class="btn sm" data-a="facil">₽${FACIL[fl].cost.toLocaleString()}</button></div>`:''}</div>
+      <div class="card wide"><div class="lbl">This week <span class="dim">tap a day to change it</span></div><div class="wk">${DOW.map((d,i)=>{const k=T.plan[i];const isMatchDay=i===6;const S=SESSIONS[k]||SESSIONS.train;
+        return`<button class="wkd ${i===Training.dow(L.day)?'now':''} ${isMatchDay?'md':''}" ${isMatchDay?'disabled':`data-a="sess" data-i="${i}"`} style="--sc:${isMatchDay?'#4fd07a':S.col}"><small>${d}</small><b>${isMatchDay?'⚽':S.ic}</b><span>${isMatchDay?'Match':S.n}</span></button>`}).join('')}</div>
+        <div class="trow"><span class="lbl" style="margin:0">Intensity</span><div class="seg2">${Object.entries(INTENSITY).map(([k,I])=>`<button data-a="inten" data-k="${k}" class="${T.intensity===k?'on':''}">${I.n}</button>`).join('')}</div><span class="dim sm">${INTENSITY[T.intensity].d}</span></div></div>
+      <div class="card wide"><div class="lbl">Today · ${League.date(L.day)} · ${todayK==='match'?'Match day':SESSIONS[todayK].n}</div>${todayK==='match'||todayK==='rest'?'<p class="dim">No drill on a match day or a day off.</p>':drilled?`<p>Drill done: today's session is boosted <b style="color:var(--gold)">×${T.drillBoost.toFixed(2)}</b>.</p>`:`<p class="dim sm">Optional: run one drill. A good score boosts today's session for the whole squad (up to ×1.6).</p><div class="drills">${Drills.list.map(d=>`<button class="drb" data-a="drill" data-k="${d.k}"><b>${d.n}</b><small>${d.d}</small></button>`).join('')}</div>`}</div>
+      <div class="card wide flush"><div class="sq-head"><span class="lbl">Everyone · ${sq.length}</span><button class="btn sm" data-a="planAll">Set plan for all reserves</button></div><div class="trl2">${sq.filter(p=>!Training.pri(p)).map(trow).join('')}</div></div></div>`},
+  pickSession(i){const T=Training.state();const ks=Object.keys(SESSIONS);T.plan[i]=ks[(ks.indexOf(T.plan[i])+1)%ks.length];Audio2.sfx('select');this.rerender()},
+
+  /* ---------- bottom sheet: training plan for one or many ---------- */
+  planSheet(ids){const ps=League.squad().filter(p=>ids.includes(p.id));if(!ps.length)return;const one=ps.length===1?ps[0]:null;
+    const draw=()=>{const f=one?Training.focus(one):null;const pri=one?Training.pri(one):ps.every(p=>Training.pri(p));const pl=Training.priList().length,sl=Training.slots();
+      return`<div class="lbl">Training plan · ${one?esc(pName(one)):ps.length+' Pokémon'}</div><h3>What should ${one?'it':'they'} work on?</h3>
+        <div class="fgrid">${Object.entries(FOCUS).map(([k,F])=>`<button class="fb ${f===k?'on':''}" data-f="${k}" style="--fc:${F.col}"><i>${F.ic}</i><b>${F.n}</b><small>${F.d}</small></button>`).join('')}</div>
+        <button class="pritog ${pri?'on':''}" data-pri><i>★</i><span><b>${pri?'In the priority group':'Add to priority group'}</b><small>${pl}/${sl} slots used · ${PRI_MULT}× Exp on training days</small></span></button>`};
+    this.modalOpen(`<div class="psheet">${draw()}</div>`);this.modal.classList.add('sheet');const m=this.modal;const cl=m.querySelector('[data-a=closeModal]');if(cl)cl.textContent='Done';
+    m.querySelector('.psheet').onclick=e=>{e.stopPropagation();const b=e.target.closest('[data-f],[data-pri]');if(!b)return;
+      if(b.dataset.f){for(const p of ps)Training.setPlan(p,{focus:b.dataset.f});Audio2.sfx('select')}
+      else{const on=!(one?Training.pri(one):ps.every(p=>Training.pri(p)));if(on){const free=Training.slots()-Training.priList().length;const need=ps.filter(p=>!Training.pri(p)&&Training.focus(p)!=='rest');
+          if(need.length>free){UI.toast(free?`Only ${free} priority slot${free>1?'s':''} left. Upgrade the training ground in Training for more.`:`The priority group is full (${Training.slots()}/${Training.slots()}). Take someone out first, or upgrade the training ground.`,2800);Audio2.sfx('bump');return}
+          if(ps.some(p=>Training.focus(p)==='rest')){UI.toast('Resting Pokémon can\'t be in the priority group. Pick a plan first.',2400);Audio2.sfx('bump');return}}
+        for(const p of ps)Training.setPlan(p,{pri:on});Audio2.sfx('select')}
+      m.querySelector('.psheet').innerHTML=draw();this.rerender()}},
+
+  rerender(){if(!this.el)return;const B=this.el.querySelector('.hub-body');const y=B.scrollTop;B.innerHTML=this['s_'+this.scr]?this['s_'+this.scr](this.arg):'';if(this['after_'+this.scr])this['after_'+this.scr](this.arg);B.scrollTop=y;this.head(this.el.querySelector('.ht-t h1').textContent)},
+  todoCard(){return this.coachTips(sqCtx(),true)},
+});
+
+/* ---------- wire into the hub ---------- */
+{const _go=Hub.go,_act=Hub.act,_home=Hub.s_home;
+  Hub.go=function(s,arg){const bk=this.back;this.arg=arg;if(s!=='moves')this.mvSlot=null;_go.call(this,s,arg);if(s==='moves'){this.back=bk;this.head('Moves')}if(s==='squad'||s==='training'||s==='home')this.back=s};
+  Hub.s_home=function(){const h=_home.call(this);const t=this.todoCard();const k='<div class="card"><div class="lbl">Division';return t&&h.includes(k)?h.replace(k,t+k):h};
+  const A={
+    sqTap(d){if(SQ.sel){SQ.sel.has(d.id)?SQ.sel.delete(d.id):SQ.sel.add(d.id);Audio2.sfx('move');this.rerender()}else this.go('profile',d.id)},
+    sqF(d){SQ.filter=SQ.filter===d.f&&d.f!=='all'?'all':d.f;Audio2.sfx('move');this.rerender()},
+    sqType(d){SQ.type=d.t||null;this.modalClose();this.rerender()},
+    sqSel(){SQ.sel=SQ.sel?null:new Set();this.rerender()},
+    selAll(){for(const p of this.sqList())SQ.sel.add(p.id);this.rerender()},
+    selPlan(){this.planSheet([...SQ.sel])},
+    selSell(){const ps=League.squad().filter(p=>SQ.sel.has(p.id)&&!League.canSell(p));if(!ps.length)return;const tot=ps.reduce((a,p)=>a+League.quickPrice(p),0);
+      if(League.squad().length-ps.length<(DIV_FORMAT[G.club.div]||3)){UI.toast("You'd be left without enough Pokémon for a matchday squad.",2600);Audio2.sfx('bump');return}
+      this.confirm(`<div class="lbl">Quick sale</div><h3>Sell ${ps.length} Pokémon?</h3><div class="mbody">${ps.map(p=>`${esc(pName(p))} (Lv ${p.lv}) · ₽${League.quickPrice(p).toLocaleString()}`).join('<br>')}<br><br>Total <b>₽${tot.toLocaleString()}</b>. Quick sales are about half value. This can't be undone.</div>`,`Sell all for ₽${tot.toLocaleString()}`).then(ok=>{if(!ok)return;for(const p of ps)League.sell(p,League.quickPrice(p),null);SQ.sel=new Set();Audio2.jingle('item');UI.toast(`Sold ${ps.length} Pokémon for ₽${tot.toLocaleString()}.`);Game.save(true);this.rerender()})},
+    sqSort(){this.modalOpen(`<div class="lbl">Sort and filter</div><h3>Sort by</h3><div class="sortg">${Object.entries(SORTS).map(([k,t])=>`<button class="chip ${SQ.sort===k?'on':''}" data-k="${k}">${t}</button>`).join('')}</div><h3 style="margin-top:16px">Type</h3><div class="sortg">${['',...TYPES.filter(t=>t!=='???')].map(t=>`<button class="chip ${(SQ.type||'')===t?'on':''}" data-t="${t}">${t||'Any'}</button>`).join('')}</div>`);this.modal.classList.add('sheet');
+      this.modal.querySelector('.hm-card').addEventListener('click',e=>{const b=e.target.closest('[data-k],[data-t]');if(!b)return;e.stopPropagation();if(b.dataset.k)SQ.sort=b.dataset.k;else SQ.type=b.dataset.t||null;Audio2.sfx('select');this.modalClose();this.rerender()})},
+    bestXI(){const n=DIV_FORMAT[G.club.div]||3;const best=League.squad().slice().sort((a,b)=>ovr(b)*formMul(b)-ovr(a)*formMul(a)).slice(0,n);G.club.lineup=best.map(p=>p.id);G.club.lineupLocked=true;Audio2.sfx('select');UI.toast(`Strongest ${n} picked: ${best.map(pName).join(', ')}.`,2400);this.rerender()},
+    tip(d){const k=d.k;if(k==='pri'){this.go('training');return}if(k==='tired'){this.go('lineup');return}if(k==='offers'){this.go('market');return}SQ.filter=k;SQ.q='';SQ.type=null;this.go('squad')},
+    planSheet(d){this.planSheet([d.id])},
+    planAll(){this.planSheet(League.squad().filter(p=>!(G.club.lineup||[]).includes(p.id)&&!Training.pri(p)).map(p=>p.id))},
+    priTog(d){const p=League.squad().find(m=>m.id===d.id);if(!p)return;if(!Training.pri(p)){if(Training.priList().length>=Training.slots()){UI.toast(`The priority group is full (${Training.slots()}/${Training.slots()}). Take someone out first, or upgrade the training ground.`,2800);Audio2.sfx('bump');return}if(Training.focus(p)==='rest')Training.setPlan(p,{focus:'balanced'})}
+      Training.setPlan(p,{pri:!Training.pri(p)});Audio2.sfx('select');this.rerender()},
+    facil(){const T=Training.state();const nx=FACIL[T.facil];if(!nx)return;if(G.money<nx.cost){UI.toast("The board won't fund that yet. Not enough money.");Audio2.sfx('bump');return}
+      this.confirm(`<div class="lbl">Club facilities</div><h3>Upgrade the training ground?</h3><div class="mbody">More coaches and pitches: the priority group grows from ${Training.slots()} to <b>${nx.slots}</b> Pokémon.</div>`,`Upgrade for ₽${nx.cost.toLocaleString()}`).then(ok=>{if(!ok)return;G.money-=nx.cost;T.facil++;Audio2.jingle('item');UI.toast(`Training ground upgraded. ${nx.slots} priority slots.`);Game.save(true);this.rerender()})},
+    evolve(d){const p=League.squad().find(m=>m.id===d.id);if(!p)return;Evo.run(p).then(r=>{if(r)this.go('profile',p.id)})},
+    moves(d){this.mvTab='free';this.mvSlot=null;this.go('moves',d.id)},
+    mvSlot(d){const i=+d.i;this.mvSlot=this.mvSlot===i?null:i;Audio2.sfx('move');this.rerender()},
+    mvTab(d){this.mvTab=d.t;this.rerender()},
+    mvPick(d){const p=League.squad().find(m=>m.id===this.mvId);if(!p)return;const id=d.m;let i=this.mvSlot;
+      if(i==null){if(p.moves.length<4)i=p.moves.length;else{UI.toast('First tap one of the four moves at the top to swap out.',2200);Audio2.sfx('bump');return}}
+      const nm=p.moves.slice();if(i>=nm.length)nm.push(id);else nm[i]=id;
+      if(!nm.some(x=>MOVES[x].c!=='S')){UI.toast('Keep at least one attacking move.',2200);Audio2.sfx('bump');return}
+      const done=()=>{const old=p.moves[i];p.moves=nm;this.mvSlot=null;Audio2.sfx('select');UI.toast(old?`${esc(pName(p))} forgot ${esc(MOVES[old].n)} and learned <b>${esc(MOVES[id].n)}</b>.`:`${esc(pName(p))} learned <b>${esc(MOVES[id].n)}</b>.`,2200);Game.save(true);this.rerender()};
+      if(this.mvTab==='paid'&&!Tutor.owned(p,id)){const c=Tutor.cost(id);if(G.money<c){UI.toast('Not enough money for the tutor.');Audio2.sfx('bump');return}
+        this.confirm(`<div class="lbl">Move tutor</div><h3>Teach ${esc(MOVES[id].n)}?</h3><div class="mbody">${esc(pName(p))} learns <b>${esc(MOVES[id].n)}</b>${p.moves[i]?` in place of ${esc(MOVES[p.moves[i]].n)}`:''}. One-off fee: once taught, it can swap this move back in for free.</div>`,`Teach for ₽${c.toLocaleString()}`).then(ok=>{if(!ok)return;G.money-=c;(p.taught=p.taught||[]).push(id);done()});return}
+      done()},
+  };
+  Hub.act=function(a,d){if(A[a])return A[a].call(this,d);return _act.call(this,a,d)};
+}
 
 'use strict';
 /* ================= Act I: "Rise" (Season 1, Division 4, Emberwick Coast) =================
