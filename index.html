@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Champion Road"><meta name="theme-color" content="#0b0d12"><meta name="cr-version" content="0.4.1">
+<meta name="apple-mobile-web-app-title" content="Champion Road"><meta name="theme-color" content="#0b0d12"><meta name="cr-version" content="0.4.2">
 <title>Champion Road: The Last Champion</title>
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,7 +39,8 @@ body::before{top:0}body::after{bottom:0}body.cine::before,body.cine::after{heigh
 .tport{width:72px;height:72px;border-radius:10px;overflow:hidden;border:1px solid rgba(227,194,122,.45);background:radial-gradient(circle at 50% 30%,#3a4256,#1a1e28)}.tport img{width:144px;height:144px;image-rendering:pixelated;margin:-6px 0 0 -36px}
 .dlg-body{flex:1;min-width:0}
 .dlg-name{font:600 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:2px 0 9px}
-.dlg-text{font:500 17px/1.52 var(--sans);color:var(--text);min-height:52px;text-wrap:pretty}
+.dlg-text{font:500 17px/1.52 var(--sans);color:var(--text);height:calc(3 * 1.52em);overflow:hidden;text-wrap:pretty}
+.dlg-name{min-height:12px}
 .dlg-text b{color:var(--gold);font-weight:700}.dlg-text i{color:#cfd6e2}
 .dlg-next{position:absolute;right:18px;bottom:12px;width:10px;height:10px;border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(45deg);opacity:0}
 .dlg-next.on{opacity:1;animation:nx 1s ease-in-out infinite}@keyframes nx{50%{transform:translateY(4px) rotate(45deg)}}
@@ -135,7 +136,7 @@ body.notitle #menuBtn,body.hidehud #menuBtn,body.hidehud .touch,body.hidehud .ba
 .btop button{height:38px;min-width:46px;padding:0 12px;border-radius:11px;background:rgba(10,12,17,.75);border:1px solid rgba(255,255,255,.16);font:700 13px var(--sans);backdrop-filter:blur(8px)}
 .btop .bspd{color:var(--gold);border-color:rgba(227,194,122,.5)}.btop .bauto.on{background:var(--gold);color:#1a1408}
 .bbot{position:absolute;left:0;right:0;bottom:0;padding:0 calc(14px + var(--sar)) calc(14px + var(--sab)) calc(14px + var(--sal));display:flex;gap:12px;align-items:flex-end}
-.bmsg{flex:1;min-height:110px;padding:16px 20px;border-radius:14px;background:linear-gradient(180deg,rgba(20,24,33,.94),rgba(10,12,17,.96));border:1px solid rgba(227,194,122,.24);box-shadow:0 18px 50px rgba(0,0,0,.4);display:flex;align-items:center}
+.bmsg{flex:1;height:110px;overflow:hidden;padding:16px 20px;border-radius:14px;background:linear-gradient(180deg,rgba(20,24,33,.94),rgba(10,12,17,.96));border:1px solid rgba(227,194,122,.24);box-shadow:0 18px 50px rgba(0,0,0,.4);display:flex;align-items:center}
 .bmsg-t{font:500 17px/1.45 var(--sans)}.bmsg-t b{color:var(--gold)}
 .bcmd{flex:0 0 auto;width:min(420px,52vw)}.bcmd:empty{display:none}
 .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -152,7 +153,7 @@ body.notitle #menuBtn,body.hidehud #menuBtn,body.hidehud .touch,body.hidehud .ba
 .mv:disabled{opacity:.4}
 .cback{margin-top:8px;font:600 13px var(--sans);color:var(--dim);padding:6px 4px}
 .blist{display:flex;flex-direction:column;gap:6px;max-height:44vh;overflow:auto}.blist button{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:11px;background:rgba(14,17,24,.94);border:1px solid rgba(255,255,255,.14)}.blist button b{font-weight:600}.blist button span{color:var(--dim);font-size:12px}.blist button:disabled{opacity:.4}
-@media (max-width:720px){.bbot{flex-direction:column;align-items:stretch;gap:8px}.bcmd{width:100%}.bmsg{min-height:74px;padding:12px 16px}.bmsg-t{font-size:15px}.bh{min-width:0;width:min(250px,62vw)}.bh-p{bottom:auto;top:calc(110px + var(--sat));right:calc(12px + var(--sar))}.cb{height:50px}.mv{height:54px}}
+@media (max-width:720px){.bbot{flex-direction:column;align-items:stretch;gap:8px}.bcmd{width:100%}.bmsg{height:88px;min-height:0;padding:12px 16px}.bmsg-t{font-size:15px}.bh{min-width:0;width:min(250px,62vw)}.bh-p{bottom:auto;top:calc(110px + var(--sat));right:calc(12px + var(--sar))}.cb{height:50px}.mv{height:54px}}
 @media (max-width:720px) and (orientation:portrait){.bh-r{top:calc(62px + var(--sat))}.bh-p{top:auto;bottom:calc(292px + var(--sab))}}
 body.inbattle .touch{display:none}
 
@@ -7620,15 +7621,21 @@ const UI={root:null,
     const src=ASSETS.tpics[p.pic];return src?`<div class="tport"><img src="${src}" alt=""></div>`:''},
   /* say: who may be a PEOPLE key, a free name, or null for narration */
   async say(who,text,o={}){const p=PEOPLE[who];const name=o.name||(p?p.name:who)||'';const d=this.dlg;
-    d.classList.toggle('narr',!who);d.querySelector('.dlg-name').textContent=name==='you'?G.name:name;d.querySelector('.dlg-name').style.display=name?'':'none';
+    d.classList.toggle('narr',!who);d.querySelector('.dlg-name').textContent=name==='you'?G.name:name;d.querySelector('.dlg-name').style.visibility=name?'':'hidden';
     const port=who?this.portrait(who,o.emo):'';d.querySelector('.dlg-port').innerHTML=port;d.classList.toggle('hasport',!!port);
     text=text.replace(/\{name\}/g,esc(G?G.name:'')).replace(/\{club\}/g,'Fernwick Rovers');
     d.classList.add('on');const el=d.querySelector('.dlg-text');const nx=d.querySelector('.dlg-next');nx.classList.remove('on');
-    /* type it out, keeping inline tags intact */
-    const parts=text.split(/(<[^>]+>)/);el.innerHTML='';let html='';const cps=[38,70,140][G?G.settings.textSpeed:1]||70;let skip=false;Input.take('a');
-    for(const part of parts){if(part.startsWith('<')){html+=part;continue}for(const ch of part){html+=ch;if(!skip){el.innerHTML=html;if(ch!==' '&&Math.random()<.35)Audio2.sfx('text');await wait(1000/cps*(',.!?'.includes(ch)?4:1));if(Input.take('a'))skip=true}}}
-    el.innerHTML=html;nx.classList.add('on');if(o.noWait)return;
+    /* the box never changes size, like the games: long text is split into pages that each fit, and you tap through them */
+    const pages=this.paginate(el,text);const cps=[38,70,140][G?G.settings.textSpeed:1]||70;Input.take('a');
+    for(let pi=0;pi<pages.length;pi++){const parts=pages[pi].split(/(<[^>]+>)/);el.innerHTML='';let html='',skip=false;
+      for(const part of parts){if(part.startsWith('<')){html+=part;continue}for(const ch of part){html+=ch;if(!skip){el.innerHTML=html;if(ch!==' '&&Math.random()<.35)Audio2.sfx('text');await wait(1000/cps*(',.!?'.includes(ch)?4:1));if(Input.take('a'))skip=true}}}
+      el.innerHTML=html;nx.classList.add('on');if(pi<pages.length-1){while(!Input.take('a')){await frame()}Audio2.sfx('select');nx.classList.remove('on');Input.take('a')}}
+    if(o.noWait)return;
     while(!Input.take('a')){await frame()}Audio2.sfx('select');nx.classList.remove('on');if(o.keep)return;if(!o.chain)d.classList.remove('on')},
+  paginate(el,text){const fits=h=>{el.innerHTML=h;return el.scrollHeight<=el.clientHeight+2};if(!el.clientHeight||fits(text)){el.innerHTML='';return[text]}
+    const out=[];let cur='';const add=bit=>{const c=cur?cur+' '+bit:bit;if(fits(c)){cur=c;return}if(cur){out.push(cur);cur=''}if(fits(bit)){cur=bit;return}
+      for(const w of bit.split(' ')){const c2=cur?cur+' '+w:w;if(fits(c2))cur=c2;else{if(cur)out.push(cur);cur=w}}};
+    for(const sn of text.split(/(?<=[.!?…])\s+/))add(sn);if(cur)out.push(cur);el.innerHTML='';return out.length?out:[text]},
   close(){this.dlg.classList.remove('on')},
   async choose(opts,{cancel=-1}={}){const c=this.ch;let i=0;c.innerHTML=opts.map((o,k)=>`<button data-i="${k}">${esc(o)}</button>`).join('');c.classList.add('on');
     const draw=()=>c.querySelectorAll('button').forEach((b,k)=>b.classList.toggle('sel',k===i));draw();Input.clear();
@@ -13438,8 +13445,7 @@ class Battler{
     if(this.tex)this.tex.dispose();this.tex=tex;this.mat.map=tex;this.mat.emissiveMap=tex;this.dmat.map=tex;this.mat.needsUpdate=this.dmat.needsUpdate=true;
     /* sized by the Pokémon's real height (a trainer is about 2 units), so Pikachu is small and Onix towers */
     /* one fixed scale for every Pokémon, like the games: the sprite's own pixels decide its size, so Pikachu is small and Onix towers. Back sprites a touch smaller (they're nearer the camera) */
-    this.scale=(S.anim?1/26:1/23)*(back?.72:1);this.mesh.scale.set(S.W*this.scale,S.H*this.scale,1);this.mesh.position.y=-(S.H-S.feet)*this.scale;
-    const w=Math.max(.9,S.W*this.scale*.55);this.blob.scale.set(w/1.6*1.4,w/1.6*1.4,1);this.frame=0;this.frameIdx=0;this.t=0;this.fx={dx:0,dy:0,k:1,op:1};this.sink=0}
+    this.back=back;this.pf=(S.anim?1:1.13);if(!this.scale)this.scale=1/26;this.mesh.scale.set(S.W*this.scale,S.H*this.scale,1);this.mesh.position.y=-(S.H-S.feet)*this.scale;this.frame=0;this.frameIdx=0;this.t=0;this.fx={dx:0,dy:0,k:1,op:1};this.sink=0}
   height(){return this.S?(this.S.feet)*this.scale:1.5}
   update(dt,cam){if(!this.S)return;this.t+=dt*1000;const S=this.S;let k=this.frameIdx||0;if(k>=S.n)k=0;while(this.t>S.durs[k]){this.t-=S.durs[k];k=(k+1)%S.n}this.frameIdx=k;
     this.tex.offset.set((k%S.cols)/S.cols,1-(Math.floor(k/S.cols)+1)/S.rows);
@@ -13448,7 +13454,7 @@ class Battler{
     /* anim offsets from the move runtime: screen-space pixels to world */
     const f=this.fx;const wpp=this.wpp||.01;const right=new THREE.Vector3(1,0,0).applyQuaternion(cam.quaternion),up=new THREE.Vector3(0,1,0).applyQuaternion(cam.quaternion);
     const o=right.multiplyScalar(f.dx*wpp).add(up.multiplyScalar(-f.dy*wpp));this.mesh.position.x=o.x;this.mesh.position.z=o.z;this.mesh.position.y=-(S.H-S.feet)*this.scale+o.y-this.sink;
-    const e=this.enter;this.mesh.scale.set(S.W*this.scale*f.k*e,S.H*this.scale*f.k*e,1);this.mat.opacity=f.op*clamp(1-this.sink*.6,0,1);
+    {const w=Math.max(.9,S.W*this.scale*.55);this.blob.scale.set(w/1.6*1.4,w/1.6*1.4,1)}const e=this.enter;this.mesh.scale.set(S.W*this.scale*f.k*e,S.H*this.scale*f.k*e,1);this.mat.opacity=f.op*clamp(1-this.sink*.6,0,1);
     this.flashT=Math.max(0,this.flashT-dt);this.mat.emissiveIntensity=.32+(this.flashT>0?Math.sin(this.flashT*40)>0?2.5:0:0)+(this.white||0)*4;this.blob.material.opacity=.6*e*(1-this.sink*.8)}
   show(v){this.visible=v;this.group.visible=v}
 }
@@ -13563,6 +13569,9 @@ const Battle3D={b:null,shake:0,
     const o=W.sunOff;const c=this.st.me.clone().lerp(this.st.foe,.5);W.sun.position.set(c.x+o[0],c.y+o[1],c.z+o[2]);W.sun.target.position.copy(c);const shc=W.sun.shadow.camera;shc.left=-14;shc.right=14;shc.top=14;shc.bottom=-14;shc.updateProjectionMatrix();
     if(W.scene.fog){const P=TIMES[W.timeKey];W.scene.fog.near=14+P.fogN*.4;W.scene.fog.far=30+P.fogF*.6}
     OCC.near.value=0;OCC.d.value=-1;
+    /* sizes fixed on screen like the handheld games (Delta/GBA): every sprite pixel is the same size, measured from the standard battle view so close-ups still zoom naturally, with a cap so nothing fills the screen */
+    const cp=this.rigPose('classic'),FW=Math.min(R3.w,R3.h*1.5),fv=Math.tan((R3.aspect<1?36:20)*Math.PI/360);
+    for(const bt of [this.bp,this.br]){if(!bt||!bt.S)continue;const wc=2*cp.pos.distanceTo(bt.group.position)*fv/R3.h;let sc=bt.pf*FW/343*wc;const h=bt.S.feet||bt.S.H,mh=(bt.back?.38:.32)*FW*wc;if(h*sc>mh)sc=mh/h;bt.scale=sc}
     for(const bt of [this.bp,this.br]){if(!bt)continue;const dist=this.cam.position.distanceTo(bt.group.position);bt.wpp=2*dist*Math.tan(this.cam.fov*Math.PI/360)/R3.h;bt.update(dt*sp,this.cam)}
     if(this.ball)this.ball.update(dt*sp);
     R3.post.uniforms.focus.value=.52;R3.post.uniforms.band.value=.3;
