@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Champion Road"><meta name="theme-color" content="#0b0d12"><meta name="cr-version" content="0.6.2">
+<meta name="apple-mobile-web-app-title" content="Champion Road"><meta name="theme-color" content="#0b0d12"><meta name="cr-version" content="0.6.3">
 <title>Champion Road: The Last Champion</title>
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15281,7 +15281,7 @@ const Act2B={
     this.quest();await Cut.end()},
   /* ---------- 3. the gyms ---------- */
   async briar(a){if(flag('bloom_badge')){await say('briar',"The Bloom Badge suits you. Now go and see Morwen. Take her an apple; she pretends she doesn't eat.");return}
-    if((G.badges||[]).length<4){await say('briar',"Four badges first, sweetheart. The Highlands gyms, then me.");return}
+    if(!flag('frost_badge')){await say('briar',"Win Isolde's Frost Badge up in the Highlands first, sweetheart. Then come and see me.");return}
     await Cut.begin();await Cut.look(6,2,{zoom:.8});
     await say('briar',"Marlow's manager! He told me about you. He hasn't told me about anything in twenty years, so you must be something.");
     await say('briar',"Everything in this Vale burned once. The forest, the tower, the old stadium. And everything grew back, greener. Show me you can grow back too.",{noWait:true});
@@ -15290,8 +15290,9 @@ const Act2B={
     if(!won){await Cut.end();return}
     await Cut.look(6,2,{zoom:.75,ms:500});giveBadge('bloom_badge','Bloom');Audio2.jingle('item');
     await say(null,`${esc(G.name)} received the <b>Bloom Badge</b> from Leader Briar!`);
+    if(!flag('tide_badge'))await say('briar',"You haven't got Moray's Tide Badge? He's by the beach in Fernwick, down your way. He'd love a visit.");
     Packs.grant('gold');await say(null,'Briar handed over a <b>Gold Pack</b>.');
-    await say('briar',"Five badges. Morwen's gym is across the square. She keeps the old stories, the ones about the bell. Ask her about your grandfather.");
+    await say('briar',"Morwen's gym is across the square. She keeps the old stories, the ones about the bell. Ask her about your grandfather.");
     this.quest();await Cut.end()},
   async morwen(a){if(flag('shade_badge')){await say('morwen',flag('vale_done')?"The bell will ring at the final. Whatever comes down, remember the ones who came before. That's all a ghost asks.":"The beasts have been caged on our heights for a week. Set them free, {name}. The Vale remembers kindness.");return}
     if(!flag('bloom_badge')){await say('morwen',"Briar's badge first. The living, then the dead.");return}
@@ -15318,19 +15319,25 @@ const Act2B={
       a_g2:{name:'Requiem Grunt',char:'grunt_f',quote:'For the reset!',lose:"You don't even know what you're stopping.",foe:[mon('Mightyena',29),mon('Croagunk',29),mon('Murkrow',29)],prize:850},
       a_g3:{name:'Requiem Grunt',char:'grunt',quote:'The Spring is ours!',lose:'Washed out!',foe:[mon('Golbat',30),mon('Skuntank',30)],prize:900},
       a_sable:{name:'Sable',title:'Requiem Admin',char:'sable',quote:"Third time, child. Let's make it the last.",lose:'...Fine. Fine! Open the cage. See if it thanks you.',foe:[mon('Crobat',31),mon('Skuntank',31),mon('Houndoom',32),mon('Honchkrow',32)],prize:2400,tier:'smart'}};return T[id]},
+  /* one guard: their line, then the battle. Returns true if beaten */
+  async fightGuard(id){const sable=id==='a_sable';const g=Cut.actor(id),P=Game.world.player;if(g){g.faceTo(P);await Cut.emote(g,'!')}
+    if(sable)await say('sable',"You. Of course it's you. Do you know what's in that cage, child? The guardian of every spring in the Vale. Commander Wren needs all three for the bell.");
+    else await say('grunt',({r3_g1:"Hey! This shrine's off limits. Requiem business!",r3_g2:"The kid from the Highlands! Get them!",a_g1:"Nobody goes near the tower. Orders!",a_g2:"The beast stays in the cage till the final. That's the plan.",a_g3:"The Spring's closed. Turn around."})[id]||"Get lost!",{name:'Requiem grunt'});
+    const won=await storyBattle({...this.guard(id),music:sable?'battle_wren':'battle_requiem',time:G.time});if(won){flag('beat_'+id,true);Game.save(true)}return won},
   async shrineGrunt(a){const id=a.npc.id;const sable=id==='a_sable';const who=sable?'sable':'grunt';
     if(flag('beat_'+id)){await say(who,sable?"Go on, then. Let it out. Wren will just call it again.":"...We're on a break. Leave us alone.",sable?{}:{name:'Requiem grunt'});return}
-    await Cut.begin();a.faceTo(Game.world.player);
-    if(sable){await say('sable',"You. Of course it's you. Do you know what's in that cage, child? The guardian of every spring in the Vale. Commander Wren needs all three for the bell.");}
-    else await say('grunt',({r3_g1:"Hey! This shrine's off limits. Requiem business!",r3_g2:"The kid from the Highlands! Get them!",a_g1:"Nobody goes near the tower. Orders!",a_g2:"The beast stays in the cage till the final. That's the plan.",a_g3:"The Spring's closed. Turn around."})[id]||"Get lost!",{name:'Requiem grunt'});
-    const c=this.guard(id);const won=await storyBattle({...c,music:sable?'battle_wren':'battle_requiem',time:G.time});
-    if(won){flag('beat_'+id,true);const b=Object.keys(BEASTS).find(k=>BEASTS[k].guards.includes(id));const other=BEASTS[b].guards.find(x=>x!==id);
-      if(flag('beat_'+other))await say(null,`The cage around ${b} is unguarded now. Walk up to it.`);}
+    await Cut.begin();const won=await this.fightGuard(id);
+    if(won){const b=Object.keys(BEASTS).find(k=>BEASTS[k].guards.includes(id));const other=BEASTS[b].guards.find(x=>x!==id);
+      await say(null,flag('beat_'+other)?`The cage around ${b} is unguarded now. Walk up to it and press A.`:`One more Requiem guard is still watching ${b}'s cage.`)}
     await Cut.end()},
   async beast(a){const sp=a.npc.beast,k=sp.toLowerCase(),B=BEASTS[sp];const W=Game.world,P=W.player,F=W.follower;a.faceTo(P);Audio2.cry(B.dex);
     if(!freed(sp)){const g=B.guards.filter(id=>!flag('beat_'+id));
-      if(g.length){await say(null,`${sp} lies inside a cage of humming iron, eyes half closed. Requiem are guarding it. Deal with them first.`);return}
-      await Cut.begin();await Cut.look(a.x,a.y,{zoom:.75,ms:700});
+      await Cut.begin();
+      /* walking up to the cage is enough: whoever is still guarding it comes at you, one after the other */
+      if(g.length){await say(null,`${sp} lies inside a cage of humming iron, eyes half closed. Requiem won't let you near it.`);
+        for(const id of g){const won=await this.fightGuard(id);if(!won){await Cut.end();return}}
+        await say(null,`The guards are beaten. Nothing stands between you and ${sp}'s cage now.`)}
+      await Cut.look(a.x,a.y,{zoom:.75,ms:700});
       await say(null,`${sp} is trapped in a cage of humming iron. As you reach for the lock, ${({Raikou:'sparks crawl up the bars',Entei:'the bars glow red-hot',Suicune:'frost spreads across the bars'})[sp]}.`);
       if(F){F.forceAnim='Charge';await say('rook',"Rook steps up and puts a paw to the lock. His aura pours into the iron.",{emo:'Determined'});F.forceAnim=null}
       W.shakeAmt=.1;Audio2.sfx('superhit');R3.post.uniforms.flash.value=.7;setTimeout(()=>R3.post.uniforms.flash.value=0,140);const cg=KIT.cages&&KIT.cages[B.cage];if(cg)cg.visible=false;flag('free_'+k,true);await wait(500);W.shakeAmt=0;Audio2.cry(B.dex);
