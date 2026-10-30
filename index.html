@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Champion Road"><meta name="theme-color" content="#0b0d12"><meta name="cr-version" content="0.6.0">
+<meta name="apple-mobile-web-app-title" content="Champion Road"><meta name="theme-color" content="#0b0d12"><meta name="cr-version" content="0.6.2">
 <title>Champion Road: The Last Champion</title>
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -7133,7 +7133,7 @@ MAPS.fernwick=(()=>{const W=48,Hh=64;const m=MapGrid(W,Hh,'.');m.id='fernwick';m
   m.prop('boat',8,57,{rot:.2});m.prop('boat',34,56,{rot:-.15,c:'#d8574a'});m.prop('boat',14,59,{rot:1.4,c:'#3d74b8'});
   m.prop('crates',12,52);m.prop('crates',29,52);m.prop('mailbox',11,33);
   for(const [x,y] of [[31,2],[23,20],[44,15],[19,10]])m.prop('rock',x,y);
-  m.signs.push({x:29,y:25,t:'<b>Fernwick</b><br>"Where the tide brings everyone home."'},{x:26,y:2,t:'<b>Route 1 ⟶ Stormcrest Highlands</b><br>The mountain road is closed until further notice. — Meridia League'},
+  m.signs.push({x:29,y:25,t:'<b>Fernwick</b><br>"Where the tide brings everyone home."'},{x:29,y:3,t:'<b>Route 1 ⟶ Stormcrest Highlands</b><br>The mountain road is closed until further notice. — Meridia League'},
     {x:17,y:21,t:'<b>Fernwick Old Ground</b><br>Home of the Meridia League 1922–1976. Closed: unsafe structure.'},{x:9,y:46,t:'<b>Fernwick Rovers</b> · Division 4<br>Matchday: this Saturday. All welcome!'},
     {x:28,y:30,t:'<b>Poké Mart</b><br>Everything a young trainer needs.'},{x:44,y:31,t:'<b>Fernwick Gym</b> · Leader Flint<br>"Hard as the cliffs, steady as the tide."'});
   for(const s of m.signs)m.prop('sign',s.x,s.y);
@@ -7276,7 +7276,7 @@ MAPS.route2=(()=>{const W=40,Hh=72;const m=MapGrid(W,Hh,'.');m.id='route2';m.nam
   for(const [x,y,rot] of [[33,9,.3],[36,17,.1],[29,3,-.2],[4,24,.5]])m.prop('turbine',x,y,{spin:'volt_power',rot});
   m.signs.push({x:22,y:68,t:'<b>Route 2 · Stormcrest Pass</b><br>Voltspire ↑ · Fernwick ↓<br><small>Weather can turn quickly. Stay on the road.</small>'},{x:24,y:4,t:'<b>Voltspire</b> ↑<br>"Town of a Thousand Winds"'});
   for(const s of m.signs)m.prop('sign',s.x,s.y);
-  m.items=[{id:'r2_potion',x:4,y:58,item:'Super Potion',n:2},{id:'r2_balls',x:36,y:44,item:'Great Ball',n:3},{id:'r2_revive',x:3,y:16,item:'Revive'},{id:'r2_ether',x:37,y:30,item:'Ether'}];
+  m.items=[{id:'r2_potion',x:4,y:58,item:'Super Potion',n:2},{id:'r2_balls',x:32,y:44,item:'Great Ball',n:3},{id:'r2_revive',x:3,y:16,item:'Revive'},{id:'r2_ether',x:37,y:30,item:'Ether'}];
   /* trainers */
   m.npcs.push(tr('r2h1','hiker',23,60,'left',{name:'Hiker Dunstan',char:'hiker',quote:'The mountain tests everyone!',lose:'Ha! You climb well.',foe:mons(['Geodude',14],['Machop',15]),prize:500,sight:4,after:"Voltspire's wind farm has gone quiet. Odd. It's never quiet up there."}),
     tr('r2c1','camper',11,47,'right',{name:'Camper Rhys',char:'camper',quote:'My Pokémon love the cold!',lose:"Brr. That stung.",foe:mons(['Mareep',15],['Swinub',15]),prize:480,sight:4,after:'Tie your laces. The ice is sneaky.'}),
@@ -7500,6 +7500,7 @@ MAPS.ashenvale=(()=>{const W=48,Hh=54;const m=MapGrid(W,Hh,'.');m.id='ashenvale'
   m.line([[0,31],[8,31]],3,':');m.rect(8,30,44,32,'=');m.rect(18,26,30,36,'=');m.line([[24,36],[24,46]],3,'=');m.rect(4,46,44,47,':');
   m.line([[24,25],[24,18]],3,':');m.line([[24,16],[24,0]],3,':');
   m.line([[24,13],[14,11],[7,11]],2,':');/* to the Burnt Tower */m.line([[25,12],[36,11]],2,':');/* to the Spring */
+  /* the stone stairs up to the Heights go in last, so no road paints over them */m.rect(23,17,25,17,'^');m.H(23,17,25,17,1);
   const B=(id,o)=>m.buildings.push({id,...o});
   B('center_a',{style:'center',x:9,y:22,w:6,d:4,door:11,door2:12,to:'center_a',roof:'#d8414a',wall:'#f4efe6'});
   B('mart_a',{style:'mart',x:33,y:23,w:4,d:3,door:34,to:'mart_a',roof:'#3c6fc4',wall:'#eef1f4'});
@@ -7521,7 +7522,7 @@ MAPS.ashenvale=(()=>{const W=48,Hh=54;const m=MapGrid(W,Hh,'.');m.id='ashenvale'
     {x:22,y:44,t:'<b>Marlow\'s Dojo</b><br><small>Closed by order of the Meridia League, 1998.</small>'},{x:27,y:19,t:'<b>Ashen Heights</b> ↑<br>The Ashen Bell · the Burnt Tower · the Spring'},{x:21,y:2,t:'<b>The Ashen Bell</b> ↑<br>League ground, 1902–1976. <small>Closed.</small>'});
   for(const s of m.signs)m.prop('sign',s.x,s.y);
   m.blob(15,4,2.8,2,'"',353);m.blob(31,3,3,2,'"',355);m.blob(44,15,2.4,1.6,'"',357);m.blob(5,50,3,1.6,'"',359);
-  m.items=[{id:'a_max',x:46,y:2,item:'Max Potion'},{id:'a_rev',x:1,y:16,item:'Revive',n:2},{id:'a_ultra',x:45,y:51,item:'Ultra Ball',n:3}];
+  m.items=[{id:'a_max',x:30,y:8,item:'Max Potion'},{id:'a_rev',x:1,y:16,item:'Revive',n:2},{id:'a_ultra',x:45,y:51,item:'Ultra Ball',n:3}];
   m.npcs.push({id:'a_keeper',char:'oldwoman',x:21,y:33,face:'right',talk:'a_keeper'},{id:'a_kid',char:'boy3',x:27,y:30,face:'left',talk:'a_kid',wander:2},{id:'a_fan',char:'pokefan_f',x:31,y:34,face:'left',talk:'a_fan'},
     {id:'a_reporter',char:'reporter_f',x:20,y:25,face:'down',talk:'a_reporter'},{id:'a_gardener',char:'man5',x:38,y:48,face:'up',talk:'a_gardener',wander:2},
     {id:'marlow_a',char:'marlow',x:21,y:44,face:'down',talk:'marlow_a',show:'vale_arrived'},
@@ -7610,7 +7611,7 @@ class World{
     if(c==='L'){return ty===fy+1&&tx===fx?'ledge':false}
     const k=tx+','+ty;if(this.doors[k]&&ty===fy-1&&who===this.player)return'door';
     if(this.blocked.has(k))return false;
-    const hf=this.lev(fx,fy),ht=this.lev(tx,ty);if(Math.abs(hf-ht)>.01){const vert=tx===fx;if(!(vert&&(c==='^'||cf==='^')))return false;}
+    const hf=this.lev(fx,fy),ht=this.lev(tx,ty);if(Math.abs(hf-ht)>.01){const vert=tx===fx;if(!((vert&&(c==='^'||cf==='^'))||c==='P'||cf==='P'))return false;/* stairs, or stepping down onto a pier */}
     else if(c==='^'&&tx!==fx)return false;
     if(cf==='^'&&tx!==fx)return false;
     for(const a of this.actors)if(a!==who&&a.solid&&a.spr.root.visible&&a.x===tx&&a.y===ty)return false;
@@ -7924,7 +7925,7 @@ function healParty(){for(const p of G.party){p.chp=null;p.cst='';p.cpp=null}}
 /* ================= cutscene helpers ================= */
 const Cut={
   async begin(){Game.lock++;UI.bars(true);document.body.classList.add('hidehud');await wait(350)},
-  async end(){UI.bars(false);document.body.classList.remove('hidehud');const W=Game.world;if(W){W.focus=null;W.zoom=1;W.camSpeed=1}await wait(300);Game.lock--;Game.save(true)},
+  async end(){UI.close();UI.bars(false);document.body.classList.remove('hidehud');const W=Game.world;if(W){W.focus=null;W.zoom=1;W.camSpeed=1}await wait(300);Game.lock--;Game.save(true)},
   /* camera: look at a tile (or actor) with an optional zoom; resolves when the camera has mostly arrived */
   /* a pause in a cutscene that a tap / Space cuts short (the camera jumps to where it was heading) */
   wait(ms){return new Promise(res=>{let done=false;const fin=()=>{if(done)return;done=true;off();clearTimeout(t);res()};const t=setTimeout(fin,ms);const off=Input.on(k=>{if(k==='a'){Input.take('a');if(Game.world)Game.world.snapCam=true;fin()}})})},
@@ -15085,7 +15086,7 @@ const Act2={
     await say(null,`${esc(G.name)} received the <b>Frost Badge</b> from Leader Isolde!`);
     Packs.grant('gold');await say(null,'Isolde handed over a <b>Gold Pack</b>.');
     await say('isolde',"Four badges. Now listen. For seven days the sky over Skyline Bowl has been at war with itself. Articuno came first, then Moltres. Last night, Zapdos.");
-    await say('isolde',"Masked people went up the ridge two days ago and have not come down. The gate north will open for your badge. I can't go with you: if the storm reaches the village, I have to be here.",{chain:true});
+    await say('isolde',"Masked people went up the ridge two days ago and have not come down. The gate north will open for your badge. I can't go with you: if the storm reaches the village, I have to be here.");
     Quest.set('Climb the ridge path north of Frostmere to Skyline Bowl');await Cut.end()},
   /* ---------- 5. Skyline Bowl ---------- */
   async arriveSkyline(){if(flag('skyline_calm'))return;const W=Game.world,P=W.player,F=W.follower;
@@ -15275,7 +15276,7 @@ const Act2B={
     await say('marlow',"Twenty-eight years ago, that was. Same thing they're doing to the Royals now, just with a fancier name.");
     if(F){F.forceAnim='Nod';await say('rook',"Rook leans against Marlow's leg. The old coach rests a hand on his head.",{emo:'Sad'});F.forceAnim=null}
     await say('marlow',"Two gyms here now. Briar does Grass, south-east of the square. Morwen does Ghosts, south-west. Briar first; Morwen won't see anyone without Briar's badge.");
-    await say('marlow',"And the grey masks are here. Folk say they've caged something at the Burnt Tower and something else up at the Spring. Same as on the Vale Road. Be careful, gaffer. I'll be at the old dojo.",{chain:true});
+    await say('marlow',"And the grey masks are here. Folk say they've caged something at the Burnt Tower and something else up at the Spring. Same as on the Vale Road. Be careful, gaffer. I'll be at the old dojo.");
     M.walk(['down','down','down','down','down'],{force:true}).then(()=>M.remove());
     this.quest();await Cut.end()},
   /* ---------- 3. the gyms ---------- */
@@ -15405,7 +15406,7 @@ const Act2B={
     await say('pip',"I made a BANNER. It's mostly spelled right!",{name:'Pip'});
     await Cut.look(20,15,{zoom:.8,ms:700});
     await say('kai',"...Hey. Floatzel's been weird all week. Hale says it's nerves. Pokémon don't get nerves, right?",{name:'Kai'});
-    await say('kai',"Doesn't matter. Mr Hale says we win this by six. Let's play.",{name:'Kai',chain:true});
+    await say('kai',"Doesn't matter. Mr Hale says we win this by six. Let's play.",{name:'Kai'});
     await Cut.end();
     /* the match itself: Kai's Royals at full Overdrive */
     UI.bars(false);document.body.classList.remove('hidehud');
