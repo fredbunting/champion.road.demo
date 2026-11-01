@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Champion Road"><meta name="theme-color" content="#0b0d12"><meta name="cr-version" content="0.10.2">
+<meta name="apple-mobile-web-app-title" content="Champion Road"><meta name="theme-color" content="#0b0d12"><meta name="cr-version" content="0.10.3">
 <title>Champion Road: The Last Champion</title>
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -471,11 +471,11 @@ body.inhub #menuBtn,body.inhub .touch,body.inhub #quest,body.inhub .banner{displ
 @keyframes rmblink{50%{opacity:.15}}
 .rm-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 12px;background:linear-gradient(180deg,#304890,#20306a);border-top:2px solid #98b0f0;color:#fff;font:700 14px var(--sans);letter-spacing:.02em}.rm-q{font-size:12px;color:#f8d838;text-align:right}
 /* VS splash before story battles */
-.vs{position:fixed;inset:0;z-index:70;pointer-events:none;overflow:hidden;background:rgba(6,8,12,.55);animation:fi .15s;transition:opacity .35s}.vs.out{opacity:0}
-.vs-band{position:absolute;left:-10%;right:-10%;height:24%;display:flex;align-items:center;gap:16px;padding:0 16%;color:#fff;transform:skewY(-6deg)}
-.vs-band img{height:118%;align-self:flex-end;image-rendering:pixelated;transform:skewY(6deg);filter:drop-shadow(0 6px 10px rgba(0,0,0,.5))}.vs-band b{font:700 clamp(22px,6vw,42px) var(--serif);transform:skewY(6deg)}.vs-band small{font:700 11px var(--sans);letter-spacing:.2em;text-transform:uppercase;color:#f0d390;transform:skewY(6deg)}
-.vs-a{top:20%;background:linear-gradient(90deg,#1d4fa8,#3a7ae0);animation:vsl .45s cubic-bezier(.2,.9,.2,1) both}.vs-b{bottom:20%;flex-direction:row-reverse;text-align:right;background:linear-gradient(270deg,#a8241d,#e0503a);animation:vsr .45s .08s cubic-bezier(.2,.9,.2,1) both}
-.vs-b b,.vs-b small{display:block}.vs-x{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:900 clamp(48px,14vw,96px) var(--serif);color:#f0d390;text-shadow:0 4px 0 #6a4a10,0 0 30px rgba(240,211,144,.6);animation:vsx .5s .3s cubic-bezier(.3,1.6,.4,1) both}
+.vsp{position:fixed;inset:0;z-index:70;pointer-events:none;overflow:hidden;background:rgba(6,8,12,.55);animation:fi .15s;transition:opacity .35s}.vsp.out{opacity:0}
+.vsp-band{position:absolute;left:-10%;right:-10%;height:24%;display:flex;align-items:center;gap:16px;padding:0 16%;color:#fff;transform:skewY(-6deg)}
+.vsp-band img{height:118%;align-self:flex-end;image-rendering:pixelated;transform:skewY(6deg);filter:drop-shadow(0 6px 10px rgba(0,0,0,.5))}.vsp-band b{font:700 clamp(22px,6vw,42px) var(--serif);transform:skewY(6deg)}.vsp-band small{font:700 11px var(--sans);letter-spacing:.2em;text-transform:uppercase;color:#f0d390;transform:skewY(6deg)}
+.vsp-a{top:20%;background:linear-gradient(90deg,#1d4fa8,#3a7ae0);animation:vsl .45s cubic-bezier(.2,.9,.2,1) both}.vsp-b{bottom:20%;flex-direction:row-reverse;text-align:right;background:linear-gradient(270deg,#a8241d,#e0503a);animation:vsr .45s .08s cubic-bezier(.2,.9,.2,1) both}
+.vsp-b b,.vsp-b small{display:block}.vsp-x{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:900 clamp(48px,14vw,96px) var(--serif);color:#f0d390;text-shadow:0 4px 0 #6a4a10,0 0 30px rgba(240,211,144,.6);animation:vsx .5s .3s cubic-bezier(.3,1.6,.4,1) both}
 @keyframes vsl{from{transform:skewY(-6deg) translateX(-100%)}}@keyframes vsr{from{transform:skewY(-6deg) translateX(100%)}}@keyframes vsx{from{transform:translate(-50%,-50%) scale(3);opacity:0}}
 /* ---------- the Clean look (0.10) ---------- */
 body.look-clean .dlg-in{background:linear-gradient(180deg,#151a22,#0e1218);border:1px solid rgba(227,194,122,.3);border-radius:16px;box-shadow:0 18px 40px rgba(0,0,0,.45)}
@@ -14130,7 +14130,7 @@ function sdRender(now){const t=(now-SDX.t0)*SDX.acc;const M=SDX.map;
     if(q.kind==='bg'){n.style.opacity=st.opacity;continue}
     if(q.kind==='shake'){const d=(st.top??-90)+90;Battle3D.shake=d*M.s;continue}
     if(q.kind==='fx'){const c=M.pt(st.left+st.width/2,st.top+st.height/2);const w=st.width*M.s,h=st.height*M.s;n.style.width=w+'px';n.style.height=h+'px';n.style.transform=`translate(${c.x-w/2}px,${c.y-h/2}px)`;n.style.opacity=st.opacity;continue}
-    if(q.kind==='mon'){const b=q.base;const cx=st.left+st.width/2,cy=st.top+st.height/2,bx=b.left+b.width/2,by=b.top+b.height/2;const k=b.width?st.width/b.width:1;n.fx.dx=(cx-bx)*M.sx;n.fx.dy=(cy-by)*M.sy;n.fx.k=clamp(k,.85,1.18);n.fx.op=st.opacity}}
+    if(q.kind==='mon'){const b=q.base;const cx=st.left+st.width/2,cy=st.top+st.height/2,bx=b.left+b.width/2,by=b.top+b.height/2;const k=b.width?st.width/b.width:1;const a=M.pt(cx,cy),o=M.pt(bx,by);const L=M.lim[n.side]||{x0:-1e4,x1:1e4,y0:-1e4,y1:1e4};n.fx.dx=clamp(a.x-o.x,L.x0,L.x1);n.fx.dy=clamp(a.y-o.y,L.y0,L.y1);n.fx.k=clamp(k,.85,1.18);n.fx.op=st.opacity}}
   if(t<SDX.end)SDX.raf=requestAnimationFrame(sdRender);else sdCleanup()}
 function sdCleanup(){cancelAnimationFrame(SDX.raf);SDX.raf=0;for(const q of SDX.qs){if(!q.node)continue;if(q.kind==='shake'){Battle3D.shake=0;continue}if(q.kind==='mon'){q.node.fx={dx:0,dy:0,k:1,op:1}}else q.node.remove()}SDX.qs=[];const cb=SDX.done;SDX.done=null;cb&&cb()}
 /* moves without their own Showdown script borrow the closest one: by name first, then by type and power */
@@ -14181,9 +14181,9 @@ const Battle3D={b:null,shake:0,
     if(!cfg.wild&&cfg.char){this.trainerR=new Actor(BW,{id:'tr',key:ASSETS.chars[cfg.char]?cfg.char:({vance:'scientist2',graves:'oldman',skier:'beauty'}[cfg.char]||'man'),x:c,y:c-5,face:'down'});BW.actors.push(this.trainerR)}
     WIND.clear.value.set(c+.5,c+.5,7.5,1);
     if(kind==='pitch')this.crowd(BW,Math.min(70,G.club?G.club.fans:40),c);
-    this.cam=new THREE.PerspectiveCamera(30,R3.aspect,.3,200);this.camT=0;this.camShot='intro';
+    this.cam=new THREE.PerspectiveCamera(30,R3.aspect,.3,200);this.camT=0;this.camShot='classic';this.pose=null;
     this.buildUI();await this.br.set(b.sides.r.team[0],false);this.br.show(!!cfg.wild);this.br.enter=1;
-    if(cfg.walkout){this.camShot='walkout';this.camT=0;this.walkT=0}
+    if(cfg.walkout){this.walkT=0}
     R3.post.uniforms.trans.value=0;this.frame(0,App.T);await fadeIn(cfg.walkout?900:300);
     if(cfg.walkout){Audio2.music('matchday',{fade:300});Audio2.sfx('crowd');this.msg('The Rovers walk out onto the pitch...');this.walking=true;await wait(2600);this.msg(`${G.club?G.club.fans:40} fans sing for Fernwick. It sounds like four hundred.`);Audio2.sfx('crowd');await wait(2400);this.walking=false;Audio2.sfx('whistle');await wait(700);Audio2.music(cfg.music||'battle_trainer',{fade:300});this.shot('intro')}
     if(cfg.wild)Audio2.cry(SPECIES[b.sides.r.team[0].sp].dex);
@@ -14191,7 +14191,7 @@ const Battle3D={b:null,shake:0,
     return await this.loop()},
   async transition(cfg){const U=R3.post.uniforms;Audio2.sfx('enc');for(let i=0;i<2;i++){await tweenU('flash',.85,70);await tweenU('flash',0,90)}U.transKind.value=cfg.wild?(Math.random()<.5?1:2):1;await tweenU('trans',1,620,ease.in);U.fade.value=1;U.trans.value=0},
   /* ---- camera shots ---- */
-  shot(k,o={}){this.camShot=k;this.camT=0;this.camO=o;this.camFrom=this.cam.position.clone();this.camLookFrom=this.camLook?this.camLook.clone():null},
+  shot(){/* the camera is locked during battles */},
   rigPose(k){const st=this.st;const ax=st.ax;const side=new THREE.Vector3(-ax.z,0,ax.x);const mid=st.me.clone().lerp(st.foe,.55);const asp=R3.aspect||1;const port=asp<1;
     const baseDist=port?16.5:19;let pos,look;
     if(k==='intro'){pos=st.foe.clone().addScaledVector(ax,-3.6).addScaledVector(side,-2.2);pos.y+=1.6;look=st.foe.clone();look.y+=1}
@@ -14203,24 +14203,43 @@ const Battle3D={b:null,shake:0,
   frame(dt,T){const sp=this.speed();const W=this.BW;if(!this.st||!this.cam||!W||!W.scene){const O=Game.world;if(O&&O.scene){O.update(dt,T);renderScene(O.scene,O.cam,T)}return}
     W.update(dt,T);
     {const show=this.camShot==='intro'||this.camShot==='walkout'||this.walking;for(const a of [this.trainerP,this.rookA,this.trainerR])if(a)a.spr.root.visible=show||a===this.trainerR}
-    if(this.trainerP){if(this.walking||this.camShot==='walkout'){this.walkT=(this.walkT||0)+dt;const k=clamp(this.walkT/4.5,0,1);this.trainerP.spr.root.position.set(this.st.base.x,0,this.st.base.z+4*(1-k));this.trainerP.mv=k<1?{t:(this.walkT%.5)*0.5,dur:.25,fx:0,fy:0,tx:0,ty:0}:null;this.trainerP.step=Math.floor(this.walkT*4)}else{this.trainerP.mv=null;this.trainerP.spr.root.position.copy(this.st.base)}this.trainerP.face='up';this.trainerP.draw();this.trainerP.spr.root.position.y=0}if(this.rookA){this.rookA.spr.root.position.set(this.st.base.x-1.15,0,this.st.base.z-.2);this.rookA.face='up'}if(this.trainerR){this.trainerR.spr.root.position.set(this.st.foe.x+1.6,0,this.st.foe.z-1.6)}
-    /* camera */
-    /* camera: a smoothed base pose, with drift and impact shake layered on top (never accumulated into the base) */
-    const tgt=this.rigPose(this.camShot);this.camT+=dt*sp;if(!this.camLook)this.camLook=tgt.look.clone();if(!this.camBase)this.camBase=tgt.pos.clone();
-    if(this.camShot==='intro'){const a=this.rigPose('intro'),c=this.rigPose('classic');const kk=clamp((this.camT-.5)/1.7,0,1);const e=ease.inOut(kk);this.camBase.copy(a.pos.clone().lerp(c.pos,e));this.camLook.copy(a.look.clone().lerp(c.look,e));if(kk>=1)this.camShot='classic'}
-    else{const k=1-Math.pow(.08,Math.min(dt,.05)*sp);this.camBase.lerp(tgt.pos,k);this.camLook.lerp(tgt.look,k)}
-    this.quake=Math.max(0,(this.quake||0)-dt*2.4*sp);const sh=(this.shake||0)+(this.quake||0)*45;this.cam.position.copy(this.camBase);this.cam.position.x+=Math.sin(T*.35)*.12+Math.cos(T*63)*sh*.004;this.cam.position.y+=Math.sin(T*70)*sh*.004;
-    this.cam.aspect=R3.aspect;this.cam.fov=R3.aspect<1?36:20;{const pan=this.ui&&this.ui.querySelector('.bbot');const ph=pan?pan.getBoundingClientRect().height:0;if(this.ui&&Math.abs((this._ph||0)-ph)>2){this._ph=ph;this.ui.style.setProperty('--bpan',Math.round(ph)+'px')}const off=R3.aspect<1&&this.camShot!=='intro'?Math.round(R3.h*(120/innerHeight)*.5):0;if(off)this.cam.setViewOffset(R3.w,R3.h,0,off,R3.w,R3.h);else this.cam.clearViewOffset()}this.cam.updateProjectionMatrix();this.cam.lookAt(this.camLook);
+    if(this.trainerP){if(this.walking||this.camShot==='walkout'){this.walkT=(this.walkT||0)+dt;const k=clamp(this.walkT/4.5,0,1);this.trainerP.spr.root.position.set(this.st.base.x,0,this.st.base.z+4*(1-k));this.trainerP.mv=k<1?{t:(this.walkT%.5)*0.5,dur:.25,fx:0,fy:0,tx:0,ty:0}:null;this.trainerP.step=Math.floor(this.walkT*4)}else{this.trainerP.mv=null;this.trainerP.spr.root.position.copy(this.st.base)}this.trainerP.face='up';this.trainerP.draw();this.trainerP.spr.root.position.y=0}if(this.rookA){this.rookA.spr.root.position.set(this.st.base.x-1.15,0,this.st.base.z-.2);this.rookA.face='up'}if(this.trainerR){this.trainerR.spr.root.position.set(this.st.foe.x-1.5,0,this.st.foe.z-1.8)}
+    /* camera: LOCKED. One pose for the whole battle, solved for this screen shape so your Pokémon and the foe always land in the same places.
+       Nothing moves it except the impact shake, so move animations always start and land on the right Pokémon. */
+    const port=R3.aspect<1;if(!this.pose||this.pose.asp!==R3.aspect)this.pose=this.solvePose();const pose=this.pose;this.camShot='classic';
+    this.quake=Math.max(0,(this.quake||0)-dt*2.4*sp);const sh=(this.shake||0)+(this.quake||0)*45;
+    this.cam.position.copy(pose.pos);this.cam.position.x+=Math.cos(T*63)*sh*.004;this.cam.position.y+=Math.sin(T*70)*sh*.004;
+    this.cam.aspect=R3.aspect;this.cam.fov=pose.fov;this.cam.clearViewOffset();this.cam.updateProjectionMatrix();this.cam.lookAt(pose.look);this.cam.updateMatrixWorld();
+    {const pan=this.ui&&this.ui.querySelector('.bbot');const ph=pan?pan.getBoundingClientRect().height:0;if(this.ui&&Math.abs((this._ph||0)-ph)>2){this._ph=ph;this.ui.style.setProperty('--bpan',Math.round(ph)+'px')}}
     const o=W.sunOff;const c=this.st.me.clone().lerp(this.st.foe,.5);W.sun.position.set(c.x+o[0],c.y+o[1],c.z+o[2]);W.sun.target.position.copy(c);const shc=W.sun.shadow.camera;shc.left=-14;shc.right=14;shc.top=14;shc.bottom=-14;shc.updateProjectionMatrix();
     if(W.scene.fog){const P=TIMES[W.timeKey];W.scene.fog.near=14+P.fogN*.4;W.scene.fog.far=30+P.fogF*.6}
     OCC.near.value=0;OCC.d.value=-1;
-    /* sizes fixed on screen like the handheld games (Delta/GBA): every sprite pixel is the same size, measured from the standard battle view so close-ups still zoom naturally, with a cap so nothing fills the screen */
-    const cp=this.rigPose('classic'),FW=Math.min(R3.w,R3.h*1.5),fv=Math.tan((R3.aspect<1?36:20)*Math.PI/360);
-    for(const bt of [this.bp,this.br]){if(!bt||!bt.S)continue;const wc=2*cp.pos.distanceTo(bt.group.position)*fv/R3.h;const port=R3.aspect<1;let sc=bt.pf*FW/(port?235:343)*wc*(bt.back&&port?1.08:1);const h=bt.S.feet||bt.S.H,mh=(bt.back?(port?.5:.38):(port?.4:.32))*FW*wc;if(h*sc>mh)sc=mh/h;bt.scale=sc}
+    /* sizes: every sprite pixel is the same size on screen (like the handhelds), then each Pokémon is fitted so it never runs under the health boxes or off the sides */
+    const FW=Math.min(R3.w,R3.h*1.5),fv=Math.tan(pose.fov*Math.PI/360);const safeTop=this.safeTop();
+    for(const bt of [this.bp,this.br]){if(!bt||!bt.S)continue;const dist=pose.pos.distanceTo(bt.group.position);const wpp=2*dist*fv/R3.h;
+      let sc=bt.pf*FW/(port?235:343)*wpp*(bt.back&&port?1.08:1);const pxs=()=>sc/wpp;
+      const fp=bt.group.position.clone().project(this.cam);const fy=(-fp.y*.5+.5)*R3.h;
+      const hPx=(bt.S.feet-bt.S.top)*pxs(),maxH=Math.max(60,fy-safeTop-6);if(hPx>maxH)sc*=maxH/hPx;
+      const wPx=bt.S.W*.8*pxs(),maxW=(bt.back?.6:.46)*R3.w;if(wPx>maxW)sc*=maxW/wPx;
+      bt.scale=sc}
     for(const bt of [this.bp,this.br]){if(!bt)continue;const dist=this.cam.position.distanceTo(bt.group.position);bt.wpp=2*dist*Math.tan(this.cam.fov*Math.PI/360)/R3.h;bt.update(dt*sp,this.cam)}
     if(this.ball)this.ball.update(dt*sp);
     R3.post.uniforms.focus.value=.52;R3.post.uniforms.band.value=.3;
     renderScene(W.scene,this.cam,T)},
+  /* find the camera that puts your Pokémon's feet and the foe's feet exactly where we want them on this screen */
+  solvePose(){const st=this.st;const port=R3.aspect<1;const fov=port?36:20;const ax=st.ax,side=new THREE.Vector3(-ax.z,0,ax.x);
+    const T=port?{p:[.34,.70],f:[.69,.42]}:{p:[.30,.70],f:[.66,.40]};if(port){/* short phones: your Pokémon's feet stay above the tallest menu (the move list) */const py=Math.min(.70,(R3.h-this.panelMax()-10)/R3.h);T.f[1]-=Math.max(0,(.70-py)*.35);T.p[1]=py}const cam=new THREE.PerspectiveCamera(fov,R3.aspect,.3,200);
+    const pv=new THREE.Vector3(),pos=new THREE.Vector3(),look=new THREE.Vector3();
+    const place=q=>{pos.copy(st.me).addScaledVector(ax,-q[0]).addScaledVector(side,q[2]);pos.y=q[1];look.copy(st.me).lerp(st.foe,q[3]).addScaledVector(side,q[4]);look.y=.6;cam.position.copy(pos);cam.lookAt(look);cam.updateMatrixWorld();cam.updateProjectionMatrix()};
+    const err=q=>{place(q);let e=0;for(const [w,t] of [[st.me,T.p],[st.foe,T.f]]){pv.copy(w).project(cam);const x=pv.x*.5+.5,y=-pv.y*.5+.5;e+=(x-t[0])**2+(y-t[1])**2;if(pv.z>1||pv.z<-1)e+=9}
+      const pitch=Math.atan2(pos.y-look.y,Math.hypot(pos.x-look.x,pos.z-look.z))*180/Math.PI;if(pitch<14)e+=(14-pitch)*.01;if(pitch>38)e+=(pitch-38)*.01;return e+.0004*(q[0]-10)**2};
+    const lo=[4,2,-3,0,-3],hi=[20,9,4,.9,3];let q=port?[9,5,1.5,.35,0]:[10,4,3,.45,.5];let best=err(q);let step=[2,1,.8,.1,.6];
+    for(let it=0;it<60;it++){let moved=false;for(let k=0;k<5;k++)for(const d of [-1,1]){const t=q.slice();t[k]=clamp(t[k]+d*step[k],lo[k],hi[k]);const e=err(t);if(e<best-1e-7){best=e;q=t;moved=true}}if(!moved){step=step.map(x=>x*.5);if(step[0]<.01)break}}
+    place(q);return{pos:pos.clone(),look:look.clone(),fov,asp:R3.aspect,err:best,q}},
+  /* the move list is the tallest the bottom panel gets (message line + 2x2 moves + Back) */
+  panelMax(){const b=this.ui&&this.ui.querySelector('.bbot');if(b&&b.querySelector('.mgrid2'))return b.offsetHeight;const pb=b?parseFloat(getComputedStyle(b).paddingBottom)||14:14;return pb+8+39+190},
+  /* the lowest edge of the health boxes: nothing is drawn above it */
+  safeTop(){const now=performance.now();if(this._st&&now-this._st.t<400)return this._st.v;let v=60;for(const s of ['.bh-r','.bh-p']){const e=this.ui&&this.ui.querySelector(s);if(!e||!e.innerHTML)continue;const r=e.getBoundingClientRect();if(R3.aspect<1||s==='.bh-r')v=Math.max(v,r.bottom)}this._st={t:now,v};return v},
   screenOf(bt){if(!bt||!bt.S)return null;const v=bt.group.position.clone();v.y+=bt.height()*.55;const p=v.project(this.cam);return{x:(p.x*.5+.5)*R3.w,y:(-p.y*.5+.5)*R3.h,w:bt.S.W*bt.scale/bt.wpp}},
   placeHUD(){},
   crowd(BW,n,c){const keys=['man','man2','woman','woman2','boy','girl','lass','youngster','fatman','oldwoman','camper','picnicker','sailor','fisher','hiker','expertf'];const r=srng(n*7+3);this.fans=[];
@@ -14278,7 +14297,13 @@ const Battle3D={b:null,shake:0,
   async withdraw(bt){const sp=this.speed();bt.white=0;await this.tween(300/sp,k=>{bt.white=k;bt.enter=1-k*.99});bt.show(false);bt.enter=1;bt.white=0},
   moveFX(side,mvId){if(G.settings.anims===false)return 0;const m=MOVES[mvId]||(mvId==='Struggle'?STRUGGLE:null);if(!m)return 0;const A=sdAnimFor(m);if(!A)return 0;if(SDX.raf)sdCleanup();
     const P=this.screenOf(this.bp),O=this.screenOf(this.br);if(!P||!O)return 0;
-    const sx=(O.x-P.x)/200,sy=(O.y-P.y)/-110;const s=clamp((Math.abs(sx)+Math.abs(sy))/2,.45,2.6);SDX.map={P,O,sx,sy,s,pt:(X,Y)=>({x:P.x+(X-210)*sx,y:P.y+(Y-245)*sy})};SDX.qs=[];SDScene.timeOffset=0;
+    /* Showdown's scene → this screen. Its two Pokémon sit at (210,245) and (430,135); here they sit wherever the locked camera puts them.
+       The line between them maps exactly onto the line between ours, and "up" stays straight up at one even scale,
+       so a lunge goes at the foe, a jump goes up a sensible height, and effects land on the Pokémon on every screen shape. */
+    const ax=O.x-P.x,ay=O.y-P.y,u=Math.hypot(ax,ay)/246;const s=clamp(u*1.15,.45,2.4);const top=this.safeTop()+10,bot=(document.querySelector('.bbot')||{getBoundingClientRect:()=>({top:R3.h})}).getBoundingClientRect().top;
+    const lim={};const fv=Math.tan(this.cam.fov*Math.PI/360);for(const bt of [this.bp,this.br]){if(!bt||!bt.S)continue;const fp=bt.group.position.clone().project(this.cam);const fx=(fp.x*.5+.5)*R3.w,fy=(-fp.y*.5+.5)*R3.h;const px=bt.scale/(2*this.cam.position.distanceTo(bt.group.position)*fv/R3.h);
+      const tp=fy-(bt.S.feet-bt.S.top)*px,l=fx-bt.S.W*.4*px,r=fx+bt.S.W*.4*px;lim[bt.side]={y0:Math.min(0,top-6-tp),y1:Math.max(0,bot+16-fy),x0:Math.min(0,-R3.w*.06-l),x1:Math.max(0,R3.w*1.06-r)}}
+    SDX.map={P,O,s,top,bot,lim,pt:(X,Y)=>{const t=(X-210)/220,v=-((Y-245)+110*t);return{x:P.x+ax*t,y:P.y+ay*t-v*u}}};SDX.qs=[];SDScene.timeOffset=0;
     const att=side==='p'?new SDMon('p',this.bp):new SDMon('r',this.br);const other=side==='p'?new SDMon('r',this.br):new SDMon('p',this.bp);
     const selfT=m.c==='S'&&(m.self||m.heal||m.rest||/protect|detect|harden|withdraw|curl|barrier|reflect|screen|armor|defense|dance|bulk|calm|agility|amnesia|growth|focus|rest|recover|milk|softboiled/i.test(m.n))&&!m.foe&&!m.fx;
     const P2=side==='p'?att:other,R2=side==='p'?other:att;const def=selfT?att:(side==='p'?R2:P2);
@@ -17023,7 +17048,7 @@ function keyMagenta(img){const c=canvas(img.width,img.height,x=>x.drawImage(img,
 {const prevSB=storyBattle;storyBattle=async function(o){return prevSB({vs:true,...o})}}
 {const prev=Battle3D.transition.bind(Battle3D);Battle3D.transition=async function(cfg){if(!cfg||!cfg.vs||cfg.wild)return prev(cfg);
   const pic=cfg.pic||(ASSETS.tpics[cfg.char]?cfg.char:(PEOPLE[cfg.char]&&PEOPLE[cfg.char].pic))||null;const me=ASSETS.tpics[G.hero]?G.hero:null;
-  const el=document.createElement('div');el.className='vs';el.innerHTML=`<div class="vs-band vs-a">${me?`<img src="${ASSETS.tpics[me].src||ASSETS.tpics[me]}" alt="">`:''}<b>${esc(G.name)}</b></div><div class="vs-x">VS</div><div class="vs-band vs-b">${pic&&ASSETS.tpics[pic]?`<img src="${ASSETS.tpics[pic].src||ASSETS.tpics[pic]}" alt="">`:''}<b>${esc(cfg.name||'')}</b><small>${esc(cfg.title||'')}</small></div>`;
+  const el=document.createElement('div');el.className='vsp';el.innerHTML=`<div class="vsp-band vsp-a">${me?`<img src="${ASSETS.tpics[me].src||ASSETS.tpics[me]}" alt="">`:''}<b>${esc(G.name)}</b></div><div class="vsp-x">VS</div><div class="vsp-band vsp-b">${pic&&ASSETS.tpics[pic]?`<img src="${ASSETS.tpics[pic].src||ASSETS.tpics[pic]}" alt="">`:''}<b>${esc(cfg.name||'')}</b><small>${esc(cfg.title||'')}</small></div>`;
   for(const im of el.querySelectorAll('img'))keyMagentaImg(im);document.body.appendChild(el);Audio2.sfx('enc');await wait(1500);el.classList.add('out');const p=prev(cfg);await wait(350);el.remove();return p}}
 
 /* ---------- settings: difficulty and running ---------- */
